@@ -96,6 +96,8 @@ export async function fetchNFTs(address, contract) {
       }),
     );
 
+    console.log('Tokens:', tokens)
+
     // Filter out null values (where token fetch failed).
     const validTokens = tokens.filter(Boolean);
     console.log("Total NFTs found:", validTokens.length);

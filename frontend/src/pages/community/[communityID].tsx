@@ -5,10 +5,12 @@ import LoadingWrapper from "@/components/LoadingWrapper";
 import LoginWithMagic from "@/components/LoginWithMagic";
 import MerchForm from "@/components/MerchForm";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function CollectiblesPage() {
   const { user } = useUser();
-
+  const router = useRouter();
+  const { communityID } = router.query;
   // initialize the state used to track the current page's data
   const [loading, setLoading] = useState(user?.refreshCollectibles);
 
@@ -29,7 +31,8 @@ export default function CollectiblesPage() {
   return (
     <Layout title="Holders Only Area" className="">
       <section className="hero">
-        <h1>Token-Gated Perks</h1>
+        <h1>Community {communityID}</h1>
+        <h1>Token-Gated Perks </h1>
         <p>
           This page only shows content to users with a Hiro NFT. At Magic,
           we&apos;re seeing a rising number of sophisticated token-gating use

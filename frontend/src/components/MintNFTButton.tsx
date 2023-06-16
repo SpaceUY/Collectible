@@ -29,7 +29,7 @@ export default function MintNFTButton({
     try {
       // Request to mint NFT
       const res = await requestMintNFT(user.address, contract);
-
+      alert('finished request mint nft')
       // If the request returns no result, log an error and return
       if (!res) {
         console.log("Mint failed (or was canceled by the user).");

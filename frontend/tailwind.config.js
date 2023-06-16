@@ -20,7 +20,11 @@ module.exports = {
       screens: {
         "custom-breakpoint-500": { max: "500px" },
       },
+      lineHeight: {
+        'juanma-height': '1.2rem',
+      },
     },
   },
   plugins: [],
 };
+
