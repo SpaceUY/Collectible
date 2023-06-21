@@ -6,7 +6,7 @@
   @apply border-b border-gray-300;
 } */
 
-.navContainer {
+/* .navContainer {
   @apply items-center justify-between flex-grow w-full bg-white lg:flex;
 }
 .navOpen {
@@ -43,4 +43,4 @@
 
 .burger {
   @apply block lg:hidden;
-}
+} */

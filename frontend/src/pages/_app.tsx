@@ -1,11 +1,11 @@
 import "@/styles/globals.css";
-import { Inter } from "@next/font/google";
 import { UserProvider } from "@/context/UserContext";
 import { Web3Provider } from "@/context/Web3Context";
+import { Poppins } from "@next/font/google";
 
-const inter = Inter({
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-inter",
 });
 
 export default function App({ Component, pageProps }) {
@@ -15,10 +15,11 @@ export default function App({ Component, pageProps }) {
         <style jsx global>
           {`
             :root {
-              --font-inter: ${inter.style.fontFamily};
+              --font-inter: ${poppins.style.fontFamily};
             }
           `}
         </style>
+
         <Component {...pageProps} />
       </UserProvider>
     </Web3Provider>
