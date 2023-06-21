@@ -2,7 +2,7 @@
   Style the modal
 */
 
-.background {
+/* .background {
   @apply fixed inset-0 z-40 bg-black opacity-60;
 }
 
@@ -50,4 +50,4 @@
 
 .content {
   @apply relative flex-auto px-4 py-6 space-y-5;
-}
+} */
