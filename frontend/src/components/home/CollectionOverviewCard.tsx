@@ -12,7 +12,7 @@ const CollectionOverviewCard = ({
   authorPicture,
 }: CollectionOverviewInfo) => {
   return (
-    <article className="h-auto w-full rounded-lg bg-collectible-medium-purple p-7">
+    <article className="to-50% h-auto w-full rounded-lg bg-gradient-to-b from-indigo-500 to-collectible-dark-purple px-7 pt-20 pb-7">
       <div className="mb-5 flex items-center">
         <Image
           src={authorPicture}
