@@ -16,7 +16,11 @@ const communities: {
   { communityPicture: "", name: "Random" },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+  handleOpenConnectModal: () => void;
+}
+
+const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
   return (
     <aside className="fixed left-0 top-20 mx-5 mt-2 h-full w-64 rounded-lg bg-collectible-dark-purple ">
       <ul className="mx-3 my-5">
@@ -50,12 +54,7 @@ const Sidebar = () => {
             />
           ))}
         </ul>
-        <Button
-          action={() => console.log("awdwa")}
-          isFilled={false}
-          isLarge={false}
-          text="Connect Wallet"
-        />
+        <Button action={handleOpenConnectModal}>Connect Wallet</Button>
       </div>
     </aside>
   );
