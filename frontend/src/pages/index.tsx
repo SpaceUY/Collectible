@@ -1,9 +1,6 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-
-import CollectibleCard from "@/components/CollectibleCard";
-import Sidebar from "../components/UI/left-sidebar/Sidebar";
 import CollectionOverviewCard from "../components/home/CollectionOverviewCard";
 
 const tokens = [
@@ -12,6 +9,8 @@ const tokens = [
   { id: 9, image: "/img/Queen Hiro.png" },
   { id: 4, image: "/img/King Hiro.png" },
 ];
+
+
 export default function CollectiblesPage() {
   const { user } = useUser();
 

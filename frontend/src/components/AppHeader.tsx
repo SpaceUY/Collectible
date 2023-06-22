@@ -34,6 +34,7 @@ export default function AppHeader({}) {
 
   // Function to handle disconnection
   const disconnect = async () => {
+    console.log('disconnecting...')
     // Disconnect from magic
     await magic.user.logout();
 

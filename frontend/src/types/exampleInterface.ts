@@ -1,8 +1,8 @@
-interface ExampleInterface {
+export interface ExampleInterface {
   id: number;
   name: string;
   email: string;
   address: string;
 }
 
-type ExampleInterfaceArray = ExampleInterface[];
+export type ExampleInterfaceArray = ExampleInterface[];

@@ -22,7 +22,7 @@ const Button = ({
         variant === "purple"
           ? "border-transparent bg-collectible-purple"
           : variant === "white"
-          ? "border-gray-strong bg-white text-collectible-purple"
+          ? "border-gray-strong bg-white !text-collectible-purple"
           : "border-gray-strong bg-transparent"
       } ${
         isLarge ? "max-h-12 px-6 py-3 text-base" : "max-h-10 px-5 py-2 text-sm"
