@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import Button from "../Button";
-import CommunityCard from "./CommunityCard";
+import Button from "./Button";
+import CommunityListItem from "./CommunityListItem";
 
 const defaultSidebarItems: { text: string; icon: string }[] = [
   { text: "Home", icon: "page-icons/home-icon.svg" },
@@ -22,7 +22,7 @@ interface SidebarProps {
 
 const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
   return (
-    <aside className="fixed left-0 top-20 mx-5 mt-2 h-full w-64 rounded-lg bg-collectible-dark-purple ">
+    <aside className="fixed left-0 top-20 mx-5 mt-4 h-full w-64 rounded-lg bg-collectible-dark-purple ">
       <ul className="mx-3 my-5">
         {defaultSidebarItems.map((itemList) => (
           <li key={itemList.text}>
@@ -47,7 +47,7 @@ const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
       <div className="mx-3 flex h-full flex-col content-end">
         <ul className="mb-8 space-y-5">
           {communities.map(({ communityPicture, name }) => (
-            <CommunityCard
+            <CommunityListItem
               key={name}
               communityPicture={communityPicture}
               name={name}

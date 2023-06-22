@@ -1,10 +1,7 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-
-import CollectibleCard from "@/components/CollectibleCard";
-import Sidebar from "../components/UI/left-sidebar/Sidebar";
-import CollectionOverviewCard from "../components/home/CollectionOverviewCard";
+import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -34,11 +31,11 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <div className="bo ml-72 mt-3 h-full w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
-        <CollectionOverviewCard
-          authorPicture=""
-          title="Asldas jasd"
-          postText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
+      <div className=" mx-72  h-full w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
+        <CommunityOverviewCard
+          communityPicture=""
+          communityName="Asldas jasd"
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
         vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet
         nulla efficitur non. Aliquam tristique nunc non purus ultricies, in
         consectetur nisl scelerisque. In sollicitudin pharetra dui, in
