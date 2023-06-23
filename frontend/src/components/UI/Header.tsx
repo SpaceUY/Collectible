@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
   const { user } = useUser();
+  const [searchbarQuery, setSearchbarQuery] = useState("");
 
   return (
-    <header className="border-1 ml-5 mt-6 flex items-center justify-between">
-      <Image
-        src={"/collectible-logo.svg"}
-        width={82}
-        height={50}
-        alt="Collectible Logo"
+    <header className="mt-6 mb-4 flex w-full px-6">
+      <div className="mr-3 w-64">
+        <Image
+          src={"/collectible-logo.svg"}
+          width={82}
+          height={50}
+          alt="Collectible Logo"
+        />
+      </div>
+      <SearchBar
+        query={searchbarQuery}
+        handleQuery={setSearchbarQuery}
+        placeholderText="Search Collectibles..."
       />
       {user?.isLoggedIn && (
-        <div className="mr-8 flex items-center gap-4">
+        <div className="flex items-center gap-4 ml-auto">
           <span className="flex flex-col items-end">
             <p className="text-gray-strong opacity-50">userName</p>
             <p className="text-sm text-gray-strong opacity-50">

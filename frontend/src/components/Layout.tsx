@@ -1,12 +1,16 @@
 import Modal from "./Modal";
-import Sidebar from "./UI/left-sidebar/Sidebar";
+import Sidebar from "./UI/Sidebar";
+import SearchBar from "./UI/SearchBar";
+import CommunitiesSidebar from "./UI/CommunitiesSidebar";
 import { useEffect, useState } from "react";
 import ConnectModal from "./Modals/ConnectModal";
 import Header from "./UI/Header";
 import MintModal from "./Modals/MintModal";
 import { useRouter } from "next/router";
+
 export default function Layout({ children, title, className = "" }) {
   const router = useRouter();
+
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const handleOpenConnectModal = () => {
     setIsConnectModalOpen(true);
@@ -30,8 +34,9 @@ export default function Layout({ children, title, className = "" }) {
   }, [router.query.key]);
 
   return (
-    <>
+    <div>
       <Header />
+      <CommunitiesSidebar />
       <Sidebar handleOpenConnectModal={handleOpenConnectModal} />
       <Modal />
       {isConnectModalOpen && (
@@ -40,9 +45,7 @@ export default function Layout({ children, title, className = "" }) {
       {isMintModalOpen && (
         <MintModal handleCloseMintModal={handleCloseMintModal} />
       )}
-      <main className={`container space-y-12 px-3 py-12 ${className}`}>
-        {children}
-      </main>
-    </>
+      <main className={`container space-y-12 ${className}`}>{children}</main>
+    </div>
   );
 }
