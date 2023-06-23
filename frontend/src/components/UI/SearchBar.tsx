@@ -28,7 +28,7 @@ const SearchBar = ({
     <div className="relative">
       {!query.length && (
         <Image
-          src={"page-icons/glass-icon.svg"}
+          src={"/page-icons/glass-icon.svg"}
           width={20}
           height={20}
           alt=""

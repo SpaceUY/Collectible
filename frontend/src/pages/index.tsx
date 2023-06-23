@@ -10,7 +10,6 @@ const tokens = [
   { id: 4, image: "/img/King Hiro.png" },
 ];
 
-
 export default function CollectiblesPage() {
   const { user } = useUser();
 
@@ -33,18 +32,16 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <div className=" mx-72  h-full w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
-        <CommunityOverviewCard
-          communityPicture=""
-          communityName="Asldas jasd"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
+      <CommunityOverviewCard
+        communityPicture=""
+        communityName="Asldas jasd"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
         vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet
         nulla efficitur non. Aliquam tristique nunc non purus ultricies, in
         consectetur nisl scelerisque. In sollicitudin pharetra dui, in
         condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
-        />
-      </div>
+      />
 
       {/* <section className="hero">
         <h1>Home</h1>

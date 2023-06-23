@@ -3,10 +3,12 @@ import Image from "next/image";
 import Button from "./Button";
 import CommunityListItem from "./CommunityListItem";
 import { useUser } from "@/context/UserContext";
+import Link from "next/link";
+import { useModal } from "@/context/ModalContext";
 
-const defaultSidebarItems: { text: string; icon: string }[] = [
-  { text: "Home", icon: "/page-icons/home-icon.svg" },
-  { text: "Explore", icon: "/page-icons/glass-icon.svg" },
+const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
+  { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
+  { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/explore" },
 ];
 
 const communities: {
@@ -17,20 +19,17 @@ const communities: {
   { communityPicture: "", name: "Random2" },
 ];
 
-interface SidebarProps {
-  handleOpenConnectModal: () => void;
-}
 
-const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
+const Sidebar = () => {
   const { user, disconnectUser } = useUser();
-  console.log("Sidebar - user is ", user);
+  const { handleOpenConnectModal } = useModal();
   return (
     <aside className="fixed left-0 top-20 mx-5 mt-4 h-full w-64 rounded-lg bg-collectible-dark-purple ">
       <ul className="mx-3 my-5">
         {defaultSidebarItems.map((itemList) => (
-          <li key={itemList.text}>
-            <a
-              href="#"
+          <li  key={itemList.text}>
+            <Link
+             href={itemList.href}
               className="text-strong-gray-900 hover:text:text-su flex items-center rounded-lg p-2 "
             >
               <Image
@@ -42,7 +41,7 @@ const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
               <span className="ml-3 text-gray-medium hover:text-gray-strong">
                 {itemList.text}
               </span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

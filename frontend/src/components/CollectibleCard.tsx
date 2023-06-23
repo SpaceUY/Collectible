@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { fetchJSONfromURI, ipfsToHttps } from "@/lib/utils";
+import { fetchJSONfromURI, ipfsToHttps } from "@/api/nftApi";
+import { useModal } from "@/context/ModalContext";
 
 interface CollectibleCardProps {
   item?: { id: number; image: string };
@@ -18,6 +19,12 @@ export default function CollectibleCard({
   tokenURI,
 }: CollectibleCardProps) {
   let [metadata, setMetadata] = useState<Metadata>({});
+  const { handleSelectCollectibleId, handleOpenCollectibleModal } = useModal();
+
+  const inspectCollectible = () => {
+    handleSelectCollectibleId(metadata?.tokenId);
+    handleOpenCollectibleModal();
+  };
 
   // Fetch the token's metadata from the given `tokenURI` url
   const fetchMetadata = async (uri: string) => {
@@ -42,7 +49,10 @@ export default function CollectibleCard({
   if (!metadata?.image) return null;
 
   return (
-    <div className="mx-auto overflow-hidden rounded-xl border border-gray-200 bg-gray-50 shadow-brand">
+    <div
+      className="shadow-brand mx-auto overflow-hidden rounded-xl border border-gray-200 bg-gray-50 hover:cursor-pointer"
+      onClick={inspectCollectible}
+    >
       {metadata?.name && (
         <div className="w-full bg-white bg-opacity-80 px-4 py-2 font-semibold">
           {metadata.name}
@@ -50,8 +60,8 @@ export default function CollectibleCard({
       )}
       <Image
         src={metadata.image}
-        width={256}
-        height={256}
+        width={175}
+        height={175}
         alt="Hiro Collectible NFT"
       />
     </div>
