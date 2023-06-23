@@ -9,22 +9,20 @@ module.exports = {
         sans: ["var(--font-inter)", ...fontFamily.sans],
       },
       colors: {
-        "brand-purple": "#6851ff",
-        "brand-purple-text": "#522FD4",
-        "brand-purple-light": "#EDEBFF",
-        "brand-ink": "#18171A",
+        // Collectible colors
+        "collectible-dark-purple": "#201F23",
+        "collectible-medium-purple": "#26252C",
+        "collectible-purple": "#7A5FC8", // Main color, used in: buttons, ...
+        "collectible-purple-borders": "#433273",
+        "gray-strong": "#F5F5F5",
+        "gray-medium": "rgba(245, 245, 245, 0.5)",
+        "gray-weak": "rgba(245, 245, 245, 0.2)",
       },
-      boxShadow: {
-        brand: "8 8px 48px rgba(24, 23, 26, .2)",
-      },
-      screens: {
-        "custom-breakpoint-500": { max: "500px" },
-      },
-      lineHeight: {
-        'juanma-height': '1.2rem',
-      },
+    },
+    backdropFilter: {
+      none: "none",
+      blur: "blur(20px)",
     },
   },
   plugins: [],
 };
-
