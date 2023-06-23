@@ -9,6 +9,8 @@ const tokens = [
   { id: 9, image: "/img/Queen Hiro.png" },
   { id: 4, image: "/img/King Hiro.png" },
 ];
+
+
 export default function CollectiblesPage() {
   const { user } = useUser();
 
