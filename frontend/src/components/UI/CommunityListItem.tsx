@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const CommunityCard = ({
+const CommunityListItem = ({
   communityPicture,
   name,
 }: {
@@ -27,4 +27,4 @@ const CommunityCard = ({
   );
 };
 
-export default CommunityCard;
+export default CommunityListItem;
