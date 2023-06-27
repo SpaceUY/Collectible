@@ -6,110 +6,91 @@ import LoginWithMagic from "@/components/LoginWithMagic";
 import MerchForm from "@/components/MerchForm";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import CommunityOverviewCard from "../../components/home/CommunityOverviewCard";
+import Button from "../../components/UI/Button";
+
+const placeholder = {
+  communityName: "Adlaa eawd",
+  communityPicture: "",
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet nulla efficitur non. Aliquam tristique nunc non purus ultricies, in consectetur nisl scelerisque. In sollicitudin pharetra dui, in condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu convallis metus convallis. Morbi ut felis id lectus tincidunt convallis.",
+};
+
+enum CommunityTabs {
+  FEED = "feed",
+  BENEFITS = "benefits",
+  COLLECTION = "collection",
+}
+
+const communitySections = [
+  { tabName: "Feed", tabParam: CommunityTabs.FEED },
+  { tabName: "Benefits", tabParam: CommunityTabs.BENEFITS },
+  { tabName: "Collection", tabParam: CommunityTabs.COLLECTION },
+];
 
 export default function CollectiblesPage() {
   const { user } = useUser();
   const router = useRouter();
-  const { communityID } = router.query;
+  const { communityID } = router.query; // TODO content
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
   // initialize the state used to track the current page's data
   const [loading, setLoading] = useState(user?.refreshCollectibles);
+  const [selectedSectionParam, setSelectedSectionParam] =
+    useState<CommunityTabs>(CommunityTabs.FEED);
 
   useEffect(() => {
+    if (Object.values(CommunityTabs).includes(tab as CommunityTabs)) {
+      setSelectedSectionParam(tab as CommunityTabs);
+    }
+
     // do nothing if the user is not logged in
     if (!user?.address) {
       setLoading(true);
       return;
     }
-
     // disable the loading after collectibles have already been loaded
     if (user?.address && !user?.refreshCollectibles && user?.collectibles) {
       setLoading(false);
       return;
     }
-  }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
+  }, [user?.address, user?.refreshCollectibles, user?.collectibles, tab]);
+
+  const handleTabSelection = (sectionParam: CommunityTabs) => {
+    router.replace({ query: { ...router.query, tab: sectionParam } });
+  };
 
   return (
     <Layout title="Holders Only Area" className="">
-      <section className="hero">
-        <h1>Community {communityID}</h1>
-        <h1>Token-Gated Perks </h1>
-        <p>
-          This page only shows content to users with a Hiro NFT. At Magic,
-          we&apos;re seeing a rising number of sophisticated token-gating use
-          cases at large enterprises.{" "}
-          <a
-            href="https://magic.link/contact"
-            rel="noreferrer"
-            target="_blank"
-            className="text-brand-purple underline"
-          >
-            Contact us
-          </a>{" "}
-          if you&apos;d like our help with your project.
-        </p>
-      </section>
+      <CommunityOverviewCard
+        description={placeholder.description}
+        communityName={placeholder.communityName}
+        communityPicture={placeholder.communityPicture}
+      />
 
-      <LoadingWrapper>
-        {user?.address ? (
-          <section className="space-y-4 text-center">
-            <LoadingWrapper loading={loading}>
-              {user?.collectibles?.length > 0 ? (
-                <div>
-                  <p className="mx-auto max-w-5xl">
-                    Everyone loves free merch. Complete the form below for a
-                    chance to win our monthly swag giveaway!
-                  </p>
-                  <div className="mx-auto flex flex-col justify-center pt-6 lg:flex-row lg:items-start lg:space-x-12">
-                    <div className="inline-grid grid-cols-4 gap-6 lg:grid-cols-2 ">
-                      <div>
-                        <Image
-                          className="shadow-image block"
-                          src="/img/swag-buckethat.png"
-                          height={250}
-                          width={250}
-                          alt="Hat swag"
-                        />
-                      </div>
-                      <div>
-                        <Image
-                          className="shadow-image block"
-                          src="/img/swag-tote.png"
-                          height={250}
-                          width={250}
-                          alt="Hat swag"
-                        />
-                      </div>
-                      <Image
-                        className="shadow-image block"
-                        src="/img/swag-jacket.png"
-                        height={250}
-                        width={250}
-                        alt="Hat swag"
-                      />
-                      <div>
-                        <Image
-                          className="shadow-image block"
-                          src="/img/swag-cards.png"
-                          height={250}
-                          width={250}
-                          alt="Hat swag"
-                        />
-                      </div>
-                    </div>
-                    <div className="shadow-form mt-6 rounded-3xl bg-white p-8 lg:mt-0">
-                      <MerchForm />
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-            </LoadingWrapper>
-          </section>
-        ) : (
-          <section className="space-y-3 py-10 text-center">
-            <LoginWithMagic />
-          </section>
-        )}
-      </LoadingWrapper>
+      <div className="mt-10 mb-4 flex gap-5">
+        {communitySections.map((section) => {
+          const buttonVariant =
+            section.tabParam === selectedSectionParam ? "purple" : "outlined";
+
+          return (
+            <Button
+              variant={buttonVariant}
+              key={section.tabName}
+              action={() => handleTabSelection(section.tabParam)}
+            >
+              {section.tabName}
+            </Button>
+          );
+        })}
+      </div>
+
+      <div>
+        {selectedSectionParam === CommunityTabs.FEED && <>feed</>}
+        {selectedSectionParam === CommunityTabs.BENEFITS && <>benefits</>}
+        {selectedSectionParam === CommunityTabs.COLLECTION && <>collection</>}
+      </div>
     </Layout>
   );
 }
