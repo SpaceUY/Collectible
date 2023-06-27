@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { nameToUrl } from "utils/functions";
 
 const CommunityListItem = ({
   communityPicture,
@@ -9,20 +11,20 @@ const CommunityListItem = ({
 }) => {
   return (
     <li>
-      <a href="#" className="">
+      <Link href={`/community/${nameToUrl(name)}`} className="">
         <div className="group flex items-center">
           <Image
+            className="h-12 w-12 rounded-full bg-gray-strong object-cover "
             src={communityPicture}
             width={65}
             height={65}
             alt=""
-            className="rounded-full bg-orange-500"
           />
           <p className="ml-3 text-base font-medium text-gray-medium group-hover:text-gray-strong">
             {name}
           </p>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };

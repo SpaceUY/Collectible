@@ -1,27 +1,21 @@
 import React, { useState } from "react";
 import CommunityListItem from "./CommunityListItem";
 import SearchBar from "./SearchBar";
-
-const communities: {
-  communityPicture: string;
-  name: string;
-}[] = [
-  { communityPicture: "", name: "Random" },
-  { communityPicture: "", name: "aja" },
-  { communityPicture: "", name: "Jkak" },
-];
+import { COMMUNITY_LIST } from "../../../mock/community";
+import { useRouter } from "next/router";
 
 const CommunitiesSidebar = () => {
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
 
-  const filteredCommunitites = communities.filter((community) =>
+  const filteredCommunitites = COMMUNITY_LIST.filter((community) =>
     community.name
       .toLocaleLowerCase()
       .includes(searchInput.toLocaleLowerCase()),
   );
 
   return (
-    <aside className="fixed right-0 top-20 mx-5 mt-4 h-full w-64 rounded-lg bg-collectible-dark-purple px-3 py-4">
+    <>
       <SearchBar
         query={searchInput}
         handleQuery={setSearchInput}
@@ -39,7 +33,7 @@ const CommunitiesSidebar = () => {
           ))}
         </ul>
       </div>
-    </aside>
+    </>
   );
 };
 

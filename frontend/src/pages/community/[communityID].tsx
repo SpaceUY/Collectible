@@ -1,21 +1,11 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import LoadingWrapper from "@/components/LoadingWrapper";
-import LoginWithMagic from "@/components/LoginWithMagic";
-import MerchForm from "@/components/MerchForm";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import CommunityOverviewCard from "../../components/home/CommunityOverviewCard";
 import Button from "../../components/UI/Button";
-
-const placeholder = {
-  communityName: "Adlaa eawd",
-  communityPicture: "",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet nulla efficitur non. Aliquam tristique nunc non purus ultricies, in consectetur nisl scelerisque. In sollicitudin pharetra dui, in condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu convallis metus convallis. Morbi ut felis id lectus tincidunt convallis.",
-};
+import { COMMUNITY_LIST } from "mock/community";
 
 enum CommunityTabs {
   FEED = "feed",
@@ -39,6 +29,11 @@ export default function CollectiblesPage() {
   const [loading, setLoading] = useState(user?.refreshCollectibles);
   const [selectedSectionParam, setSelectedSectionParam] =
     useState<CommunityTabs>(CommunityTabs.FEED);
+
+  /**  @DEV to be implemented */
+  const community = COMMUNITY_LIST.find(
+    (community) => community.id === communityID,
+  );
 
   useEffect(() => {
     if (Object.values(CommunityTabs).includes(tab as CommunityTabs)) {
@@ -64,9 +59,9 @@ export default function CollectiblesPage() {
   return (
     <Layout title="Holders Only Area" className="">
       <CommunityOverviewCard
-        description={placeholder.description}
-        communityName={placeholder.communityName}
-        communityPicture={placeholder.communityPicture}
+        description={community?.description}
+        communityName={community?.name}
+        communityPicture={community?.communityPicture}
       />
 
       <div className="mt-10 mb-4 flex gap-5">

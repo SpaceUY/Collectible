@@ -14,9 +14,8 @@ export async function getUserData(web3) {
     const balance = web3.utils.fromWei(balanceInWei);
 
     // Truncate the user's address for display purposes
-    const shortAddress = `${address.substring(0, 5)}...${address.substring(
-      address.length - 4,
-    )}`;
+    const shortAddress = getAddressShortcut(address);
+
     console.log("finished getuserdata");
     return {
       isLoggedIn: true,
@@ -31,3 +30,11 @@ export async function getUserData(web3) {
     console.error("getUserData", error);
   }
 }
+
+export const getAddressShortcut = (address: string) => {
+  const shortAddress = `${address.substring(0, 5)}...${address.substring(
+    address.length - 4,
+  )}`;
+
+  return shortAddress;
+};

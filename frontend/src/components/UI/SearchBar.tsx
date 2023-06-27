@@ -25,7 +25,7 @@ const SearchBar = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {!query.length && (
         <Image
           src={"/page-icons/glass-icon.svg"}

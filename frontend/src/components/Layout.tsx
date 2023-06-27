@@ -1,51 +1,35 @@
-import Modal from "./Modal";
 import Sidebar from "./UI/Sidebar";
-import SearchBar from "./UI/SearchBar";
 import CommunitiesSidebar from "./UI/CommunitiesSidebar";
-import { useEffect, useState } from "react";
-import ConnectModal from "./Modals/ConnectModal";
 import Header from "./UI/Header";
-import MintModal from "./Modals/MintModal";
 import { useRouter } from "next/router";
 
 export default function Layout({ children, title, className = "" }) {
   const router = useRouter();
 
-  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
-  const handleOpenConnectModal = () => {
-    setIsConnectModalOpen(true);
-  };
-  const handleCloseConnectModal = () => {
-    setIsConnectModalOpen(false);
-  };
-
-  const [isMintModalOpen, setIsMintModalOpen] = useState(false);
-  const handleOpenMintModal = () => {
-    setIsMintModalOpen(true);
-  };
-  const handleCloseMintModal = () => {
-    setIsMintModalOpen(false);
-  };
-
-  useEffect(() => {
-    if (router.query.key) {
-      handleOpenMintModal();
-    }
-  }, [router.query.key]);
-
+  const isHomeOrExplore = router.pathname === "/" || router.pathname === "/explore";
   return (
-    <div>
-      <Header />
-      <CommunitiesSidebar />
-      <Sidebar handleOpenConnectModal={handleOpenConnectModal} />
-      <Modal />
-      {isConnectModalOpen && (
-        <ConnectModal handleCloseConnectModal={handleCloseConnectModal} />
-      )}
-      {isMintModalOpen && (
-        <MintModal handleCloseMintModal={handleCloseMintModal} />
-      )}
-      <main className={`container space-y-12 ${className}`}>{children}</main>
+    <div className="relative mx-auto flex w-full flex-col  border-red-500 px-6 xl:px-10 2xl:px-20">
+      <header className="flex w-full items-center gap-4  py-4">
+        <Header />
+      </header>
+
+      <div className="flex min-h-[calc(100vh-100px)] w-full gap-4 border-blue-500">
+        <aside className=" sticky top-0 bottom-0 min-h-full w-64 flex-shrink-0 rounded-lg bg-collectible-dark-purple px-4 py-4">
+          <Sidebar />
+        </aside>
+
+        <main
+          className={`h-full w-full flex-shrink flex-grow rounded-lg bg-collectible-dark-purple px-8 py-10`}
+        >
+          {children}
+          <br /> <br /> <br /> <br /> <br /> <br /> <br />
+          <br /> <br /> <br /> <br /> <br /> <br /> <br />
+        </main>
+
+        <aside className="sticky top-0 bottom-0 min-h-full w-64 flex-shrink-0 rounded-lg bg-collectible-dark-purple px-4 py-4 ">
+          {isHomeOrExplore && <CommunitiesSidebar />}
+        </aside>
+      </div>
     </div>
   );
 }

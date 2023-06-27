@@ -2,28 +2,34 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
 import SearchBar from "./SearchBar";
+import Link from "next/link";
 
 const Header = () => {
   const { user } = useUser();
   const [searchbarQuery, setSearchbarQuery] = useState("");
 
   return (
-    <header className="mt-6 mb-4 flex w-full px-6">
-      <div className="mr-3 w-64">
+    <>
+      <Link className="w-64 shrink-0 " href="/">
         <Image
           src={"/collectible-logo.svg"}
           width={82}
           height={50}
           alt="Collectible Logo"
         />
-      </div>
+      </Link>
+
       <SearchBar
         query={searchbarQuery}
         handleQuery={setSearchbarQuery}
         placeholderText="Search Collectibles..."
       />
-      {user?.isLoggedIn && (
-        <div className="ml-auto flex items-center gap-4">
+
+      {user?.isLoggedIn ? (
+        <Link
+          className="flex w-64 shrink-0 items-center justify-end gap-4 pr-2"
+          href={`/profile/${user?.address}`}
+        >
           <span className="flex flex-col items-end">
             <p className="text-gray-strong opacity-50">userName</p>
             <p className="text-sm text-gray-strong opacity-50">
@@ -42,9 +48,11 @@ const Header = () => {
               alt="Collectible Logo"
             />
           </div>
-        </div>
+        </Link>
+      ) : (
+        <></>
       )}
-    </header>
+    </>
   );
 };
 

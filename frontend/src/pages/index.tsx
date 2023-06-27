@@ -34,52 +34,20 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <div className="mx-72 w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
-        <CommunityOverviewCard
-          communityPicture=""
-          communityName="Asldas jasd"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
+      <CommunityOverviewCard
+        communityPicture=""
+        communityName="Asldas jasd"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
         vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet
         nulla efficitur non. Aliquam tristique nunc non purus ultricies, in
         consectetur nisl scelerisque. In sollicitudin pharetra dui, in
         condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
-        />
+      />
 
-        <AddPost userName="das" userPicture="" />
+      <AddPost userName="das" userPicture="" />
 
-        <CollectablesReel />
-      </div>
-
-      {/* <section className="hero">
-        <h1>Home</h1>
-        <p>
-          Here you can explore new publications, collections and etc without
-          being logged.
-        </p>
-        <br />
-        <br />
-        <h2 className="">New Collection from the Magic Team</h2>
-        <div className="flex justify-center">
-          <section className="inline-grid place-items-center gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {tokens.slice(0, 4).map((item, id) => (
-              <CollectibleCard key={id} item={item} />
-            ))}
-          </section>
-        </div>
-
-        <br />
-        <br />
-
-        <h2 className="">New Collection from the Magic Team</h2>
-        <div className="flex justify-center">
-          <section className="inline-grid place-items-center gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {tokens.slice(0, 4).map((item, id) => (
-              <CollectibleCard key={id} item={item} />
-            ))}
-          </section>
-        </div>
-      </section> */}
+      {/* <CollectablesReel /> */}
     </Layout>
   );
 }

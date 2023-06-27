@@ -3,34 +3,25 @@ import Image from "next/image";
 import Button from "./Button";
 import CommunityListItem from "./CommunityListItem";
 import { useUser } from "@/context/UserContext";
+import Link from "next/link";
+import { useModal } from "@/context/ModalContext";
+import { USER_COMMUNITY_LIST } from "mock/community";
 
-const defaultSidebarItems: { text: string; icon: string }[] = [
-  { text: "Home", icon: "/page-icons/home-icon.svg" },
-  { text: "Explore", icon: "/page-icons/glass-icon.svg" },
+const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
+  { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
+  { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
 ];
 
-const communities: {
-  communityPicture: string;
-  name: string;
-}[] = [
-  { communityPicture: "", name: "Random1" },
-  { communityPicture: "", name: "Random2" },
-];
-
-interface SidebarProps {
-  handleOpenConnectModal: () => void;
-}
-
-const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
+const Sidebar = () => {
   const { user, disconnectUser } = useUser();
-  console.log("Sidebar - user is ", user);
+  const { handleOpenConnectModal } = useModal();
   return (
-    <aside className="fixed left-0 top-20 mx-5 mt-4 h-full w-64 rounded-lg bg-collectible-dark-purple ">
-      <ul className="mx-3 my-5">
+    <>
+      <ul className="mb-4">
         {defaultSidebarItems.map((itemList) => (
           <li key={itemList.text}>
-            <a
-              href="#"
+            <Link
+              href={itemList.href}
               className="text-strong-gray-900 hover:text:text-su flex items-center rounded-lg p-2 "
             >
               <Image
@@ -42,21 +33,26 @@ const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
               <span className="ml-3 text-gray-medium hover:text-gray-strong">
                 {itemList.text}
               </span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
 
-      <div className="mx-3 flex h-full flex-col content-end">
-        <ul className="mb-8 space-y-5">
-          {communities.map(({ communityPicture, name }) => (
-            <CommunityListItem
-              key={name}
-              communityPicture={communityPicture}
-              name={name}
-            />
-          ))}
-        </ul>
+      {user?.isLoggedIn && (
+        <div className="px-1 flex flex-col content-end">
+          <ul className="mb-8 space-y-5">
+            {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
+              <CommunityListItem
+                key={name}
+                communityPicture={communityPicture}
+                name={name}
+              />
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="mx-3 flex flex-col">
         {!user?.loading && !user?.isLoggedIn && (
           <Button action={handleOpenConnectModal}>Connect Account</Button>
         )}
@@ -65,7 +61,7 @@ const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
         )}
         {user?.loading && <Button action={() => {}}>Loading</Button>}
       </div>
-    </aside>
+    </>
   );
 };
 

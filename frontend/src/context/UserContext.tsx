@@ -1,8 +1,9 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { fetchNFTs } from "@/lib/utils";
 import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserData } from "@/api/accountApi";
+import { fetchNFTs } from "@/api/nftApi";
+import { useRouter } from "next/router";
 
 // Define custom user data type
 interface UserData {
@@ -41,9 +42,13 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Get web3 and contract instances from Web3Context
   const { web3, contract, isAccountChanged, initializeWeb3 } = useWeb3();
+  const router = useRouter();
 
+  const initialUserState = {
+    loading: true,
+  };
   // State to hold the user data
-  const [user, setUser] = useState<UserData>();
+  const [user, setUser] = useState<UserData>(initialUserState);
 
   /**  
    @dev User connection to be handled on WeaveDV @TBD
@@ -84,6 +89,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Re-initialize web3 instance to ensure correct provider is used
     await initializeWeb3();
+
+    // Redirect to homepage
+    router.push("/");
   };
 
   // 1. Get the user account when web3 instance is available
