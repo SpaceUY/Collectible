@@ -6,6 +6,7 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
 import { USER_COMMUNITY_LIST } from "mock/community";
+import { BiLogOut } from "react-icons/bi";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
@@ -39,7 +40,7 @@ const Sidebar = () => {
       </ul>
 
       {user?.isLoggedIn && (
-        <div className="px-1 flex flex-col border-2">
+        <div className="flex flex-col px-1">
           <ul className="mb-8 space-y-5">
             {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
               <CommunityListItem
@@ -52,12 +53,43 @@ const Sidebar = () => {
         </div>
       )}
 
-      <div className=" border-2  flex items-center justify-center self-center justify-self-end ">
+      {user?.isLoggedIn && (
+        <Link
+          className="fixed bottom-6 flex items-center justify-center gap-3"
+          href={`/profile/${user?.address}`}
+        >
+          <div className="rounded-full border-[1px] bg-gray-strong">
+            <Image
+              /** 
+               @DEV remove opacity-0 to display image
+               **/
+              className="h-12 w-12 rounded-full border-gray-strong opacity-0"
+              src={"collectible-logo.svg"}
+              width={50}
+              height={50}
+              alt="Collectible Logo"
+            />
+          </div>
+          <span className="flex flex-col mr-6">
+            <p className="text-gray-strong opacity-50">userName</p>
+            <p className="text-sm text-gray-strong opacity-50">
+              {user?.shortAddress}
+            </p>
+          </span>
+          {!user?.loading && user?.isLoggedIn && (
+            <button
+              className="text-2xl text-gray-medium "
+              onClick={disconnectUser}
+            >
+              <BiLogOut />
+            </button>
+          )}
+        </Link>
+      )}
+
+      <div className=" flex  items-center justify-center self-center justify-self-end ">
         {!user?.loading && !user?.isLoggedIn && (
           <Button action={handleOpenConnectModal}>Connect Account</Button>
-        )}
-        {!user?.loading && user?.isLoggedIn && (
-          <Button action={disconnectUser}>Disconnect</Button>
         )}
         {user?.loading && <Button action={() => {}}>Loading</Button>}
       </div>
