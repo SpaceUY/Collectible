@@ -59,9 +59,9 @@ export default function CollectiblesPage() {
   return (
     <Layout title="Holders Only Area" className="">
       <CommunityOverviewCard
-        description={community.description}
-        communityName={community.name}
-        communityPicture={community.communityPicture}
+        description={community?.description}
+        communityName={community?.name}
+        communityPicture={community?.communityPicture}
       />
 
       <div className="mt-10 mb-4 flex gap-5">

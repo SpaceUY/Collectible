@@ -49,7 +49,7 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Profile" className="">
-      <div className="flex items-center gap-4">
+      <div className="mb-8 flex items-center gap-4">
         <div className="rounded-full border-[1px] bg-gray-strong">
           <Image
             /** 
@@ -72,8 +72,8 @@ export default function CollectiblesPage() {
         </span>
       </div>
 
-      <div className="flex flex-col justify-center gap-2">
-        <h3 className="text-2xl font-semibold text-gray-strong">
+      <div className="flex flex-col justify-center gap-3 mb-8">
+        <h3 className="text-xl font-semibold text-gray-strong">
           Collectibles
         </h3>
         <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
@@ -94,8 +94,8 @@ export default function CollectiblesPage() {
         </section>
       </div>
 
-      <div className="flex flex-col justify-center gap-2">
-        <h3 className="text-2xl font-semibold text-gray-strong">Communities</h3>
+      <div className="flex flex-col justify-center gap-3">
+        <h3 className="text-xl font-semibold text-gray-strong">Communities</h3>
         <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {loadingCollectibles ? (
             <>
@@ -113,7 +113,6 @@ export default function CollectiblesPage() {
           )}
         </section>
       </div>
-      
     </Layout>
   );
 }

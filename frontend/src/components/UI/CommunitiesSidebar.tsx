@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import CommunityListItem from "./CommunityListItem";
 import SearchBar from "./SearchBar";
 import { COMMUNITY_LIST } from "../../../mock/community";
+import { useRouter } from "next/router";
 
 const CommunitiesSidebar = () => {
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
 
   const filteredCommunitites = COMMUNITY_LIST.filter((community) =>

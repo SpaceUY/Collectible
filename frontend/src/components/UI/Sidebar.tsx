@@ -9,7 +9,7 @@ import { USER_COMMUNITY_LIST } from "mock/community";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
-  { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/explore" },
+  { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
 ];
 
 const Sidebar = () => {
