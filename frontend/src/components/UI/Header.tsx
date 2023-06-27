@@ -9,8 +9,8 @@ const Header = () => {
   const [searchbarQuery, setSearchbarQuery] = useState("");
 
   return (
-    <header className="mt-6 mb-4 flex w-full px-6">
-      <Link className="mr-3 w-64" href="/">
+    <>
+      <Link className="w-64 shrink-0 " href="/">
         <Image
           src={"/collectible-logo.svg"}
           width={82}
@@ -18,14 +18,16 @@ const Header = () => {
           alt="Collectible Logo"
         />
       </Link>
+
       <SearchBar
         query={searchbarQuery}
         handleQuery={setSearchbarQuery}
         placeholderText="Search Collectibles..."
       />
-      {user?.isLoggedIn && (
+
+      {user?.isLoggedIn ? (
         <Link
-          className="ml-auto flex items-center gap-4"
+          className="flex w-64 shrink-0 items-center justify-end gap-4 pr-2"
           href={`/profile/${user?.address}`}
         >
           <span className="flex flex-col items-end">
@@ -47,8 +49,10 @@ const Header = () => {
             />
           </div>
         </Link>
+      ) : (
+        <></>
       )}
-    </header>
+    </>
   );
 };
 

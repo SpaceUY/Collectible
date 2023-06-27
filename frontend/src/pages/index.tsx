@@ -2,6 +2,8 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
+import AddPost from "../components/UI/AddPost";
+import CollectablesReel from "../components/UI/CollectablesReel";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -43,35 +45,9 @@ export default function CollectiblesPage() {
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
       />
 
-      {/* <section className="hero">
-        <h1>Home</h1>
-        <p>
-          Here you can explore new publications, collections and etc without
-          being logged.
-        </p>
-        <br />
-        <br />
-        <h2 className="">New Collection from the Magic Team</h2>
-        <div className="flex justify-center">
-          <section className="inline-grid place-items-center gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {tokens.slice(0, 4).map((item, id) => (
-              <CollectibleCard key={id} item={item} />
-            ))}
-          </section>
-        </div>
+      <AddPost userName="das" userPicture="" />
 
-        <br />
-        <br />
-
-        <h2 className="">New Collection from the Magic Team</h2>
-        <div className="flex justify-center">
-          <section className="inline-grid place-items-center gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {tokens.slice(0, 4).map((item, id) => (
-              <CollectibleCard key={id} item={item} />
-            ))}
-          </section>
-        </div>
-      </section> */}
+      {/* <CollectablesReel /> */}
     </Layout>
   );
 }

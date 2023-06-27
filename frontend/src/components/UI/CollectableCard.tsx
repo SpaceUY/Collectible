@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-type CollectiveCardProps = {
+export type CollectiveCardProps = {
   pictureUrl: string;
   name: string;
   description: string;
@@ -15,7 +15,7 @@ export const CollectableCard = ({
   showPictureOnly = false,
 }: CollectiveCardProps) => {
   return (
-    <div className="rounded-lg bg-collectible-medium-purple p-4">
+    <div className="w-[200px] rounded-lg bg-collectible-medium-purple p-4">
       <Image
         src={pictureUrl}
         width={168}
