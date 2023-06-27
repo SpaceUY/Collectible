@@ -23,7 +23,7 @@ const Header = () => {
         placeholderText="Search Collectibles..."
       />
       {user?.isLoggedIn && (
-        <div className="flex items-center gap-4 ml-auto">
+        <div className="ml-auto flex items-center gap-4">
           <span className="flex flex-col items-end">
             <p className="text-gray-strong opacity-50">userName</p>
             <p className="text-sm text-gray-strong opacity-50">

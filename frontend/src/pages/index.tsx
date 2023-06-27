@@ -2,6 +2,8 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
+import AddPost from "../components/UI/AddPost";
+import CollectablesReel from "../components/UI/CollectablesReel";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -9,7 +11,6 @@ const tokens = [
   { id: 9, image: "/img/Queen Hiro.png" },
   { id: 4, image: "/img/King Hiro.png" },
 ];
-
 
 export default function CollectiblesPage() {
   const { user } = useUser();
@@ -33,7 +34,7 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <div className=" mx-72  h-full w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
+      <div className="mx-72 w-full rounded-lg bg-collectible-dark-purple px-5 py-7 md:w-auto">
         <CommunityOverviewCard
           communityPicture=""
           communityName="Asldas jasd"
@@ -44,6 +45,10 @@ export default function CollectiblesPage() {
         condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
         />
+
+        <AddPost userName="das" userPicture="" />
+
+        <CollectablesReel />
       </div>
 
       {/* <section className="hero">
