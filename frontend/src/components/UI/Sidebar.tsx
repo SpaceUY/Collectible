@@ -39,7 +39,7 @@ const Sidebar = () => {
       </ul>
 
       {user?.isLoggedIn && (
-        <div className="px-1 flex flex-col content-end">
+        <div className="px-1 flex flex-col border-2">
           <ul className="mb-8 space-y-5">
             {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
               <CommunityListItem
@@ -52,7 +52,7 @@ const Sidebar = () => {
         </div>
       )}
 
-      <div className="mx-3 flex flex-col">
+      <div className=" border-2  flex items-center justify-center self-center justify-self-end ">
         {!user?.loading && !user?.isLoggedIn && (
           <Button action={handleOpenConnectModal}>Connect Account</Button>
         )}
