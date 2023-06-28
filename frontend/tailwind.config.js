@@ -25,5 +25,8 @@ module.exports = {
       blur: "blur(20px)",
     },
   },
-  plugins: [],
+  plugins: [
+    // ...
+    require("tailwind-scrollbar")({ nocompatible: true }),
+  ],
 };

@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <Link className="w-64 shrink-0 " href="/">
+      <Link className="w-[250px] shrink-0 px-4 mr-[14px]" href="/">
         <Image
           src={"/collectible-logo.svg"}
           width={82}

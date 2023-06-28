@@ -41,21 +41,26 @@ const Sidebar = () => {
 
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
-          <ul className="mb-8 space-y-5">
-            {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
-              <CommunityListItem
-                key={name}
-                communityPicture={communityPicture}
-                name={name}
-              />
-            ))}
+          <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
+            {USER_COMMUNITY_LIST.concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .map(({ communityPicture, name }) => (
+                <CommunityListItem
+                  key={name}
+                  communityPicture={communityPicture}
+                  name={name}
+                />
+              ))}
           </ul>
         </div>
       )}
 
       {user?.isLoggedIn && (
         <Link
-          className="fixed bottom-6 flex items-center justify-center gap-3"
+          className="fixed bottom-8 flex items-center justify-center gap-3"
           href={`/profile/${user?.address}`}
         >
           <div className="rounded-full border-[1px] bg-gray-strong">
@@ -70,7 +75,7 @@ const Sidebar = () => {
               alt="Collectible Logo"
             />
           </div>
-          <span className="flex flex-col mr-6">
+          <span className="mr-6 flex flex-col">
             <p className="text-gray-strong opacity-50">userName</p>
             <p className="text-sm text-gray-strong opacity-50">
               {user?.shortAddress}
@@ -87,11 +92,17 @@ const Sidebar = () => {
         </Link>
       )}
 
-      <div className=" flex  items-center justify-center self-center justify-self-end ">
+      <div className="fixed bottom-8 ml-2 flex items-center justify-center">
         {!user?.loading && !user?.isLoggedIn && (
-          <Button action={handleOpenConnectModal}>Connect Account</Button>
+          <Button isLarge className="w-[200px]" action={handleOpenConnectModal}>
+            Connect Account
+          </Button>
         )}
-        {user?.loading && <Button action={() => {}}>Loading</Button>}
+        {user?.loading && (
+          <Button isLarge className="w-[200px]" action={() => {}}>
+            Loading
+          </Button>
+        )}
       </div>
     </>
   );
