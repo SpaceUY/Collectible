@@ -32,14 +32,14 @@ const SearchBar = ({
           width={20}
           height={20}
           alt=""
-          className="x-10 absolute left-4 top-4"
+          className="absolute left-4 top-[50%] translate-y-[-50%]"
         />
       )}
       <input
         name="search"
         type="text"
         placeholder={placeholderText}
-        className={`h-14 w-full rounded-lg p-4 text-gray-weak placeholder-gray-weak ${
+        className={`h-[52px] w-full rounded-lg p-4 text-gray-weak placeholder-gray-weak ${
           !query.length && "pl-12"
         } ${searchbarVariantColor}`}
         onChange={(e) => handleQuery(e.target.value)}
