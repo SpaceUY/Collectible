@@ -44,10 +44,12 @@ export default function CollectiblesPage() {
         condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
       />
-
       <AddPost userName="das" userPicture="" />
-
       {/* <CollectablesReel /> */}
+      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
+      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
+      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
+      <div>hola</div> <div>hola</div> <div>hola</div>
     </Layout>
   );
 }

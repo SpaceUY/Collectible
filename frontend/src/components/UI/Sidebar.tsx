@@ -6,6 +6,7 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
 import { USER_COMMUNITY_LIST } from "mock/community";
+import { BiLogOut } from "react-icons/bi";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
@@ -39,27 +40,69 @@ const Sidebar = () => {
       </ul>
 
       {user?.isLoggedIn && (
-        <div className="px-1 flex flex-col content-end">
-          <ul className="mb-8 space-y-5">
-            {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
-              <CommunityListItem
-                key={name}
-                communityPicture={communityPicture}
-                name={name}
-              />
-            ))}
+        <div className="flex flex-col px-1">
+          <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
+            {USER_COMMUNITY_LIST.concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .concat(USER_COMMUNITY_LIST)
+              .map(({ communityPicture, name }) => (
+                <CommunityListItem
+                  key={name}
+                  communityPicture={communityPicture}
+                  name={name}
+                />
+              ))}
           </ul>
         </div>
       )}
 
-      <div className="mx-3 flex flex-col">
+      {user?.isLoggedIn && (
+        <Link
+          className="fixed bottom-8 flex items-center justify-center gap-3"
+          href={`/profile/${user?.address}`}
+        >
+          <div className="rounded-full border-[1px] bg-gray-strong">
+            <Image
+              /** 
+               @DEV remove opacity-0 to display image
+               **/
+              className="h-12 w-12 rounded-full border-gray-strong opacity-0"
+              src={"collectible-logo.svg"}
+              width={50}
+              height={50}
+              alt="Collectible Logo"
+            />
+          </div>
+          <span className="mr-6 flex flex-col">
+            <p className="text-gray-strong opacity-50">userName</p>
+            <p className="text-sm text-gray-strong opacity-50">
+              {user?.shortAddress}
+            </p>
+          </span>
+          {!user?.loading && user?.isLoggedIn && (
+            <button
+              className="text-2xl text-gray-medium "
+              onClick={disconnectUser}
+            >
+              <BiLogOut />
+            </button>
+          )}
+        </Link>
+      )}
+
+      <div className="fixed bottom-8 ml-2 flex items-center justify-center">
         {!user?.loading && !user?.isLoggedIn && (
-          <Button action={handleOpenConnectModal}>Connect Account</Button>
+          <Button isLarge className="w-[200px]" action={handleOpenConnectModal}>
+            Connect Account
+          </Button>
         )}
-        {!user?.loading && user?.isLoggedIn && (
-          <Button action={disconnectUser}>Disconnect</Button>
+        {user?.loading && (
+          <Button isLarge className="w-[200px]" action={() => {}}>
+            Loading
+          </Button>
         )}
-        {user?.loading && <Button action={() => {}}>Loading</Button>}
       </div>
     </>
   );

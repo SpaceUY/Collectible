@@ -6,30 +6,27 @@ import { useRouter } from "next/router";
 export default function Layout({ children, title, className = "" }) {
   const router = useRouter();
 
-  const isHomeOrExplore = router.pathname === "/" || router.pathname === "/explore";
+  const isHomeOrExplore =
+    router.pathname === "/" || router.pathname === "/explore";
   return (
-    <div className="relative mx-auto flex w-full flex-col  border-red-500 px-6 xl:px-10 2xl:px-20">
-      <header className="flex w-full items-center gap-4  py-4">
+    <div className="relative mx-auto flex w-full flex-col border-red-500">
+      <header className="fixed left-0 right-[calc(250px+14px)] z-10 flex items-center bg-collectible-medium-purple pt-[14px] pb-[14px] 2xl:left-[7vw] 2xl:right-[calc(250px+14px+7vw)]">
         <Header />
       </header>
 
-      <div className="flex min-h-[calc(100vh-100px)] w-full gap-4 border-blue-500">
-        <aside className=" sticky top-0 bottom-0 min-h-full w-64 flex-shrink-0 rounded-lg bg-collectible-dark-purple px-4 py-4">
-          <Sidebar />
-        </aside>
+      <aside className="fixed left-0 top-[83px] bottom-0 z-30 flex w-[250px] flex-shrink-0 flex-col rounded-lg bg-collectible-dark-purple px-4 py-4 2xl:left-[7vw]">
+        <Sidebar />
+      </aside>
 
-        <main
-          className={`h-full w-full flex-shrink flex-grow rounded-lg bg-collectible-dark-purple px-8 py-10`}
-        >
-          {children}
-          <br /> <br /> <br /> <br /> <br /> <br /> <br />
-          <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        </main>
+      <main
+        className={`absolute left-[calc(250px+14px)] top-[83px] mx-auto min-h-full w-[calc(100%-500px-28px)] flex-shrink flex-grow rounded-lg bg-collectible-dark-purple px-8 py-10 2xl:left-[calc(250px+7vw+14px)] 2xl:w-[calc(100%-14vw-500px-28px)]`}
+      >
+        {children}
+      </main>
 
-        <aside className="sticky top-0 bottom-0 min-h-full w-64 flex-shrink-0 rounded-lg bg-collectible-dark-purple px-4 py-4 ">
-          {isHomeOrExplore && <CommunitiesSidebar />}
-        </aside>
-      </div>
+      <aside className="fixed top-[0px] bottom-0 right-0 z-40 w-[250px] flex-shrink-0 rounded-lg bg-collectible-dark-purple px-4 py-[14px] 2xl:right-[7vw]">
+        {isHomeOrExplore && <CommunitiesSidebar />}
+      </aside>
     </div>
   );
 }
