@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Button from "./Button";
+import { POST_ICON_OPTIONS } from "../../common/constants/post-icon-options";
 
-type AddPostProps = {
+interface AddPostProps {
   userName: string;
   userPicture: string;
-};
-
-const postIconOptions: { altDescription: string; icon: string }[] = [
-  { altDescription: "Like", icon: "/page-icons/heart-icon.svg" },
-  { altDescription: "Comments", icon: "/page-icons/chat-icon.svg" },
-  { altDescription: "Share", icon: "/page-icons/share-icon.svg" },
-];
+}
 
 const AddPost = ({ userPicture, userName }: AddPostProps) => {
   const [postText, setPostText] = useState("");
@@ -43,7 +38,7 @@ const AddPost = ({ userPicture, userName }: AddPostProps) => {
 
       <div className="mt-2 flex w-full items-center justify-between">
         <div className="flex items-start gap-x-3">
-          {postIconOptions.map((option) => (
+          {POST_ICON_OPTIONS.map((option) => (
             <Image
               key={option.altDescription}
               src={option.icon}

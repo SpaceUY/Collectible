@@ -1,12 +1,6 @@
 import React from "react";
 import Image from "next/image";
-
-export type CollectiveCardProps = {
-  pictureUrl: string;
-  name: string;
-  description: string;
-  showPictureOnly?: boolean;
-};
+import { CollectiveCardProps } from "../../common/interfaces/collective-card-props.interface";
 
 export const CollectableCard = ({
   pictureUrl,
