@@ -1,16 +1,6 @@
 import Image from "next/image";
-
-type CommunityPostProps = {
-  postText: string;
-  title: string;
-  authorPicture: string;
-};
-
-const postIconOptions: { altDescription: string; icon: string }[] = [
-  { altDescription: "Like", icon: "/page-icons/heart-icon.svg" },
-  { altDescription: "Comments", icon: "/page-icons/chat-icon.svg" },
-  { altDescription: "Share", icon: "/page-icons/share-icon.svg" },
-];
+import { CommunityPostProps } from "../../common/interfaces/community-post-props.interface";
+import { POST_ICON_OPTIONS } from "../../common/constants/post-icon-options";
 
 const CommunityPost = ({
   postText,
@@ -35,7 +25,7 @@ const CommunityPost = ({
       </p>
 
       <div className="mt-5 flex items-start gap-x-3">
-        {postIconOptions.map((option) => (
+        {POST_ICON_OPTIONS.map((option) => (
           <Image
             key={option.altDescription}
             src={option.icon}
