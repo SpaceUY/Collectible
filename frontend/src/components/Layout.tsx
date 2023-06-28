@@ -14,12 +14,12 @@ export default function Layout({ children, title, className = "" }) {
         <Header />
       </header>
 
-      <aside className="fixed left-0 top-[83px] bottom-0 z-30 flex w-[250px] flex-shrink-0 flex-col rounded-lg bg-collectible-dark-purple px-4 py-4 2xl:left-[7vw]">
+      <aside className="fixed left-0 top-[80px] bottom-0 z-30 flex w-[250px] flex-shrink-0 flex-col rounded-lg bg-collectible-dark-purple px-4 py-4 2xl:left-[7vw]">
         <Sidebar />
       </aside>
 
       <main
-        className={`absolute left-[calc(250px+14px)] top-[83px] mx-auto min-h-full w-[calc(100%-500px-28px)] flex-shrink flex-grow rounded-lg bg-collectible-dark-purple px-8 py-10 2xl:left-[calc(250px+7vw+14px)] 2xl:w-[calc(100%-14vw-500px-28px)]`}
+        className={`absolute left-[calc(250px+14px)] top-[80px] mx-auto min-h-full w-[calc(100%-500px-28px)] flex-shrink flex-grow rounded-lg bg-collectible-dark-purple px-8 py-10 2xl:left-[calc(250px+7vw+14px)] 2xl:w-[calc(100%-14vw-500px-28px)]`}
       >
         {children}
       </main>

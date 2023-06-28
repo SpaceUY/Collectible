@@ -42,18 +42,13 @@ const Sidebar = () => {
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
-            {USER_COMMUNITY_LIST.concat(USER_COMMUNITY_LIST)
-              .concat(USER_COMMUNITY_LIST)
-              .concat(USER_COMMUNITY_LIST)
-              .concat(USER_COMMUNITY_LIST)
-              .concat(USER_COMMUNITY_LIST)
-              .map(({ communityPicture, name }) => (
-                <CommunityListItem
-                  key={name}
-                  communityPicture={communityPicture}
-                  name={name}
-                />
-              ))}
+            {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
+              <CommunityListItem
+                key={name}
+                communityPicture={communityPicture}
+                name={name}
+              />
+            ))}
           </ul>
         </div>
       )}
