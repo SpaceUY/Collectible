@@ -2,42 +2,14 @@ import { A11y, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import CollectableCard, { CollectiveCardProps } from "./CollectableCard";
+import CollectableCard from "./CollectableCard";
+import { CollectiveCardProps } from "../../common/interfaces/collective-card-props.interface";
 
-const CollectablesReel = () => {
-  const cards: CollectiveCardProps[] = [
-    {
-      pictureUrl: "",
-      description: "adfa",
-      name: "aloja",
-      showPictureOnly: false,
-    },
-    {
-      pictureUrl: "",
-      description: "adfa",
-      name: "alds",
-      showPictureOnly: false,
-    },
-    {
-      pictureUrl: "",
-      description: "adfa",
-      name: "aaoja",
-      showPictureOnly: false,
-    },
-    {
-      pictureUrl: "",
-      description: "adfa",
-      name: "alojsa",
-      showPictureOnly: false,
-    },
-    {
-      pictureUrl: "",
-      description: "adfa",
-      name: "alosadja",
-      showPictureOnly: false,
-    },
-  ];
-
+const CollectablesReel = ({
+  collectibleCards,
+}: {
+  collectibleCards: CollectiveCardProps[];
+}) => {
   return (
     <div className="my-5 w-auto">
       <Swiper
@@ -55,7 +27,7 @@ const CollectablesReel = () => {
           },
         }}
       >
-        {cards.map((collectible) => (
+        {collectibleCards.map((collectible) => (
           <SwiperSlide key={collectible.name}>
             <CollectableCard
               description={collectible.description}

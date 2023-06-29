@@ -1,4 +1,4 @@
-export interface community {
+export interface Community {
   name: string;
   communityPicture: string;
   description: string;

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import CommunityOverviewCard from "../../components/home/CommunityOverviewCard";
 import Button from "../../components/UI/Button";
 import { COMMUNITY_LIST } from "mock/community";
+import Feed from "../../components/community/Feed";
 
 enum CommunityTabs {
   FEED = "feed",
@@ -81,8 +82,8 @@ export default function CollectiblesPage() {
         })}
       </div>
 
-      <div>
-        {selectedSectionParam === CommunityTabs.FEED && <>feed</>}
+      <div className="flex flex-col gap-5">
+        {selectedSectionParam === CommunityTabs.FEED && <Feed />}
         {selectedSectionParam === CommunityTabs.BENEFITS && <>benefits</>}
         {selectedSectionParam === CommunityTabs.COLLECTION && <>collection</>}
       </div>
