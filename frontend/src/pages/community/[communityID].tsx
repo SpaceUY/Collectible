@@ -7,6 +7,8 @@ import CommunityOverviewCard from "../../components/home/CommunityOverviewCard";
 import Button from "../../components/UI/Button";
 import { COMMUNITY_LIST } from "mock/community";
 import Feed from "../../components/community/Feed";
+import Head from "next/head";
+import Image from "next/image";
 
 enum CommunityTabs {
   FEED = "feed",
@@ -36,6 +38,15 @@ export default function CollectiblesPage() {
     (community) => community.id === communityID,
   );
 
+  console.log("user", user);
+
+  const isOwner = user?.communityOwnerships?.find(
+    (community) => community.id === communityID,
+  )
+    ? true
+    : false;
+  console.log("isOwner", isOwner);
+
   useEffect(() => {
     if (Object.values(CommunityTabs).includes(tab as CommunityTabs)) {
       setSelectedSectionParam(tab as CommunityTabs);
@@ -59,17 +70,21 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Holders Only Area" className="">
+      <Head>
+        <title>Collectible - {community?.name}</title>
+      </Head>
       <CommunityOverviewCard
         description={community?.description}
         communityName={community?.name}
         communityPicture={community?.communityPicture}
+        isOwner={isOwner}
+        coverColor={community?.coverColor}
       />
 
-      <div className="mt-10 mb-4 flex gap-5">
+      <div className="mt-10 mb-4 flex gap-5 ">
         {communitySections.map((section) => {
           const buttonVariant =
-            section.tabParam === selectedSectionParam ? "purple" : "outlined";
-
+            section.tabParam === selectedSectionParam ? "purple" : "empty";
           return (
             <Button
               variant={buttonVariant}
@@ -80,6 +95,46 @@ export default function CollectiblesPage() {
             </Button>
           );
         })}
+        {isOwner && selectedSectionParam === CommunityTabs.BENEFITS && (
+          <Button
+            className="ml-auto"
+            variant="outlined"
+            action={() => {
+              alert("manage benefits");
+            }}
+          >
+            <span className="flex items-center gap-2">
+              <Image
+                className="h-5 w-5"
+                src={"/page-icons/edit-icon.svg"}
+                alt="add icon"
+                width={20}
+                height={20}
+              />
+              <span>Manage Benefits</span>
+            </span>
+          </Button>
+        )}
+        {isOwner && selectedSectionParam === CommunityTabs.COLLECTION && (
+          <Button
+            className="ml-auto"
+            variant="outlined"
+            action={() => {
+              alert("manage collections");
+            }}
+          >
+            <span className="flex items-center gap-2">
+              <Image
+                className="h-5 w-5"
+                src={"/page-icons/edit-icon.svg"}
+                alt="add icon"
+                width={20}
+                height={20}
+              />
+              <span>Manage Collections</span>
+            </span>
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-col gap-5">

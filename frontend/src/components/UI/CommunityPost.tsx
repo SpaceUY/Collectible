@@ -11,13 +11,13 @@ const CommunityPost = ({
     <article className="h-auto w-full rounded-lg bg-collectible-medium-purple p-7">
       <div className="mb-5 flex items-center">
         <Image
+          className="rounded-full bg-gray-medium w-12 h-12"
           src={authorPicture}
           width={65}
           height={65}
           alt=""
-          className="rounded-full bg-gray-medium"
         />
-        <h3 className="ml-5 text-2xl font-bold text-gray-strong">{title}</h3>
+        <h3 className="ml-3 text-2xl font-bold text-gray-strong">{title}</h3>
       </div>
 
       <p className="text-sm font-normal leading-6 text-gray-strong">

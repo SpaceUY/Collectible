@@ -19,12 +19,12 @@ export default function Document() {
         />
         <meta
           property="og:site_name"
-          content="Magic NFT Demo"
+          content="Collectible"
           key="ogsitename"
         />
         <meta
           property="og:title"
-          content="Next.js NFT Template"
+          content="Collectible"
           key="ogtitle"
         />
         <meta
@@ -32,7 +32,6 @@ export default function Document() {
           content="Use this template to kickstart your Next.js NFT marketplace or dApp, reducing hours of work to minutes. This Next.js NFT template comes out of the box with code for authentication, fiat onramp, minting NFTs, viewing NFT collections, and web3 token gating."
           key="ogdesc"
         />
-        <title>Next.js NFT Template</title>
       </Head>
       <body>
         <Main />

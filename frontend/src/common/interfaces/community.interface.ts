@@ -3,4 +3,5 @@ export interface Community {
   communityPicture: string;
   description: string;
   id: string;
+  coverColor: string;
 }

@@ -8,6 +8,7 @@ const nextConfig = {
       "cdn.wallpapersafari.com",
       "w7.pngwing.com",
       "1000marcas.net",
+      "i.seadn.io",
     ],
   },
 };

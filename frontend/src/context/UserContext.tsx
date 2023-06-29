@@ -4,23 +4,24 @@ import { magic } from "@/lib/magic";
 import { getUserData } from "@/api/accountApi";
 import { fetchNFTs } from "@/api/nftApi";
 import { useRouter } from "next/router";
+import { UserData } from "../common/interfaces/user-data.interface";
 
-// Define custom user data type
-interface UserData {
-  address?: string;
-  shortAddress?: string;
-  balance?: string;
-  collectibles?: string[];
-  isLoggedIn?: boolean;
-  loading?: boolean;
-  refreshCollectibles?: boolean;
-  tokenIdForModal?: number;
-}
+const initialUserState: UserData = {
+  loading: true,
+  isLoggedIn: false,
+  address: "",
+  shortAddress: "",
+  balance: "",
+  refreshCollectibles: false,
+  collectibles: [],
+  communityMemberships: [],
+  communityOwnerships: [],
+};
 
 // Define user context type
 type UserContextType = {
-  user: UserData | null;
-  setUser: React.Dispatch<React.SetStateAction<UserData | undefined>> | null;
+  user: UserData;
+  setUser: React.Dispatch<React.SetStateAction<UserData>> | null;
   connectUser: () => void;
   connectBrand: () => void;
   disconnectUser: () => void;
@@ -28,7 +29,7 @@ type UserContextType = {
 
 // Create context with default values
 const UserContext = createContext<UserContextType>({
-  user: null,
+  user: initialUserState,
   setUser: null,
   connectUser: () => {},
   connectBrand: () => {},
@@ -44,9 +45,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const { web3, contract, isAccountChanged, initializeWeb3 } = useWeb3();
   const router = useRouter();
 
-  const initialUserState = {
-    loading: true,
-  };
   // State to hold the user data
   const [user, setUser] = useState<UserData>(initialUserState);
 
@@ -85,7 +83,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     await magic.user.logout();
     console.log("disconnected from Magic");
     // Clear the user state
-    setUser(null);
+    setUser(initialUserState);
 
     // Re-initialize web3 instance to ensure correct provider is used
     await initializeWeb3();
@@ -99,15 +97,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const fetchData = async () => {
       console.log("Fetching user data");
       if (!web3) return;
-      setUser({ loading: true });
+      setUser({ ...user, loading: true });
 
       const account = await web3.eth.getAccounts();
       console.log(account);
       if (account.length > 0) {
         const data = await getUserData(web3);
+        console.log('data from getUserData',data);
         setUser(data);
       } else {
-        setUser({ loading: false });
+        setUser({ ...user, loading: false });
       }
     };
 

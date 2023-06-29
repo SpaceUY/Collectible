@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { COLLECTIVE_CARDS } from "../../../mock/collective-cards";
 import { COMMUNITY_POSTS } from "../../../mock/community-post";
-import CollectablesReel from "../UI/CollectablesReel";
+import CollectablesReel from "../UI/CollectiblesReel";
 import CommunityPost from "../UI/CommunityPost";
 
 const Feed = () => {

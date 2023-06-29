@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
 import AddPost from "../components/UI/AddPost";
-import CollectablesReel from "../components/UI/CollectablesReel";
+import CollectablesReel from "../components/UI/CollectiblesReel";
+import Head from "next/head";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -34,7 +35,11 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <CommunityOverviewCard
+      <Head>
+        <title>Collectible - Home</title>
+      </Head>
+
+      {/* <CommunityOverviewCard
         communityPicture=""
         communityName="Asldas jasd"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
@@ -43,13 +48,9 @@ export default function CollectiblesPage() {
         consectetur nisl scelerisque. In sollicitudin pharetra dui, in
         condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
         convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
-      />
-      <AddPost userName="das" userPicture="" />
+      /> */}
+      {/* <AddPost userName="das" userPicture="" /> */}
       {/* <CollectablesReel /> */}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div>
     </Layout>
   );
 }
