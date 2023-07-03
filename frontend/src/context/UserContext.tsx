@@ -98,9 +98,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Fetching user data");
       if (!web3) return;
       setUser({ ...user, loading: true });
-
       const account = await web3.eth.getAccounts();
-      console.log(account);
       if (account.length > 0) {
         const data = await getUserData(web3);
         console.log('data from getUserData',data);

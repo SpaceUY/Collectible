@@ -45,19 +45,19 @@ export async function getUserData(web3): Promise<UserData> {
     };
   } catch (error) {
     console.log("error in getUserData");
-    console.error("getUserData", error);
-    return {
-      isLoggedIn: true,
-      loading: false,
-      name: "Fake User",
-      address: "0x0000000000000000000000001",
-      balance: "0",
-      shortAddress: "0x000...0001",
-      collectibles: undefined,
-      refreshCollectibles: true,
-      communityMemberships,
-      communityOwnerships,
-    };
+    // console.error("getUserData", error);
+     return {
+       isLoggedIn: true,
+       loading: false,
+       name: "Fake User",
+       address: "0x0000000000000000000000001",
+       balance: "0",
+       shortAddress: "0x000...0001",
+       collectibles: undefined,
+       refreshCollectibles: true,
+       communityMemberships,
+       communityOwnerships,
+     };
   }
 }
 

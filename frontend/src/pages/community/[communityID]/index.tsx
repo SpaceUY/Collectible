@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import CommunityOverviewCard from "../../components/home/CommunityOverviewCard";
-import Button from "../../components/UI/Button";
+import CommunityOverviewCard from "../../../components/home/CommunityOverviewCard";
+import Button from "../../../components/UI/Button";
 import { COMMUNITY_LIST } from "mock/community";
-import Feed from "../../components/community/Feed";
+import Feed from "../../../components/community/Feed";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -25,7 +25,7 @@ const communitySections = [
 export default function CollectiblesPage() {
   const { user } = useUser();
   const router = useRouter();
-  const { communityID } = router.query; // TODO content
+  const { communityID } = router.query;
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   // initialize the state used to track the current page's data
@@ -38,14 +38,11 @@ export default function CollectiblesPage() {
     (community) => community.id === communityID,
   );
 
-  console.log("user", user);
-
   const isOwner = user?.communityOwnerships?.find(
     (community) => community.id === communityID,
   )
     ? true
     : false;
-  console.log("isOwner", isOwner);
 
   useEffect(() => {
     if (Object.values(CommunityTabs).includes(tab as CommunityTabs)) {
@@ -100,7 +97,7 @@ export default function CollectiblesPage() {
             className="ml-auto"
             variant="outlined"
             action={() => {
-              alert("manage benefits");
+              router.push(`/community/${communityID}/manage-benefits`);
             }}
           >
             <span className="flex items-center gap-2">
@@ -120,7 +117,7 @@ export default function CollectiblesPage() {
             className="ml-auto"
             variant="outlined"
             action={() => {
-              alert("manage collections");
+              router.push(`/community/${communityID}/manage-collectibles`);
             }}
           >
             <span className="flex items-center gap-2">
