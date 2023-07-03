@@ -1,13 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import { CollectableCardProps } from "../../common/interfaces/collectable-card-props.interface";
+import { CollectibleCardProps } from "../../common/interfaces/collectable-card-props.interface";
 
 export const CollectibleCard = ({
   pictureUrl,
   name,
   description,
   showPictureOnly = false,
-}: CollectableCardProps) => {
+}: CollectibleCardProps) => {
   return (
     <div className="w-[200px] rounded-lg bg-collectible-medium-purple p-4">
       <Image

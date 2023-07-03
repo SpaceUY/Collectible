@@ -1,4 +1,4 @@
-export interface CollectableCardProps {
+export interface CollectibleCardProps {
   pictureUrl: string;
   name: string;
   description: string;

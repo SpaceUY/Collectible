@@ -1,5 +1,5 @@
 import { Collection } from "../src/common/interfaces/collection-props.interface";
-import { COLLECTIVE_CARDS } from "./collective-cards";
+import { COLLECTIBLE_CARDS } from "./collectible-cards";
 
 export const COLLECTIONS: Collection[] = [
   {
@@ -8,7 +8,7 @@ export const COLLECTIONS: Collection[] = [
     name: "Epic collection",
     createdAt: "2023-03-24 14:05:49",
     description: "Some description about the collection and its images.",
-    collectables: COLLECTIVE_CARDS,
+    collectables: COLLECTIBLE_CARDS,
   },
   {
     id: "fgsdsdfgfdg",
@@ -17,6 +17,6 @@ export const COLLECTIONS: Collection[] = [
     createdAt: "2023-02-24 14:05:49",
     description:
       "Some description extreme lalal about the collection and its images.",
-    collectables: COLLECTIVE_CARDS,
+    collectables: COLLECTIBLE_CARDS,
   },
 ];

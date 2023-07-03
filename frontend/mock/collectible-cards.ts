@@ -1,6 +1,6 @@
-import { CollectableCardProps } from "../src/common/interfaces/collectable-card-props.interface";
+import { CollectibleCardProps } from "../src/common/interfaces/collectable-card-props.interface";
 
-export const COLLECTIVE_CARDS: CollectableCardProps[] = [
+export const COLLECTIBLE_CARDS: CollectibleCardProps[] = [
   {
     pictureUrl:
       "https://i.seadn.io/gae/kp80NFBgXc2hw9TbApyJAPje0jW0nYBUqbJgYgzLRCmBs_wJsxBFG79suTVivG1UqoC6hnGbOEaLjjHeze-a_XwsgYOvYIm-P4tP1w?auto=format&dpr=1&w=1000",

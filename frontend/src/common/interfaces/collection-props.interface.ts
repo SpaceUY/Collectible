@@ -1,4 +1,4 @@
-import { CollectableCardProps } from "./collectable-card-props.interface";
+import { CollectibleCardProps } from "./collectable-card-props.interface";
 
 export interface Collection {
   id: string;
@@ -6,5 +6,5 @@ export interface Collection {
   name: string;
   description: string;
   createdAt: string;
-  collectables: CollectableCardProps[];
+  collectables: CollectibleCardProps[];
 }
