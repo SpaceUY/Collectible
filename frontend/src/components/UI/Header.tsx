@@ -10,11 +10,11 @@ const Header = () => {
 
   return (
     <>
-      <Link className="w-[250px] shrink-0 px-4 mr-[14px]" href="/">
+      <Link className="mr-[14px] w-[250px] shrink-0 px-4" href="/">
         <Image
           src={"/collectible-logo.svg"}
-          width={82}
-          height={50}
+          width={145.54}
+          height={47.05}
           alt="Collectible Logo"
         />
       </Link>
@@ -24,8 +24,6 @@ const Header = () => {
         handleQuery={setSearchbarQuery}
         placeholderText="Search Collectibles..."
       />
-
-     
     </>
   );
 };

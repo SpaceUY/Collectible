@@ -2,6 +2,6 @@ export interface CommunityPostProps {
   postText: string;
   title: string;
   authorPicture: string;
-  date: string;
+  createdAt: string;
   id: string;
 }

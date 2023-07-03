@@ -1,13 +1,13 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
 import AddPost from "../components/UI/AddPost";
-import CollectablesReel from "../components/UI/CollectablesReel";
 import { COMMUNITY_POSTS } from "../../mock/community-post";
-import { COLLECTIVE_CARDS } from "../../mock/collective-cards";
 import CommunityPost from "../components/UI/CommunityPost";
 import CalendarSelector from "../components/brand/CalendarSelector";
+import Head from "next/head";
+import { COLLECTIONS } from "../../mock/collections";
+import CollectiblesReel from "../components/UI/CollectiblesReel";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -36,26 +36,48 @@ export default function CollectiblesPage() {
     }
   }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
 
+  const feedContent: { date: string; element: JSX.Element }[] = [];
+
+  COMMUNITY_POSTS.forEach((post) => {
+    feedContent.push({
+      date: post.createdAt,
+      element: (
+        <CommunityPost
+          authorPicture={post.authorPicture}
+          postText={post.postText}
+          title={post.title}
+          id={post.id}
+          key={post.id}
+          createdAt={post.createdAt}
+        />
+      ),
+    });
+  });
+
+  COLLECTIONS.forEach((collection) => {
+    feedContent.push({
+      date: collection.createdAt,
+      element: (
+        <CollectiblesReel
+          key={collection.id}
+          collectibleCards={collection.collectables}
+        />
+      ),
+    });
+  });
+
   return (
     <Layout title="Home" className="">
-      <div className="flex flex-col gap-5">
-        <CalendarSelector />
-        <AddPost
-          userName={"adas"}
-          userPicture={COMMUNITY_POSTS[0].authorPicture}
-        />
-        {COMMUNITY_POSTS.sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        }).map((post) => (
-          <CommunityPost
-            authorPicture={post.authorPicture}
-            postText={post.postText}
-            title={post.title}
-            key={post.id}
-            id={post.id}
-            date={post.date}
-          />
-        ))}
+      <Head>
+        <title>Collectible - Home</title>
+      </Head>
+
+      <div className="flex flex-col gap-4">
+        {feedContent
+          .sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          })
+          .map((content) => content.element)}
       </div>
     </Layout>
   );

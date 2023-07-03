@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { COLLECTIVE_CARDS } from "../../../mock/collective-cards";
 import { COMMUNITY_POSTS } from "../../../mock/community-post";
-import CollectablesReel from "../UI/CollectablesReel";
+import CollectablesReel from "../UI/CollectiblesReel";
 import CommunityPost from "../UI/CommunityPost";
 
 const Feed = ({ communityId }: { communityId: string }) => {
@@ -17,7 +17,9 @@ const Feed = ({ communityId }: { communityId: string }) => {
       {/* <CollectablesReel collectibleCards={COLLECTIVE_CARDS} /> */}
       {communityPostsById
         .sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         })
         .map((post) => (
           <CommunityPost
@@ -26,7 +28,7 @@ const Feed = ({ communityId }: { communityId: string }) => {
             title={post.title}
             key={post.id}
             id={post.id}
-            date={post.date}
+            createdAt={post.createdAt}
           />
         ))}
     </>
