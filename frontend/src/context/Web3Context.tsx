@@ -77,7 +77,6 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
   // Effect to initialize Web3 when the component mounts
   useEffect(() => {
-    console.log('useEffect on Web3Context, initializeWeb3()')
     initializeWeb3();
   }, []);
 

@@ -2,14 +2,14 @@ import { A11y, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import CollectableCard from "./CollectableCard";
-import { CollectiveCardProps } from "../../common/interfaces/collective-card-props.interface";
+import CollectableCard from "./CollectibleCard";
+import { CollectibleCardProps } from "../../common/interfaces/collective-card-props.interface";
 
-const CollectablesReel = ({
-  collectibleCards,
-}: {
-  collectibleCards: CollectiveCardProps[];
-}) => {
+interface CollectiblesReelProps {
+  collectibleCards: CollectibleCardProps[];
+}
+
+const CollectiblesReel = ({ collectibleCards }: CollectiblesReelProps) => {
   return (
     <div className="my-5 w-auto">
       <Swiper
@@ -41,4 +41,4 @@ const CollectablesReel = ({
   );
 };
 
-export default CollectablesReel;
+export default CollectiblesReel;

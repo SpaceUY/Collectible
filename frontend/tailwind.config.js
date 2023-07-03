@@ -2,7 +2,23 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // mode: "jit",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  purge: {
+    options: {
+      safelist: [
+        "from-red-500",
+        "from-green-500",
+        "from-blue-500",
+        "from-white",
+        "from-yellow-500",
+        "from-pink-500",
+        "from-purple-500",
+        "to-collectible-dark-purple",
+        "from-[#000000]",
+      ],
+    },
+  },
   theme: {
     extend: {
       fontFamily: {

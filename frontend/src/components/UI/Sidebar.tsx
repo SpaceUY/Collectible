@@ -5,7 +5,6 @@ import CommunityListItem from "./CommunityListItem";
 import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
-import { USER_COMMUNITY_LIST } from "mock/community";
 import { BiLogOut } from "react-icons/bi";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
@@ -42,7 +41,7 @@ const Sidebar = () => {
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
-            {USER_COMMUNITY_LIST.map(({ communityPicture, name }) => (
+            {user?.communityMemberships.map(({ communityPicture, name }) => (
               <CommunityListItem
                 key={name}
                 communityPicture={communityPicture}
@@ -71,7 +70,7 @@ const Sidebar = () => {
             />
           </div>
           <span className="mr-6 flex flex-col">
-            <p className="text-gray-strong opacity-50">userName</p>
+            <p className="text-gray-strong opacity-50">{user?.name}</p>
             <p className="text-sm text-gray-strong opacity-50">
               {user?.shortAddress}
             </p>

@@ -8,6 +8,7 @@ import { useWeb3 } from "@/context/Web3Context";
 import { fetchNFTs } from "@/api/nftApi";
 import { getAddressShortcut } from "@/api/accountApi";
 import CollectibleCardSkeleton from "@/components/CollectibleCardSkeleton";
+import Head from "next/head";
 
 export default function CollectiblesPage() {
   const { user } = useUser();
@@ -17,23 +18,6 @@ export default function CollectiblesPage() {
 
   const [profileCollectibles, setProfileCollectibles] = useState([]);
   const [loadingCollectibles, setLoadingCollectibles] = useState(true);
-
-  // initialize the state used to track the current page's data
-  //const [loading, setLoading] = useState(user?.refreshCollectibles);
-
-  // useEffect(() => {
-  //   // do nothing if the user is not logged in
-  //   if (!user?.address) {
-  //     setLoading(true);
-  //     return;
-  //   }
-
-  //   // disable the loading after collectibles have already been loaded
-  //   if (user?.address && !user?.refreshCollectibles && user?.collectibles) {
-  //     setLoading(false);
-  //     return;
-  //   }
-  // }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
 
   useEffect(() => {
     const fetchProfileNFTs = async () => {
@@ -49,6 +33,10 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Profile" className="">
+      <Head>
+        <title>Collectible - Profile</title>
+      </Head>
+
       <div className="mb-8 flex items-center gap-4">
         <div className="rounded-full border-[1px] bg-gray-strong">
           <Image
@@ -72,10 +60,8 @@ export default function CollectiblesPage() {
         </span>
       </div>
 
-      <div className="flex flex-col justify-center gap-3 mb-8">
-        <h3 className="text-xl font-semibold text-gray-strong">
-          Collectibles
-        </h3>
+      <div className="mb-8 flex flex-col justify-center gap-3">
+        <h3 className="text-xl font-semibold text-gray-strong">Collectibles</h3>
         <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {loadingCollectibles ? (
             <>

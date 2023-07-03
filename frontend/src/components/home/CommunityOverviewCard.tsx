@@ -4,22 +4,24 @@ type CollectionOverviewInfo = {
   description: string;
   communityName: string;
   communityPicture: string;
+  isOwner: boolean;
+  coverColor: string;
 };
 
 const CommunityOverviewCard = ({
   description,
   communityName,
   communityPicture,
+  isOwner,
+  coverColor,
 }: CollectionOverviewInfo) => {
-  const gradientColor = "from-indigo-500"; // TODO make medium color of comunity picture
-
   return (
     <article
-      className={`h-auto w-full rounded-lg bg-gradient-to-b ${gradientColor} to-collectible-dark-purple px-7 pt-20 pb-7`}
+      className={`relative h-auto w-full rounded-lg bg-gradient-to-b ${coverColor} to-collectible-dark-purple px-7 pt-20 pb-10`}
     >
-      <div className="mb-5 flex items-center">
+      <div className="mb-5 flex items-center ">
         <Image
-          className="w-16 h-16 rounded-full object-cover bg-gray-strong"
+          className="h-16 w-16 rounded-full bg-gray-strong object-cover"
           src={communityPicture}
           width={65}
           height={65}
@@ -28,6 +30,28 @@ const CommunityOverviewCard = ({
         <h2 className="ml-5 text-2xl font-bold text-gray-strong">
           {communityName}
         </h2>
+        {isOwner && (
+          <>
+            <span className="ml-5 rounded-full bg-gray-strong px-3 py-1">
+              <p className="text-gray-soft text-sm font-semibold leading-5">
+                Owner
+              </p>
+            </span>
+            <button
+              onClick={() => {
+                alert("Edit Community");
+              }}
+            >
+              <Image
+                className="absolute top-6 right-6 h-5 w-5"
+                alt="edit community icon"
+                src={"/page-icons/edit-icon.svg"}
+                width={20}
+                height={20}
+              />
+            </button>
+          </>
+        )}
       </div>
 
       <p className="text-sm font-normal leading-6 text-gray-strong">
