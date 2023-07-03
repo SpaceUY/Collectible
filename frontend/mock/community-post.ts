@@ -7,6 +7,7 @@ export const COMMUNITY_POSTS: CommunityPostProps[] = [
     title: "Nike",
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    date: "2023-02-14 17:05:49",
     id: "nike",
   },
   {
@@ -14,6 +15,7 @@ export const COMMUNITY_POSTS: CommunityPostProps[] = [
     title: "Metallica",
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    date: "2023-04-16 13:05:49",
     id: "metallica",
   },
   {
@@ -22,6 +24,7 @@ export const COMMUNITY_POSTS: CommunityPostProps[] = [
     title: "Harry Potter",
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    date: "2023-03-21 14:05:49",
     id: "harry-potter",
   },
 ];

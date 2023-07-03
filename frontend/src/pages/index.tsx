@@ -4,6 +4,10 @@ import { useUser } from "@/context/UserContext";
 import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
 import AddPost from "../components/UI/AddPost";
 import CollectablesReel from "../components/UI/CollectablesReel";
+import { COMMUNITY_POSTS } from "../../mock/community-post";
+import { COLLECTIVE_CARDS } from "../../mock/collective-cards";
+import CommunityPost from "../components/UI/CommunityPost";
+import CalendarSelector from "../components/brand/CalendarSelector";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -34,22 +38,25 @@ export default function CollectiblesPage() {
 
   return (
     <Layout title="Home" className="">
-      <CommunityOverviewCard
-        communityPicture=""
-        communityName="Asldas jasd"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
-        vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet
-        nulla efficitur non. Aliquam tristique nunc non purus ultricies, in
-        consectetur nisl scelerisque. In sollicitudin pharetra dui, in
-        condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
-        convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
-      />
-      <AddPost userName="das" userPicture="" />
-      {/* <CollectablesReel /> */}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div> <div>hola</div>{" "}
-      <div>hola</div> <div>hola</div> <div>hola</div>
+      <div className="flex flex-col gap-5">
+        <CalendarSelector />
+        <AddPost
+          userName={"adas"}
+          userPicture={COMMUNITY_POSTS[0].authorPicture}
+        />
+        {COMMUNITY_POSTS.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }).map((post) => (
+          <CommunityPost
+            authorPicture={post.authorPicture}
+            postText={post.postText}
+            title={post.title}
+            key={post.id}
+            id={post.id}
+            date={post.date}
+          />
+        ))}
+      </div>
     </Layout>
   );
 }
