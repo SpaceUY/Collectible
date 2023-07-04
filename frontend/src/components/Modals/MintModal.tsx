@@ -48,7 +48,6 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
       setUser({
         ...user,
         refreshCollectibles: true,
-        tokenIdForModal: res.tokenId,
         balance,
       });
       setThrowConfetti(true);

@@ -10,7 +10,7 @@ interface ConnectModalProps {
 }
 
 const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
-  const { user, connectUser, connectBrand } = useUser();
+  const { user, connectUser } = useUser();
 
   useEffect(() => {
     if (user?.isLoggedIn) {

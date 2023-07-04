@@ -12,7 +12,7 @@ const ManageBenefits = () => {
 
   /**  @DEV to be implemented */
   const community = COMMUNITY_LIST.find(
-    (community) => community.id === communityID,
+    (community) => community.communityId === communityID,
   );
 
   return (
