@@ -14,6 +14,7 @@ export const CollectibleCard = ({
   const { handleSelectCollectible, handleOpenCollectibleModal } = useModal();
 
   const inspectCollectible = () => {
+    console.log("Inspecting collectible", collectionID, tokenID)
     handleSelectCollectible({
       collectionID,
       tokenID,

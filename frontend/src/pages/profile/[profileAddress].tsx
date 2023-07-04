@@ -1,7 +1,6 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import CollectibleCard from "@/components/CollectibleCard";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useWeb3 } from "@/context/Web3Context";
@@ -20,6 +19,7 @@ export default function CollectiblesPage() {
 
   const [profileCollectibles, setProfileCollectibles] = useState([]);
   const [loadingCollectibles, setLoadingCollectibles] = useState(true);
+  console.log('user collectibles', user?.collectibles)
 
   useEffect(() => {
     const fetchProfileNFTs = async () => {
