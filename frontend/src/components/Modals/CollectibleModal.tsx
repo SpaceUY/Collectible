@@ -11,7 +11,7 @@ interface CollectibleModalProps {
 }
 
 const findCollectible = (collectibleIdentifier: CollectibleIdentifier) => {
-  console.log('collectible identifier', collectibleIdentifier)
+  console.log("collectible identifier", collectibleIdentifier);
   const collection = COLLECTIONS.find(
     (collection) => collection.id === collectibleIdentifier.collectionID,
   );
@@ -29,12 +29,20 @@ const CollectibleModal = ({
   selectedCollectibleIdentifier,
 }: CollectibleModalProps) => {
   const collectible = findCollectible(selectedCollectibleIdentifier);
-  
+
   return (
     <>
       <Backdrop />
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        onClick={handleCloseCollectibleModal}
+      >
+        <div
+          className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <div className="mb-8 flex justify-between ">
             <Image
               src={"/collectible-logo.svg"}
@@ -53,7 +61,7 @@ const CollectibleModal = ({
           </div>
           <div className="mb-8 flex gap-8 ">
             <Image
-              className="rounded-lg"
+              className="h-[300px] w-[300px] rounded-lg object-cover"
               src={collectible?.pictureUrl}
               width={300}
               height={300}
