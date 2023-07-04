@@ -11,13 +11,16 @@ interface CollectibleModalProps {
 }
 
 const findCollectible = (collectibleIdentifier: CollectibleIdentifier) => {
+  console.log('collectible identifier', collectibleIdentifier)
   const collection = COLLECTIONS.find(
     (collection) => collection.id === collectibleIdentifier.collectionID,
   );
+  console.log("collection", collection);
 
   const collectible = collection?.collectibles.find(
     (collectible) => collectible.tokenID === collectibleIdentifier.tokenID,
   );
+  console.log("collectible", collectible);
   return collectible;
 };
 
@@ -26,7 +29,7 @@ const CollectibleModal = ({
   selectedCollectibleIdentifier,
 }: CollectibleModalProps) => {
   const collectible = findCollectible(selectedCollectibleIdentifier);
-  console.log("collectible", collectible);
+  
   return (
     <>
       <Backdrop />

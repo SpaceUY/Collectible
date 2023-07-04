@@ -7,7 +7,7 @@ import {
 
 export const COLLECTIONS: Collection[] = [
   {
-    id: "collection-01",
+    id: "collection-03",
     communityId: "metallica",
     name: "Classic Metallica Albums",
     createdAt: "2023-01-24 14:05:49",
@@ -24,7 +24,7 @@ export const COLLECTIONS: Collection[] = [
   },
 
   {
-    id: "collection-03",
+    id: "collection-01",
     communityId: "nike",
     name: "Bored Ape Yacht Club",
     createdAt: "2023-05-24 14:05:49",
