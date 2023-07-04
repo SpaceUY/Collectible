@@ -9,7 +9,7 @@ import { BiLogOut } from "react-icons/bi";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
-  { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
+  // { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
 ];
 
 const Sidebar = () => {

@@ -1,4 +1,5 @@
 import { Community } from "./community.interface";
+import { CollectibleCardProps } from "./collectable-card-props.interface";
 
 export interface UserData {
   isLoggedIn: boolean;
@@ -7,7 +8,7 @@ export interface UserData {
   address: string;
   balance: string;
   shortAddress: string;
-  collectibles: any[];
+  collectibles: CollectibleCardProps[];
   refreshCollectibles: boolean;
   communityMemberships?: Community[];
   communityOwnerships?: Community[];

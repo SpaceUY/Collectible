@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { useUser } from "@/context/UserContext";
-import { COMMUNITY_LIST } from "mock/community";
+import { COMMUNITY_LIST } from "mock/communities";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";

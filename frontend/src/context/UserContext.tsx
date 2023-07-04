@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserData } from "@/api/accountApi";
-import { fetchNFTs } from "@/api/nftApi";
+import { fetchMockedNFTs, fetchNFTs } from "@/api/nftApi";
 import { useRouter } from "next/router";
 import { UserData } from "../common/interfaces/user-data.interface";
 
@@ -11,6 +11,7 @@ const initialUserState: UserData = {
   isLoggedIn: false,
   address: "",
   shortAddress: "",
+  name: "",
   balance: "",
   refreshCollectibles: false,
   collectibles: [],
@@ -23,7 +24,7 @@ type UserContextType = {
   user: UserData;
   setUser: React.Dispatch<React.SetStateAction<UserData>> | null;
   connectUser: () => void;
-  connectBrand: () => void;
+  // connectBrand: () => void;
   disconnectUser: () => void;
 };
 
@@ -32,7 +33,7 @@ const UserContext = createContext<UserContextType>({
   user: initialUserState,
   setUser: null,
   connectUser: () => {},
-  connectBrand: () => {},
+  // connectBrand: () => {},
   disconnectUser: () => {},
 });
 
@@ -63,20 +64,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  /**  
-   @dev Brand connection to be handled on WeaveDV @TBD
-  **/
-  const connectBrand = async () => {
-    try {
-      // Attempt to connect with the user's wallet using Magic's UI
-      await magic.wallet.connectWithUI();
-      // If the wallet connection is successful, initialize web3 instance
-      await initializeWeb3();
-    } catch (error) {
-      // Log any errors that occur during the login process
-      console.error("handleLogin", error);
-    }
-  };
+  // /**
+  //  @dev Brand connection to be handled on WeaveDV @TBD
+  // **/
+  // const connectBrand = async () => {
+  //   try {
+  //     // Attempt to connect with the user's wallet using Magic's UI
+  //     await magic.wallet.connectWithUI();
+  //     // If the wallet connection is successful, initialize web3 instance
+  //     await initializeWeb3();
+  //   } catch (error) {
+  //     // Log any errors that occur during the login process
+  //     console.error("handleLogin", error);
+  //   }
+  // };
 
   const disconnectUser = async () => {
     // Disconnect from magic
@@ -101,7 +102,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const account = await web3.eth.getAccounts();
       if (account.length > 0) {
         const data = await getUserData(web3);
-        console.log('data from getUserData',data);
+        console.log("data from getUserData", data);
         setUser(data);
       } else {
         setUser({ ...user, loading: false });
@@ -113,18 +114,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Function to fetch and update NFTs for the user
   const fetchAndUpdateNFTs = async () => {
-    if (!user?.address || !user?.refreshCollectibles) return;
+    if (!user?.address) return;
 
-    setUser({ ...user, refreshCollectibles: true });
+    // setUser({ ...user, refreshCollectibles: true });
 
     try {
-      const res = await fetchNFTs(user.address, contract);
+      // const res = await fetchNFTs(user.address, contract);
 
-      if (Array.isArray(res)) {
+      const collectibles = await fetchMockedNFTs(user.address, contract);
+
+      if (Array.isArray(collectibles)) {
         setUser({
           ...user,
-          collectibles: res.reverse(),
-          refreshCollectibles: false,
+          collectibles,
+          // refreshCollectibles: false,
         });
       }
     } catch (error) {
@@ -139,7 +142,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, connectUser, connectBrand, disconnectUser }}
+      value={{ user, setUser, connectUser, disconnectUser }}
     >
       {children}
     </UserContext.Provider>

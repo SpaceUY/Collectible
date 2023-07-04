@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { COLLECTIONS } from "../../../mock/collections";
 import CollectiblesReel from "../UI/CollectiblesReel";
 
-const Collection = ({ communityId }: { communityId: string }) => {
+const CommunityCollections = ({ communityId }: { communityId: string }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // TODO fetch by id
@@ -11,8 +11,7 @@ const Collection = ({ communityId }: { communityId: string }) => {
   );
 
   return !isLoading ? (
-    <>
-      {/* <CollectablesReel collectibleCards={COLLECTIVE_CARDS} /> */}
+    <div className="flex flex-col gap-10">
       {collectionsById
         .sort((a, b) => {
           return (
@@ -20,15 +19,18 @@ const Collection = ({ communityId }: { communityId: string }) => {
           );
         })
         .map((collection) => (
-          <CollectiblesReel
-            key={collection.name}
-            collectibleCards={collection.collectables}
-          />
+          <>
+            <CollectiblesReel
+              key={collection.name}
+              collectibleCards={collection.collectibles}
+              headerText={collection.name}
+            />
+          </>
         ))}
-    </>
+    </div>
   ) : (
     <> TODO LOADING wheel or skeleton? </>
   );
 };
 
-export default Collection;
+export default CommunityCollections;

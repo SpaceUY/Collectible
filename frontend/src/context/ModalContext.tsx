@@ -4,6 +4,11 @@ import MintModal from "@/components/Modals/MintModal";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+export interface CollectibleIdentifier {
+  collectionID: string;
+  tokenID: string;
+}
+
 // Define the structure of the Web3 context state
 type ModalContextType = {
   isConnectModalOpen: boolean;
@@ -15,8 +20,10 @@ type ModalContextType = {
   isCollectibleModalOpen: boolean;
   handleOpenCollectibleModal: () => void;
   handleCloseCollectibleModal: () => void;
-  selectedCollectibleId: string;
-  handleSelectCollectibleId: (collectibleId: string) => void;
+  selectedCollectible: CollectibleIdentifier | null;
+  handleSelectCollectible: (
+    collectibleIdentifier: CollectibleIdentifier,
+  ) => void;
 };
 
 // Create the context with default values
@@ -30,8 +37,8 @@ const ModalContext = createContext<ModalContextType>({
   isCollectibleModalOpen: false,
   handleOpenCollectibleModal: () => {},
   handleCloseCollectibleModal: () => {},
-  selectedCollectibleId: "",
-  handleSelectCollectibleId: (collectibleId: string) => {},
+  selectedCollectible: null,
+  handleSelectCollectible: () => {},
 });
 
 // Custom hook to use the Web3 context
@@ -53,9 +60,14 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const handleOpenCollectibleModal = () => setIsCollectibleModalOpen(true);
   const handleCloseCollectibleModal = () => setIsCollectibleModalOpen(false);
 
-  const [selectedCollectibleId, setSelectedCollectibleID] = useState("");
-  const handleSelectCollectibleId = (collectibleId: string) =>
-    setSelectedCollectibleID(collectibleId);
+  const [selectedCollectible, setSelectedCollectible] =
+    useState<CollectibleIdentifier | null>(null);
+
+  const handleSelectCollectible = ({
+    collectionID,
+    tokenID,
+  }: CollectibleIdentifier) =>
+    setSelectedCollectible({ collectionID, tokenID });
 
   // If the user has a NFT key param in the URL, open the mint modal
   useEffect(() => {
@@ -76,8 +88,8 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         isCollectibleModalOpen,
         handleOpenCollectibleModal,
         handleCloseCollectibleModal,
-        selectedCollectibleId,
-        handleSelectCollectibleId,
+        selectedCollectible,
+        handleSelectCollectible,
       }}
     >
       {isConnectModalOpen && (
@@ -89,6 +101,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
       {isCollectibleModalOpen && (
         <CollectibleModal
           handleCloseCollectibleModal={handleCloseCollectibleModal}
+          selectedCollectibleIdentifier={selectedCollectible}
         />
       )}
       {children}

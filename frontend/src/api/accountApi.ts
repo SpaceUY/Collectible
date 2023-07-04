@@ -2,7 +2,7 @@ import { UserData } from "../common/interfaces/user-data.interface";
 import {
   USER_COMMUNITY_MEMBERSHIP,
   USER_COMMUNITY_OWNERSHIP,
-} from "mock/community";
+} from "mock/communities";
 
 /*
   Helper function to collect all the desired connected user's data,
@@ -46,18 +46,18 @@ export async function getUserData(web3): Promise<UserData> {
   } catch (error) {
     console.log("error in getUserData");
     // console.error("getUserData", error);
-     return {
-       isLoggedIn: true,
-       loading: false,
-       name: "Fake User",
-       address: "0x0000000000000000000000001",
-       balance: "0",
-       shortAddress: "0x000...0001",
-       collectibles: undefined,
-       refreshCollectibles: true,
-       communityMemberships,
-       communityOwnerships,
-     };
+    return {
+      isLoggedIn: true,
+      loading: false,
+      name: "Fake User",
+      address: "0x0000000000000000000000001",
+      balance: "0",
+      shortAddress: "0x000...0001",
+      collectibles: undefined,
+      refreshCollectibles: true,
+      communityMemberships,
+      communityOwnerships,
+    };
   }
 }
 

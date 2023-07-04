@@ -1,11 +1,29 @@
 import Image from "next/image";
+import { CoverColor } from "../../common/interfaces/community.interface";
 
 type CollectionOverviewInfo = {
   description: string;
   communityName: string;
   communityPicture: string;
   isOwner: boolean;
-  coverColor: string;
+  coverColor: CoverColor;
+};
+
+const colorToClass = (coverColor: CoverColor) => {
+  switch (coverColor) {
+    case "purple":
+      return "from-purple-500";
+    case "yellow":
+      return "from-yellow-500";
+    case "red":
+      return "from-red-500";
+    case "white":
+      return "from-gray-strong";
+    case "black":
+      return "from-black";
+    default:
+      return "from-purple-500";
+  }
 };
 
 const CommunityOverviewCard = ({
@@ -15,9 +33,10 @@ const CommunityOverviewCard = ({
   isOwner,
   coverColor,
 }: CollectionOverviewInfo) => {
+  const colorClass = colorToClass(coverColor);
   return (
     <article
-      className={`relative h-auto w-full rounded-lg bg-gradient-to-b ${coverColor} to-collectible-dark-purple px-7 pt-20 pb-10`}
+      className={`relative h-auto w-full rounded-lg bg-gradient-to-b ${colorClass} to-collectible-dark-purple px-7 pt-20 pb-10`}
     >
       <div className="mb-5 flex items-center ">
         <Image

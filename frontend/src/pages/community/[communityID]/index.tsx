@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import CommunityOverviewCard from "../../../components/home/CommunityOverviewCard";
 import Button from "../../../components/UI/Button";
-import { COMMUNITY_LIST } from "mock/community";
-import Feed from "../../../components/community/Feed";
-import Collection from "../../../components/community/Collection";
+import { COMMUNITY_LIST } from "mock/communities";
+import CommunityFeed from "../../../components/community/CommunityFeed";
+import CommunityCollections from "../../../components/community/CommunityCollections";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -36,11 +36,11 @@ export default function CollectiblesPage() {
 
   /**  @DEV to be implemented */
   const community = COMMUNITY_LIST.find(
-    (community) => community.id === communityID,
+    (community) => community.communityId === communityID,
   );
 
   const isOwner = user?.communityOwnerships?.find(
-    (community) => community.id === communityID,
+    (community) => community.communityId === communityID,
   )
     ? true
     : false;
@@ -67,7 +67,7 @@ export default function CollectiblesPage() {
   };
 
   return (
-    <Layout title="Holders Only Area" className="">
+    <Layout title="Community Page" className="">
       <Head>
         <title>Collectible - {community?.name}</title>
       </Head>
@@ -79,7 +79,7 @@ export default function CollectiblesPage() {
         coverColor={community?.coverColor}
       />
 
-      <div className="mt-10 mb-4 flex gap-5 ">
+      <div className="mt-10 mb-11 flex gap-5 ">
         {communitySections.map((section) => {
           const buttonVariant =
             section.tabParam === selectedSectionParam ? "purple" : "empty";
@@ -137,11 +137,11 @@ export default function CollectiblesPage() {
 
       <div className="flex flex-col gap-5">
         {selectedSectionParam === CommunityTabs.FEED && (
-          <Feed communityId={community?.id} />
+          <CommunityFeed communityId={community?.communityId} />
         )}
         {selectedSectionParam === CommunityTabs.BENEFITS && <>benefits</>}
         {selectedSectionParam === CommunityTabs.COLLECTION && (
-          <Collection communityId={community?.id} />
+          <CommunityCollections communityId={community?.communityId} />
         )}
       </div>
     </Layout>
