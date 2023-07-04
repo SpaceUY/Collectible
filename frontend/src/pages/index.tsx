@@ -1,20 +1,11 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import AddPost from "../components/UI/AddPost";
 import { COMMUNITY_POSTS } from "../../mock/community-post";
 import CommunityPost from "../components/UI/CommunityPost";
-import CalendarSelector from "../components/brand/CalendarSelector";
 import Head from "next/head";
 import { COLLECTIONS } from "../../mock/collections";
 import CollectiblesReel from "../components/UI/CollectiblesReel";
-
-const tokens = [
-  { id: 0, image: "/img/Ace Hiro.png" },
-  { id: 3, image: "/img/Jack Hiro.png" },
-  { id: 9, image: "/img/Queen Hiro.png" },
-  { id: 4, image: "/img/King Hiro.png" },
-];
 
 export default function CollectiblesPage() {
   const { user } = useUser();
@@ -43,11 +34,13 @@ export default function CollectiblesPage() {
       date: post.createdAt,
       element: (
         <CommunityPost
-          authorPicture={post.authorPicture}
-          postText={post.postText}
           title={post.title}
-          id={post.id}
-          key={post.id}
+          postText={post.postText}
+          postId={post.postId}
+          communityId={post.communityId}
+          authorName={post.authorName}
+          authorPicture={post.authorPicture}
+          key={post.postId}
           createdAt={post.createdAt}
         />
       ),
@@ -60,7 +53,10 @@ export default function CollectiblesPage() {
       element: (
         <CollectiblesReel
           key={collection.id}
-          collectibleCards={collection.collectables}
+          collectibleCards={collection.collectibles}
+          headerText={
+            "New " + collection.communityId + " collection: " + collection.name
+          }
         />
       ),
     });
@@ -72,7 +68,8 @@ export default function CollectiblesPage() {
         <title>Collectible - Home</title>
       </Head>
 
-      <div className="flex flex-col gap-4">
+      {/** @DEV Home Feed */}
+      <div className="flex flex-col gap-8">
         {feedContent
           .sort((a, b) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();

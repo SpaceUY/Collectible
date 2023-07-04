@@ -1,15 +1,31 @@
 import React from "react";
 import Image from "next/image";
 import { CollectibleCardProps } from "../../common/interfaces/collectable-card-props.interface";
+import { useModal } from "@/context/ModalContext";
 
 export const CollectibleCard = ({
   pictureUrl,
   name,
   description,
   showPictureOnly = false,
+  collectionID,
+  tokenID,
 }: CollectibleCardProps) => {
+  const { handleSelectCollectible, handleOpenCollectibleModal } = useModal();
+
+  const inspectCollectible = () => {
+    handleSelectCollectible({
+      collectionID,
+      tokenID,
+    });
+    handleOpenCollectibleModal();
+  };
+
   return (
-    <div className="w-[200px] rounded-lg bg-collectible-medium-purple p-4">
+    <div
+      className="w-[200px] rounded-lg bg-collectible-medium-purple p-4"
+      onClick={inspectCollectible}
+    >
       <Image
         src={pictureUrl}
         width={168}

@@ -2,24 +2,40 @@ import Image from "next/image";
 import React from "react";
 import Button from "../UI/Button";
 import Backdrop from "./Backdrop";
-import { useUser } from "@/context/UserContext";
+import { CollectibleIdentifier } from "../../context/ModalContext";
+import { COLLECTIONS } from "mock/collections";
 
 interface CollectibleModalProps {
   handleCloseCollectibleModal: () => void;
+  selectedCollectibleIdentifier: CollectibleIdentifier;
 }
+
+const findCollectible = (collectibleIdentifier: CollectibleIdentifier) => {
+  const collection = COLLECTIONS.find(
+    (collection) => collection.id === collectibleIdentifier.collectionID,
+  );
+
+  const collectible = collection?.collectibles.find(
+    (collectible) => collectible.tokenID === collectibleIdentifier.tokenID,
+  );
+  return collectible;
+};
+
 const CollectibleModal = ({
   handleCloseCollectibleModal,
+  selectedCollectibleIdentifier,
 }: CollectibleModalProps) => {
-  
+  const collectible = findCollectible(selectedCollectibleIdentifier);
+  console.log("collectible", collectible);
   return (
     <>
       <Backdrop />
-      <div className="fixed inset-0 z-20 flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
           <div className="mb-8 flex justify-between ">
             <Image
               src={"/collectible-logo.svg"}
-              width={60}
+              width={120}
               height={50}
               alt="Collectible Logo"
             />
@@ -34,15 +50,15 @@ const CollectibleModal = ({
           </div>
           <div className="mb-8 flex gap-8 ">
             <Image
-              className=""
-              src={"/img/Ace Hiro.png"}
+              className="rounded-lg"
+              src={collectible?.pictureUrl}
               width={300}
               height={300}
               alt="the nft about to be claimed"
             />
             <div className="flex h-full flex-col">
               <h3 className="mb-4 mt-2 text-2xl font-semibold text-gray-strong">
-                Collectible Name
+                {collectible.name}
               </h3>
               <p className="mb-4 max-w-[420px] text-gray-strong">
                 Description about your NFT, the creator and the community youre
@@ -53,12 +69,16 @@ const CollectibleModal = ({
                 about to become a member of
               </p>
               <a
-                className="rounded-full w-[60%]"
+                className="w-[60%] rounded-full"
                 href="https://testnets.opensea.io/es"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="blue" action={() => {}} className="gap-2 w-full">
+                <Button
+                  variant="blue"
+                  action={() => {}}
+                  className="w-full gap-2"
+                >
                   <p className="font-semibold text-gray-strong">
                     View on OpenSea
                   </p>

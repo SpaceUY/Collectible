@@ -5,13 +5,15 @@ import CollectibleCard from "@/components/CollectibleCard";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useWeb3 } from "@/context/Web3Context";
-import { fetchNFTs } from "@/api/nftApi";
+import { fetchMockedNFTs, fetchNFTs } from "@/api/nftApi";
 import { getAddressShortcut } from "@/api/accountApi";
 import CollectibleCardSkeleton from "@/components/CollectibleCardSkeleton";
 import Head from "next/head";
+import CollectiblesReel from "@/components/UI/CollectiblesReel";
 
 export default function CollectiblesPage() {
   const { user } = useUser();
+  console.log("USER", user);
   const router = useRouter();
   const { profileAddress } = router.query;
   const { contract } = useWeb3();
@@ -22,9 +24,9 @@ export default function CollectiblesPage() {
   useEffect(() => {
     const fetchProfileNFTs = async () => {
       setLoadingCollectibles(true);
-      const res = await fetchNFTs(profileAddress, contract);
-      if (Array.isArray(res)) {
-        setProfileCollectibles(res.reverse());
+      const collectibles = await fetchMockedNFTs(profileAddress, contract);
+      if (Array.isArray(collectibles)) {
+        setProfileCollectibles(collectibles);
       }
       setLoadingCollectibles(false);
     };
@@ -32,12 +34,12 @@ export default function CollectiblesPage() {
   }, [profileAddress, contract]);
 
   return (
-    <Layout title="Profile" className="">
+    <Layout title="Profile" className="min-h-[calc(100vh-100px)]">
       <Head>
         <title>Collectible - Profile</title>
       </Head>
 
-      <div className="mb-8 flex items-center gap-4">
+      <div className="mb-8 flex items-center gap-4 ">
         <div className="rounded-full border-[1px] bg-gray-strong">
           <Image
             /** 
@@ -52,7 +54,7 @@ export default function CollectiblesPage() {
         </div>
         <span className="flex flex-col">
           <p className="text-lg font-semibold text-gray-strong opacity-50 ">
-            userName
+            User Name
           </p>
           <p className="text-sm text-gray-strong opacity-50">
             {getAddressShortcut((profileAddress as string) || "")}
@@ -62,7 +64,11 @@ export default function CollectiblesPage() {
 
       <div className="mb-8 flex flex-col justify-center gap-3">
         <h3 className="text-xl font-semibold text-gray-strong">Collectibles</h3>
-        <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
+        {user?.collectibles?.length > 0 && (
+          <CollectiblesReel collectibleCards={user.collectibles} />
+        )}
+        {user?.collectibles?.length === 0 && <CollectibleCardSkeleton hidden />}
+        {/* <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {loadingCollectibles ? (
             <>
               <CollectibleCardSkeleton />
@@ -77,10 +83,10 @@ export default function CollectiblesPage() {
           ) : (
             <CollectibleCardSkeleton hidden />
           )}
-        </section>
+        </section> */}
       </div>
 
-      <div className="flex flex-col justify-center gap-3">
+      {/* <div className="flex flex-col justify-center gap-3">
         <h3 className="text-xl font-semibold text-gray-strong">Communities</h3>
         <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {loadingCollectibles ? (
@@ -98,7 +104,7 @@ export default function CollectiblesPage() {
             <CollectibleCardSkeleton hidden />
           )}
         </section>
-      </div>
+      </div> */}
     </Layout>
   );
 }

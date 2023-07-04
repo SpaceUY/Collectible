@@ -1,7 +1,10 @@
+export type CommunityId = "metallica" | "nike" | "harry-potter";
+export type CoverColor = "red" | "yellow" | "purple" | "black" | "white";
+
 export interface Community {
   name: string;
   communityPicture: string;
   description: string;
-  id: string;
-  coverColor: string;
+  communityId: CommunityId;
+  coverColor: CoverColor;
 }

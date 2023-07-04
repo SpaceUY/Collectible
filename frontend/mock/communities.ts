@@ -1,12 +1,16 @@
-import { Community } from "../src/common/interfaces/community.interface";
+import {
+  Community,
+  CommunityId,
+} from "../src/common/interfaces/community.interface";
+import { USER_COLLECTIBLES } from "./collectible-cards";
 
 const metallica: Community = {
   communityPicture: "https://cdn.wallpapersafari.com/18/76/aWHv8q.jpg",
   name: "Metallica",
   description:
     "Welcome to Metallica's Collectible Community. A dedicated hub for all things Metallica. Dive into discography discussions, engage with fellow fans, and unlock exclusive content. Join us as we keep the metal legacy alive.",
-  id: "metallica",
-  coverColor: "from-purple-500",
+  communityId: "metallica",
+  coverColor: "purple",
 };
 
 const nike: Community = {
@@ -15,8 +19,8 @@ const nike: Community = {
   name: "Nike",
   description:
     "Welcome to the Nike Collectible Community. Embrace the spirit of innovation, athleticism, and determination. Engage with fellow enthusiasts, explore exclusive content, and unlock a world of distinctive products. Together, we redefine the boundaries of sport and style.",
-  id: "nike",
-  coverColor: "from-[#000000]",
+  communityId: "nike",
+  coverColor: "black",
 };
 
 const harryPotter: Community = {
@@ -25,10 +29,20 @@ const harryPotter: Community = {
   name: "Harry Potter",
   description:
     "Welcome to the magical world of the Harry Potter Collectible Community. Dive into the enchanting lore, engage in spellbinding discussions, and unlock exclusive content from the Wizarding World. Join us as we continue to celebrate the magical journey that transcends generations.",
-  id: "harry-potter",
-  coverColor: "from-yellow-500",
+  communityId: "harry-potter",
+  coverColor: "yellow",
 };
 
 export const COMMUNITY_LIST: Community[] = [nike, metallica, harryPotter];
-export const USER_COMMUNITY_MEMBERSHIP: Community[] = [nike, metallica];
+
+/** @dev 1. Given the USER_COLLECTIBLES, get communityIDs he's a member of. */
+const userCommunityIds: CommunityId[] = Array.from(
+  new Set(USER_COLLECTIBLES.map((collectible) => collectible.communityID)),
+);
+/** @dev 2. Given the IDs, return the Communities */
+export const USER_COMMUNITY_MEMBERSHIP: Community[] = userCommunityIds.map(
+  (communityId) =>
+    COMMUNITY_LIST.find((community) => community.communityId === communityId),
+);
+
 export const USER_COMMUNITY_OWNERSHIP: Community[] = [metallica];

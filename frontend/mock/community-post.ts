@@ -8,15 +8,29 @@ export const COMMUNITY_POSTS: CommunityPostProps[] = [
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
     createdAt: "2023-02-14 17:05:49",
-    id: "nike",
+    postId: "post-0001",
+    communityId: "nike",
+    authorName: "Nike",
   },
   {
     authorPicture: "https://cdn.wallpapersafari.com/18/76/aWHv8q.jpg",
-    title: "Some post",
+    title: "Some Metallica post",
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
     createdAt: "2023-04-16 13:05:49",
-    id: "metallica",
+    postId: "post-0002",
+    communityId: "metallica",
+    authorName: "Metallica",
+  },
+  {
+    authorPicture: "https://cdn.wallpapersafari.com/18/76/aWHv8q.jpg",
+    title: "Some other Metallica post",
+    postText:
+      "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqu mod tempor incididunt ut labore et dolore magna aliqua  mod tempor incididunt ut labore et dolore magna aliquaa",
+    createdAt: "2023-01-16 13:05:49",
+    postId: "post-0003",
+    communityId: "metallica",
+    authorName: "Metallica",
   },
   {
     authorPicture:
@@ -25,6 +39,8 @@ export const COMMUNITY_POSTS: CommunityPostProps[] = [
     postText:
       "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
     createdAt: "2023-03-21 14:05:49",
-    id: "harry-potter",
+    postId: "post-0004",
+    communityId: "harry-potter",
+    authorName: "Harry Potter",
   },
 ];

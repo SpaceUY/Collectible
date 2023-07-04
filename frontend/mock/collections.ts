@@ -1,22 +1,35 @@
 import { Collection } from "../src/common/interfaces/collection-props.interface";
-import { COLLECTIBLE_CARDS } from "./collectible-cards";
+import {
+  COLLECTIBLE_CARDS_01,
+  COLLECTIBLE_CARDS_02,
+  COLLECTIBLE_CARDS_03,
+} from "./collectible-cards";
 
 export const COLLECTIONS: Collection[] = [
   {
-    id: "saddafgrsdgds",
+    id: "collection-01",
     communityId: "metallica",
-    name: "Epic collection",
-    createdAt: "2023-03-24 14:05:49",
+    name: "Classic Metallica Albums",
+    createdAt: "2023-01-24 14:05:49",
     description: "Some description about the collection and its images.",
-    collectables: COLLECTIBLE_CARDS,
+    collectibles: COLLECTIBLE_CARDS_03,
   },
   {
-    id: "fgsdsdfgfdg",
+    id: "collection-02",
+    communityId: "metallica",
+    name: "Metallic Funkos",
+    createdAt: "2023-07-24 14:05:49",
+    description: "Some description about the collection and its images.",
+    collectibles: COLLECTIBLE_CARDS_02,
+  },
+
+  {
+    id: "collection-03",
     communityId: "nike",
-    name: "The sport Collection",
-    createdAt: "2023-02-24 14:05:49",
+    name: "Bored Ape Yacht Club",
+    createdAt: "2023-05-24 14:05:49",
     description:
       "Some description extreme lalal about the collection and its images.",
-    collectables: COLLECTIBLE_CARDS,
+    collectibles: COLLECTIBLE_CARDS_01,
   },
 ];

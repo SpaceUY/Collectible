@@ -9,7 +9,9 @@ export default function Layout({ children, title, className = "" }) {
   const isHomeOrExplore =
     router.pathname === "/" || router.pathname === "/explore";
   return (
-    <div className="relative mx-auto flex w-full flex-col border-red-500">
+    <div
+      className={`relative mx-auto flex w-full flex-col border-red-500 ${className} min-h-[calc(100vh-96px)]`}
+    >
       <header className="fixed left-0 right-[calc(250px+14px)] z-10 flex items-center bg-collectible-medium-purple pt-[14px] pb-[14px] 2xl:left-[7vw] 2xl:right-[calc(250px+14px+7vw)]">
         <Header />
       </header>

@@ -6,5 +6,5 @@ export interface Collection {
   name: string;
   description: string;
   createdAt: string;
-  collectables: CollectibleCardProps[];
+  collectibles: CollectibleCardProps[];
 }
