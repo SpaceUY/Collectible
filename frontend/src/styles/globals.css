@@ -5,7 +5,6 @@
   Base styles
 */
 
-
 @keyframes pulse {
   0%,
   100% {
@@ -25,10 +24,32 @@
 }
 
 body {
-  @apply bg-collectible-medium-purple custom-scrollbar;
+  @apply custom-scrollbar bg-collectible-medium-purple;
 }
 
+.Calendar {
+  background: #26252c !important;
+}
 
+.Calendar__header {
+  color: #f5f5f5 !important;
+}
+
+/* .Calendar__weekDays {
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: 1px solid #f5f5f5;
+} */
+
+.Calendar__day.-weekend:not(.-selected):not(.-blank):not(.-selectedStart):not(
+    .-selectedEnd
+  ):not(.-selectedBetween) {
+  color: #7a5fc8 !important;
+}
+
+.Calendar__day {
+  color: rgba(245, 245, 245, 0.5) !important;
+}
 
 /* When last, this ensures inline styles take priority */
 @tailwind utilities;

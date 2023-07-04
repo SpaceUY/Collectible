@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CollectableCard from "./CollectibleCard";
-import { CollectibleCardProps } from "../../common/interfaces/collective-card-props.interface";
+import { CollectibleCardProps } from "../../common/interfaces/collectable-card-props.interface";
 
 interface CollectiblesReelProps {
   collectibleCards: CollectibleCardProps[];

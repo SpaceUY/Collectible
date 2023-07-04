@@ -1,10 +1,13 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
-import CommunityOverviewCard from "../components/home/CommunityOverviewCard";
 import AddPost from "../components/UI/AddPost";
-import CollectablesReel from "../components/UI/CollectiblesReel";
+import { COMMUNITY_POSTS } from "../../mock/community-post";
+import CommunityPost from "../components/UI/CommunityPost";
+import CalendarSelector from "../components/brand/CalendarSelector";
 import Head from "next/head";
+import { COLLECTIONS } from "../../mock/collections";
+import CollectiblesReel from "../components/UI/CollectiblesReel";
 
 const tokens = [
   { id: 0, image: "/img/Ace Hiro.png" },
@@ -33,24 +36,49 @@ export default function CollectiblesPage() {
     }
   }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
 
+  const feedContent: { date: string; element: JSX.Element }[] = [];
+
+  COMMUNITY_POSTS.forEach((post) => {
+    feedContent.push({
+      date: post.createdAt,
+      element: (
+        <CommunityPost
+          authorPicture={post.authorPicture}
+          postText={post.postText}
+          title={post.title}
+          id={post.id}
+          key={post.id}
+          createdAt={post.createdAt}
+        />
+      ),
+    });
+  });
+
+  COLLECTIONS.forEach((collection) => {
+    feedContent.push({
+      date: collection.createdAt,
+      element: (
+        <CollectiblesReel
+          key={collection.id}
+          collectibleCards={collection.collectables}
+        />
+      ),
+    });
+  });
+
   return (
     <Layout title="Home" className="">
       <Head>
         <title>Collectible - Home</title>
       </Head>
 
-      {/* <CommunityOverviewCard
-        communityPicture=""
-        communityName="Asldas jasd"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis sem
-        vitae ipsum tristique consequat. Nunc viverra fringilla arcu, at aliquet
-        nulla efficitur non. Aliquam tristique nunc non purus ultricies, in
-        consectetur nisl scelerisque. In sollicitudin pharetra dui, in
-        condimentum ligula rhoncus at. Integer congue leo vel justo blandit, eu
-        convallis metus convallis. Morbi ut felis id lectus tincidunt convallis."
-      /> */}
-      {/* <AddPost userName="das" userPicture="" /> */}
-      {/* <CollectablesReel /> */}
+      <div className="flex flex-col gap-4">
+        {feedContent
+          .sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          })
+          .map((content) => content.element)}
+      </div>
     </Layout>
   );
 }

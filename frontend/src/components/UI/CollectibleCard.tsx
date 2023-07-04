@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { CollectibleCardProps } from "../../common/interfaces/collective-card-props.interface";
+import { CollectibleCardProps } from "../../common/interfaces/collectable-card-props.interface";
 
 export const CollectibleCard = ({
   pictureUrl,
