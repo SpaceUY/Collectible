@@ -40,7 +40,7 @@ const CollectiblesReel = ({
               spaceBetween: 10,
             },
             1900: {
-              slidesPerView: 5.1,
+              slidesPerView: 5.2,
               spaceBetween: 12,
             },
           }}

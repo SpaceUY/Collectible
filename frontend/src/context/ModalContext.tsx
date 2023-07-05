@@ -69,6 +69,21 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   }: CollectibleIdentifier) =>
     setSelectedCollectible({ collectionID, tokenID });
 
+  // If the user presses the 'Escape' key, close the Collectible Modal
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleCloseCollectibleModal();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []); // Empty array ensures effect is only run on mount and unmount
+
   // If the user has a NFT key param in the URL, open the mint modal
   useEffect(() => {
     if (router.query.key) {

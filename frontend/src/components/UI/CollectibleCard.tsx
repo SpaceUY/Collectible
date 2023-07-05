@@ -24,7 +24,7 @@ export const CollectibleCard = ({
 
  return (
    <div
-     className="flex-grow rounded-lg bg-collectible-medium-purple p-4"
+     className="flex-grow rounded-lg bg-collectible-medium-purple p-4 cursor-pointer"
      onClick={inspectCollectible}
    >
      <div className="relative w-full rounded-lg bg-gray-medium pb-[100%]">
