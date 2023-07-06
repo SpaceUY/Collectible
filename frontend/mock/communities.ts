@@ -39,6 +39,7 @@ export const COMMUNITY_LIST: Community[] = [nike, metallica, harryPotter];
 const userCommunityIds: CommunityId[] = Array.from(
   new Set(USER_COLLECTIBLES.map((collectible) => collectible.communityID)),
 );
+
 /** @dev 2. Given the IDs, return the Communities */
 export const USER_COMMUNITY_MEMBERSHIP: Community[] = userCommunityIds.map(
   (communityId) =>

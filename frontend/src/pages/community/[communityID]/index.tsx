@@ -14,13 +14,13 @@ import Image from "next/image";
 enum CommunityTabs {
   FEED = "feed",
   BENEFITS = "benefits",
-  COLLECTION = "collection",
+  COLLECTIONS = "collections",
 }
 
 const communitySections = [
   { tabName: "Feed", tabParam: CommunityTabs.FEED },
   { tabName: "Benefits", tabParam: CommunityTabs.BENEFITS },
-  { tabName: "Collection", tabParam: CommunityTabs.COLLECTION },
+  { tabName: "Collections", tabParam: CommunityTabs.COLLECTIONS },
 ];
 
 export default function CollectiblesPage() {
@@ -113,7 +113,7 @@ export default function CollectiblesPage() {
             </span>
           </Button>
         )}
-        {isOwner && selectedSectionParam === CommunityTabs.COLLECTION && (
+        {isOwner && selectedSectionParam === CommunityTabs.COLLECTIONS && (
           <Button
             className="ml-auto"
             variant="outlined"
@@ -140,7 +140,7 @@ export default function CollectiblesPage() {
           <CommunityFeed communityId={community?.communityId} />
         )}
         {selectedSectionParam === CommunityTabs.BENEFITS && <>benefits</>}
-        {selectedSectionParam === CommunityTabs.COLLECTION && (
+        {selectedSectionParam === CommunityTabs.COLLECTIONS && (
           <CommunityCollections communityId={community?.communityId} />
         )}
       </div>
