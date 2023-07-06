@@ -28,27 +28,22 @@ body {
 }
 
 .Calendar {
-  background: #26252c !important;
+  @apply bg-collectible-medium-purple !important;
+  box-shadow: none !important;
 }
 
 .Calendar__header {
-  color: #f5f5f5 !important;
+  @apply text-gray-strong !important;
 }
-
-/* .Calendar__weekDays {
-  width: 80%;
-  margin: 0 auto;
-  border-bottom: 1px solid #f5f5f5;
-} */
 
 .Calendar__day.-weekend:not(.-selected):not(.-blank):not(.-selectedStart):not(
     .-selectedEnd
   ):not(.-selectedBetween) {
-  color: #7a5fc8 !important;
+  @apply text-collectible-purple !important;
 }
 
 .Calendar__day {
-  color: rgba(245, 245, 245, 0.5) !important;
+  @apply text-gray-medium !important;
 }
 
 /* When last, this ensures inline styles take priority */

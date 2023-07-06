@@ -1,46 +1,59 @@
 import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar, DayRange } from "react-modern-calendar-datepicker";
+import {
+  Calendar,
+  DayRange,
+} from "@amir04lm26/react-modern-calendar-date-picker";
 import { BsCalendar3 } from "react-icons/bs";
 
-const CalendarSelector = () => {
-  const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
-    from: null,
-    to: null,
-  });
+const CalendarSelector = ({
+  dateRange,
+  onSelectDateRange,
+}: {
+  dateRange: DayRange;
+  onSelectDateRange: React.Dispatch<React.SetStateAction<DayRange>>;
+}) => {
+  const [isDatePickerVIsible, setIsDatePickerVisible] = useState(false);
 
   const fromDate =
-    selectedDayRange.from &&
-    Object.values(selectedDayRange.from)
+    dateRange.from &&
+    Object.values(dateRange.from)
       .map((date) => date)
       .join("/");
 
   const toDate =
-    selectedDayRange.to &&
-    Object.values(selectedDayRange.to)
+    dateRange.to &&
+    Object.values(dateRange.to)
       .map((date) => date)
       .join("/");
 
+  const handleDatePickerCalendar = () => {
+    setIsDatePickerVisible((prev) => !prev);
+  };
+
   return (
     <div className="w-[330px]">
-      <div className="mb-3  flex rounded-lg bg-collectible-medium-purple py-3">
-        <BsCalendar3 className="ml-4 mr-11 mt-1 text-gray-strong" />{" "}
+      <div
+        onClick={handleDatePickerCalendar}
+        className="mb-3  flex rounded-lg bg-collectible-medium-purple py-4 hover:cursor-pointer"
+      >
+        <BsCalendar3 className="ml-4 mr-11 mt-0.5 text-gray-strong" />{" "}
         <div className="flex gap-3 text-sm text-gray-medium">
           <p>{fromDate || "starting date"}</p> -{" "}
           <p>{toDate || "ending date"}</p>
         </div>
       </div>
 
-      <div>
+      {isDatePickerVIsible && (
         <Calendar
-          value={selectedDayRange}
-          onChange={setSelectedDayRange}
+          value={dateRange}
+          onChange={onSelectDateRange}
           colorPrimary="#7A5FC8"
           calendarClassName="custom-calendar"
           colorPrimaryLight="rgb(122, 95, 200, 0.4)"
           shouldHighlightWeekends
         />
-      </div>
+      )}
     </div>
   );
 };
