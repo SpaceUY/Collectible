@@ -22,31 +22,33 @@ export const CollectibleCard = ({
     handleOpenCollectibleModal();
   };
 
-  return (
-    <div
-      className="w-[200px] rounded-lg bg-collectible-medium-purple p-4"
-      onClick={inspectCollectible}
-    >
-      <Image
-        src={pictureUrl}
-        width={168}
-        height={168}
-        alt=""
-        className="rounded-lg bg-gray-medium"
-      />
+ return (
+   <div
+     className="flex-grow rounded-lg bg-collectible-medium-purple p-4 cursor-pointer"
+     onClick={inspectCollectible}
+   >
+     <div className="relative w-full rounded-lg bg-gray-medium pb-[100%]">
+       <Image
+         className="absolute inset-0 rounded-lg object-cover object-center"
+         src={pictureUrl}
+         layout="fill"
+         alt=""
+       />
+     </div>
 
-      {!showPictureOnly && (
-        <>
-          <h3 className="mt-3 truncate text-base font-bold text-gray-strong">
-            {name}
-          </h3>
-          <p className="truncate text-sm font-semibold text-gray-weak">
-            {description}
-          </p>
-        </>
-      )}
-    </div>
-  );
+     {!showPictureOnly && (
+       <>
+         <h3 className="mt-3 truncate text-base font-bold text-gray-strong">
+           {name}
+         </h3>
+         <p className="truncate text-sm font-semibold text-gray-weak">
+           {description}
+         </p>
+       </>
+     )}
+   </div>
+ );
+
 };
 
 export default CollectibleCard;
