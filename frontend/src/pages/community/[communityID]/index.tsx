@@ -10,6 +10,8 @@ import CommunityFeed from "../../../components/community/CommunityFeed";
 import CommunityCollections from "../../../components/community/CommunityCollections";
 import Head from "next/head";
 import Image from "next/image";
+import CommunityBenefits from "../../../components/community/CommunityBenefits";
+import { Community } from "../../../common/interfaces/community.interface";
 
 enum CommunityTabs {
   FEED = "feed",
@@ -40,6 +42,12 @@ export default function CollectiblesPage() {
   );
 
   const isOwner = user?.communityOwnerships?.find(
+    (community) => community.communityId === communityID,
+  )
+    ? true
+    : false;
+
+  const isMember = user?.communityMemberships?.find(
     (community) => community.communityId === communityID,
   )
     ? true
@@ -76,6 +84,7 @@ export default function CollectiblesPage() {
         communityName={community?.name}
         communityPicture={community?.communityPicture}
         isOwner={isOwner}
+        isMember={isMember}
         coverColor={community?.coverColor}
       />
 
@@ -137,9 +146,22 @@ export default function CollectiblesPage() {
 
       <div className="flex flex-col gap-5">
         {selectedSectionParam === CommunityTabs.FEED && (
-          <CommunityFeed communityId={community?.communityId} />
+          <CommunityFeed
+            communityId={community?.communityId}
+            communityPicture={community?.communityPicture}
+            communityName={community?.name}
+            isMember={isMember}
+            isOwner={isOwner}
+          />
         )}
-        {selectedSectionParam === CommunityTabs.BENEFITS && <>benefits</>}
+
+        {selectedSectionParam === CommunityTabs.BENEFITS && (
+          <CommunityBenefits
+            communityId={community?.communityId}
+            communityName={community?.name}
+            isMember={isMember}
+          />
+        )}
         {selectedSectionParam === CommunityTabs.COLLECTIONS && (
           <CommunityCollections communityId={community?.communityId} />
         )}

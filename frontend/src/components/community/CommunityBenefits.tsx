@@ -1,8 +1,19 @@
 import { useState } from "react";
 import { COMMUNITY_POSTS } from "../../../mock/community-post";
 import CommunityPost from "../UI/CommunityPost";
+import { COMMUNITY_BENEFITS } from "mock/benefits";
+import BenefitCard from "../UI/BenefitCard";
 
-const CommunityBenefits = ({ communityId }: { communityId: string }) => {
+interface CommunityBenefitsProps {
+  communityId: string;
+  communityName: string;
+  isMember: boolean;
+}
+const CommunityBenefits = ({
+  communityId,
+  communityName,
+  isMember,
+}: CommunityBenefitsProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // TODO fetch by id
@@ -11,26 +22,24 @@ const CommunityBenefits = ({ communityId }: { communityId: string }) => {
   );
 
   return !isLoading ? (
-    <>
-      {communityPostsById
-        .sort((a, b) => {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        })
-        .map((post) => (
-          <CommunityPost
-            authorPicture={post.authorPicture}
-            postText={post.postText}
-            title={post.title}
-            key={post.postId}
-            postId={post.postId}
-            authorName={post.authorName}
-            communityId={post.communityId}
-            createdAt={post.createdAt}
+    <div>
+      <h3 className="mb-4 text-xl font-semibold text-gray-strong">
+        Available Benefits for {communityName} members
+      </h3>
+      <div className="mb-40 flex gap-4">
+        {COMMUNITY_BENEFITS.map((benefit) => (
+          <BenefitCard
+            key={benefit.id}
+            id={benefit.id}
+            name={benefit.name}
+            description={benefit.description}
+            image={benefit.image}
+            type={benefit.type}
+            isMember={isMember}
           />
         ))}
-    </>
+      </div>
+    </div>
   ) : (
     <> TODO LOADING wheel or skeleton? </>
   );

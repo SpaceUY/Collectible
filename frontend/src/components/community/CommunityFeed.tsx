@@ -1,8 +1,23 @@
 import { useState } from "react";
 import { COMMUNITY_POSTS } from "../../../mock/community-post";
 import CommunityPost from "../UI/CommunityPost";
+import AddPost from "../UI/AddPost";
 
-const CommunityFeed = ({ communityId }: { communityId: string }) => {
+interface CommunityFeedProps {
+  communityId: string;
+  communityPicture: string;
+  communityName: string;
+  isOwner: boolean;
+  isMember: boolean;
+}
+
+const CommunityFeed = ({
+  communityId,
+  communityPicture,
+  communityName,
+  isOwner,
+  isMember,
+}: CommunityFeedProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // TODO fetch by id
@@ -11,7 +26,10 @@ const CommunityFeed = ({ communityId }: { communityId: string }) => {
   );
 
   return !isLoading ? (
-    <>
+    <div className="mb-40 flex flex-col gap-4">
+      {/* {isOwner && (
+        <AddPost userPicture={communityPicture} userName={communityName} />
+      )} */}
       {communityPostsById
         .sort((a, b) => {
           return (
@@ -30,7 +48,7 @@ const CommunityFeed = ({ communityId }: { communityId: string }) => {
             createdAt={post.createdAt}
           />
         ))}
-    </>
+    </div>
   ) : (
     <> TODO LOADING wheel or skeleton? </>
   );
