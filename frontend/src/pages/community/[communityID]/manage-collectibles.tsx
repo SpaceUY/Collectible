@@ -137,7 +137,6 @@ const ManageCollectibles = () => {
                   className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-transparent bg-collectible-dark-purple p-3 hover:cursor-pointer hover:border-gray-medium"
                 >
                   <Image width={100} height={100} src={path} alt={""} />
-                  {/* <span className="absolute bottom-1 right-1 text-gray-strong">{idx + 1}</span> */}
                 </div>
               ))}
             </div>
