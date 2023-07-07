@@ -11,7 +11,7 @@ const CommunityCollections = ({ communityId }: { communityId: string }) => {
   );
 
   return !isLoading ? (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 mb-40">
       {collectionsById
         .sort((a, b) => {
           return (

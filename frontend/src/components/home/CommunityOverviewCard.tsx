@@ -6,6 +6,7 @@ type CollectionOverviewInfo = {
   communityName: string;
   communityPicture: string;
   isOwner: boolean;
+  isMember: boolean;
   coverColor: CoverColor;
 };
 
@@ -31,6 +32,7 @@ const CommunityOverviewCard = ({
   communityName,
   communityPicture,
   isOwner,
+  isMember,
   coverColor,
 }: CollectionOverviewInfo) => {
   const colorClass = colorToClass(coverColor);
@@ -71,9 +73,16 @@ const CommunityOverviewCard = ({
             </button>
           </>
         )}
+        {!isOwner && isMember && (
+          <span className="ml-5 rounded-full bg-gray-strong px-3 py-1">
+            <p className="text-gray-soft text-sm font-semibold leading-5">
+              Member
+            </p>
+          </span>
+        )}
       </div>
 
-      <p className="text-sm font-normal leading-6 text-gray-strong">
+      <p className="text-sm font-normal leading-6 text-gray-strong h-14">
         {description}
       </p>
     </article>
