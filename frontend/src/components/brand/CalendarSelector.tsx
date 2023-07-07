@@ -45,14 +45,16 @@ const CalendarSelector = ({
       </div>
 
       {isDatePickerVIsible && (
-        <Calendar
-          value={dateRange}
-          onChange={onSelectDateRange}
-          colorPrimary="#7A5FC8"
-          calendarClassName="custom-calendar"
-          colorPrimaryLight="rgb(122, 95, 200, 0.4)"
-          shouldHighlightWeekends
-        />
+        <div className="absolute">
+          <Calendar
+            value={dateRange}
+            onChange={onSelectDateRange}
+            colorPrimary="#7A5FC8"
+            calendarClassName="custom-calendar"
+            colorPrimaryLight="rgb(122, 95, 200, 0.4)"
+            shouldHighlightWeekends
+          />
+        </div>
       )}
     </div>
   );

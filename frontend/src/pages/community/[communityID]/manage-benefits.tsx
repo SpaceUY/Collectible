@@ -31,6 +31,7 @@ const ManageBenefits = () => {
 
   const handleSubmit = () => {
     // TODO sent data
+    alert('TODO: send data')
     console.log("sent");
   };
 
@@ -46,7 +47,7 @@ const ManageBenefits = () => {
           name="benefit-name"
           type="text"
           placeholder={"Insert benefit name"}
-          className={`mb-4 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-weak placeholder-gray-weak`}
+          className={`mb-4 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-strong placeholder-gray-weak`}
           onChange={(e) => setBenefitName(e.target.value)}
           value={benefitName}
         />
@@ -55,6 +56,7 @@ const ManageBenefits = () => {
           <div className="w-1/2">
             <h2 className="mb-3 text-gray-strong">Benefit type</h2>
             <BenefitSelector
+              
               benefit={communityBenefit}
               onSelectBenefit={setCommunityBenefit}
             />

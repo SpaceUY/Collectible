@@ -59,12 +59,13 @@ const ManageCollectibles = () => {
 
         <div className="flex gap-5">
           <div className="w-1/2">
-            <h2 className="mb-3 text-sm text-gray-strong">Collection name</h2>
+            <p className="mb-3 text-gray-strong">Collection name</p>
             <input
               name="search"
               type="text"
+              maxLength={40}
               placeholder={"Insert Collection name"}
-              className={`mb-6 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-weak placeholder-gray-weak`}
+              className={`mb-6 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-strong placeholder-gray-weak`}
               onChange={(e) =>
                 setFormData((prev) => {
                   return { ...prev, collectionName: e.target.value };
@@ -75,12 +76,13 @@ const ManageCollectibles = () => {
           </div>
 
           <div className="w-1/2">
-            <h2 className="mb-3 text-sm text-gray-strong">Collection Units</h2>
+            <p className="mb-3 text-gray-strong">Collection Units</p>
             <input
               name="search"
               type="number"
+              max={9999}
               placeholder={"Put Collection Units"}
-              className={`mb-6 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-weak placeholder-gray-weak`}
+              className={`mb-6 h-[52px] w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-strong placeholder-gray-weak`}
               onChange={(e) =>
                 setFormData((prev) => {
                   return { ...prev, collectionUnits: parseInt(e.target.value) };
@@ -91,13 +93,12 @@ const ManageCollectibles = () => {
           </div>
         </div>
 
-        <h2 className="mb-3 text-sm text-gray-strong">
-          Collection Description
-        </h2>
+        <p className="mb-3 text-gray-strong">Collection Description</p>
         <textarea
           name="post-text"
           placeholder="Write a Collection description"
-          className={`h-36 w-full rounded-lg bg-collectible-medium-purple p-4 text-gray-weak placeholder-gray-weak`}
+          className={`mb-4 h-32 w-full resize-none rounded-lg bg-collectible-medium-purple p-4 text-gray-strong placeholder-gray-weak`}
+          maxLength={200}
           onChange={(e) =>
             setFormData((prev) => {
               return { ...prev, collectionDescription: e.target.value };
@@ -106,9 +107,9 @@ const ManageCollectibles = () => {
           value={formData.collectionDescription}
         />
 
-        <h2 className="mb-3 text-sm text-gray-strong">Select Images</h2>
+        <p className="mb-3 text-gray-strong">Select Images</p>
         <div
-          className="flex h-80 gap-4 rounded-lg bg-collectible-medium-purple py-3 px-5"
+          className="flex h-56 gap-4 rounded-lg bg-collectible-medium-purple py-3 px-5"
           {...getRootProps()}
         >
           <input {...getInputProps()} />
@@ -129,17 +130,18 @@ const ManageCollectibles = () => {
         {!!imagePaths.length && (
           <>
             <div className="mt-4 flex gap-3 rounded-lg bg-collectible-medium-purple p-3">
-              {imagePaths.map((path) => (
+              {imagePaths.map((path, idx) => (
                 <div
                   onClick={() => handleRemoveImage(path)}
                   key={path}
-                  className="flex h-28 w-28 items-center justify-center rounded-lg border-2 border-transparent bg-collectible-dark-purple p-3 hover:cursor-pointer hover:border-gray-medium"
+                  className="relative flex h-28 w-28 items-center justify-center rounded-lg border-2 border-transparent bg-collectible-dark-purple p-3 hover:cursor-pointer hover:border-gray-medium"
                 >
                   <Image width={100} height={100} src={path} alt={""} />
+                  {/* <span className="absolute bottom-1 right-1 text-gray-strong">{idx + 1}</span> */}
                 </div>
               ))}
             </div>
-            <p className="mt-2 text-xs text-gray-weak">
+            <p className="mt-2 text-xs text-gray-weak ">
               (Click on an image preview to remove)
             </p>
           </>
