@@ -8,75 +8,6 @@ import { useUser } from "@/context/UserContext";
 import { useWeb3 } from "@/context/Web3Context";
 import { magic } from "@/lib/magic";
 
-const signTypedDataV4Payload = {
-  domain: {
-    // Defining the chain aka Rinkeby goerli or Ethereum Main Net
-    chainId: 5,
-    // Give a user friendly name to the specific contract you are signing for.
-    name: "Ether Mail",
-    // If name isn't enough add verifying contract to make sure you are establishing contracts with the proper entity
-    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-    // Just let's you know the latest version. Definitely make sure the field name is correct.
-    version: "1",
-  },
-
-  // Defining the message signing data content.
-  message: {
-    /*
-     - Anything you want. Just a JSON Blob that encodes the data you want to send
-     - No required fields
-     - This is DApp Specific
-     - Be as explicit as possible when building out the message schema.
-    */
-    contents: "Hello, Bob!",
-    attachedMoneyInEth: 4.2,
-    from: {
-      name: "Cow",
-      wallets: [
-        "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
-        "0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF",
-      ],
-    },
-    to: [
-      {
-        name: "Bob",
-        wallets: [
-          "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
-          "0xB0BdaBea57B0BDABeA57b0bdABEA57b0BDabEa57",
-          "0xB0B0b0b0b0b0B000000000000000000000000000",
-        ],
-      },
-    ],
-  },
-  // Refers to the keys of the *types* object below.
-  primaryType: "Mail",
-  types: {
-    // TODO: Clarify if EIP712Domain refers to the domain the contract is hosted on
-    EIP712Domain: [
-      { name: "name", type: "string" },
-      { name: "version", type: "string" },
-      { name: "chainId", type: "uint256" },
-      { name: "verifyingContract", type: "address" },
-    ],
-    // Not an EIP712Domain definition
-    Group: [
-      { name: "name", type: "string" },
-      { name: "members", type: "Person[]" },
-    ],
-    // Refer to PrimaryType
-    Mail: [
-      { name: "from", type: "Person" },
-      { name: "to", type: "Person[]" },
-      { name: "contents", type: "string" },
-    ],
-    // Not an EIP712Domain definition
-    Person: [
-      { name: "name", type: "string" },
-      { name: "wallets", type: "address[]" },
-    ],
-  },
-};
-
 const LIT_ACTION_IPFS_ID = "Qmb75qXbJ3TyR5hSSiAPWQKF3FjeHLxx1yC94qCCw9STrH"; // the OG action
 const INFURA_KEY = "000a60eae4dd47f1bbccac8614b0e336";
 const PKP_PUBLIC_KEY =
@@ -101,11 +32,12 @@ function App() {
   const [identity, setIdentity] = useState(null);
 
   /**
-    @DEV Overwrite window.ethereum to be able to simulate
-    a connected wallet without having to use Metamask
-    returns the Magic wallet address
+    @DEV Overwrite window.ethereum to be able to simulate a connected wallet 
+    without having to use Metamask, returns the Magic wallet address
+
     @TBD Make sure that this overrides the window.ethereum provided 
     by Metamask, otherwise it will return the MM address instead of Magic's
+    (Currently only tested on isolated Brave without Metamask)
   */
   const overwriteEthereum = () => {
     window.ethereum = {
@@ -114,7 +46,6 @@ function App() {
           case "eth_requestAccounts":
             return [user?.address];
           case "eth_accounts":
-            console.log("eth_accounts request on window.ethereum");
             return [user?.address];
           default:
             return null;
@@ -137,7 +68,7 @@ function App() {
   }, []);
 
   /** 
-    @DEV Initialize WeaveDB 
+    @DEV Initialize WeaveDB, connect to the DB
   */
   useEffect(() => {
     const initializeWeaveDB = async () => {
@@ -149,15 +80,16 @@ function App() {
       }
       const db = new WeaveDB({
         /**
-         @DEV Passing the web3 argument is currently throwing
-        Error: ENS is not supported on network private
-       */
-        // web3: web3,
-        customProvider: {},
+         @DEV Modified from the original WeaveDB initialization
+        Added custom provider to be able to use Magic's RPC provider
+        In order to sign with the Magic Wallet
+        (Includes modification on weavedb-base and weavedb-sdk)
+        */
+        customProvider: magic.rpcProvider,
         contractTxId: "jCCWe4tmQa7s2VipsEUW5bIXGNeEdjpAmK2UslxMU4M",
       });
 
-      // await db.initializeWithoutWallet();
+      await db.initializeWithoutWallet();
       setDb(db);
       console.log("Initialized DB successfully!", db);
       overwriteEthereum();
@@ -167,7 +99,8 @@ function App() {
   }, [web3, user?.isLoggedIn]);
 
   /** 
-    @DEV 
+    @DEV generate an AuthSig to be able to sign with the Magic Wallet
+    This only needs to be done once per session, utile to avoid multiple signing
   */
   const signAuthSig = async () => {
     if (!user?.isLoggedIn) {
@@ -203,7 +136,8 @@ function App() {
   };
 
   /** 
-    @DEV Initialize WeaveDB
+    @DEV Similar to the AuthSig, generate an Identity to be able to sign with the Magic Wallet
+    This only needs to be done once per session, utile to avoid multiple signing
   */
   const signIdentity = async () => {
     if (!user?.isLoggedIn) {
@@ -225,6 +159,9 @@ function App() {
     }
   };
 
+  /**
+   @TBD To be reviewed.
+  */
   const litProtocol = async () => {
     const jobID = "relayedPost";
     const signedQuery = await db.sign("add", { message: "test" }, "post", {
@@ -256,6 +193,9 @@ function App() {
     });
   };
 
+  /**
+   @TBD To be reviewed 
+  */
   const adminCmd = async () => {
     await db.addRelayerJob(
       "relayedPost",
@@ -274,45 +214,49 @@ function App() {
       <div className="App">
         {user?.isLoggedIn ? (
           <div>
-            {litNodeClient ? (
-              <p className="text-xl text-gray-strong">litNodeClient loaded.</p>
-            ) : (
-              <p className="text-xl text-gray-strong">
-                loading litNodeClient...
-              </p>
-            )}
-            {db ? (
-              <p className="text-xl text-gray-strong">
-                WeaveDB Instance loaded.
-              </p>
-            ) : (
-              <p className="text-xl text-gray-strong">
-                loading WeaveDB Instance...
-              </p>
-            )}
-            {identity ? (
-              <p className="text-xl text-gray-strong">
-                WeaveDB Identity loaded.
-              </p>
-            ) : (
-              <Button action={signIdentity}>Sign Identity</Button>
-            )}
-            {authSig ? (
-              <p className="text-xl text-gray-strong">Lit AuthSig loaded.</p>
-            ) : (
-              <Button action={signAuthSig}>Sign AuthSig</Button>
-            )}
+            <div className="flex flex-col gap-1">
+              {litNodeClient ? (
+                <p className="text-xl text-gray-strong">
+                  litNodeClient loaded.
+                </p>
+              ) : (
+                <p className="text-xl text-gray-strong">
+                  loading litNodeClient...
+                </p>
+              )}
+              {db ? (
+                <p className="text-xl text-gray-strong">
+                  WeaveDB Instance loaded.
+                </p>
+              ) : (
+                <p className="text-xl text-gray-strong">
+                  loading WeaveDB Instance...
+                </p>
+              )}
+              {identity ? (
+                <p className="text-xl text-gray-strong">
+                  WeaveDB Identity loaded.
+                </p>
+              ) : (
+                <Button action={signIdentity}>Sign Identity</Button>
+              )}
+              {authSig ? (
+                <p className="text-xl text-gray-strong">Lit AuthSig loaded.</p>
+              ) : (
+                <Button action={signAuthSig}>Sign AuthSig</Button>
+              )}
+            </div>
 
             {litNodeClient && db && identity && authSig && (
-              <>
-                <p className="text-xl text-gray-strong">
+              <div className="flex flex-col gap-4">
+                <p className="mt-4 text-xl text-gray-strong">
                   All got loaded, you can proceed with your calls now.
                 </p>
                 <Button action={litProtocol}>
                   Do something with Lit Protocol
                 </Button>
                 <Button action={adminCmd}>Run admin command</Button>
-              </>
+              </div>
             )}
           </div>
         ) : (
