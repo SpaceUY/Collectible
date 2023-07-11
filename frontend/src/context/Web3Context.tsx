@@ -69,6 +69,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
       // Save the instance to state
       setWeb3(web3Instance);
+
       setContract(contractInstance);
     } catch (error) {
       console.error("Failed to initialize web3 or contract", error);
