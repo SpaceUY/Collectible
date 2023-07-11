@@ -17,6 +17,23 @@ const nextConfig = {
       "http2.mlstatic.com",
     ],
   },
+  webpack: (config) => {
+    config.snapshot = {
+      ...(config.snapshot ?? {}),
+      // Add all node_modules but @next module to managedPaths
+      // Allows for hot refresh of changes to @next module
+      // managedPaths: [/^(.+?[\\/]node_modules[\\/])(?!weavedb-sdk)/],
+      managedPaths: [/^(.+?[\\/]node_modules[\\/])(?!weavedb-base)/],
+    };
+    return config;
+  },
 };
+
+if (process.env.ANALYZE === "true") {
+  const withBundleAnalyzer = require("@next/bundle-analyzer")({
+    enabled: true,
+  });
+  config = withBundleAnalyzer(config);
+}
 
 module.exports = nextConfig;

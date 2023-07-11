@@ -64,21 +64,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // /**
-  //  @dev Brand connection to be handled on WeaveDV @TBD
-  // **/
-  // const connectBrand = async () => {
-  //   try {
-  //     // Attempt to connect with the user's wallet using Magic's UI
-  //     await magic.wallet.connectWithUI();
-  //     // If the wallet connection is successful, initialize web3 instance
-  //     await initializeWeb3();
-  //   } catch (error) {
-  //     // Log any errors that occur during the login process
-  //     console.error("handleLogin", error);
-  //   }
-  // };
-
   const disconnectUser = async () => {
     // Disconnect from magic
     await magic.user.logout();
@@ -96,7 +81,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // 1. Get the user account when web3 instance is available
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching user data");
       if (!web3) return;
       setUser({ ...user, loading: true });
       const account = await web3.eth.getAccounts();

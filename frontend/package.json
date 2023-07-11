@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
+    "@lit-protocol/lit-node-client": "^2.2.39",
+    "@metamask/legacy-web3": "^2.0.0",
     "@next/font": "13.1.6",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
@@ -22,6 +24,7 @@
     "react-icons": "^4.10.1",
     "react-modern-calendar-datepicker": "^3.1.6",
     "react-select": "^5.7.3",
+    "weavedb-sdk": "^0.27.26",
     "web3": "^1.8.2"
   },
   "devDependencies": {
