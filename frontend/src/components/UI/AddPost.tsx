@@ -1,31 +1,40 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import Button from "./Button";
-import { POST_ICON_OPTIONS } from "../../common/constants/post-icon-options";
+import { useWeaveDB } from "../../context/WeaveDBContext";
 
 interface AddPostProps {
-  userName: string;
-  userPicture: string;
+  communityId: string;
 }
 
-const AddPost = ({ userPicture, userName }: AddPostProps) => {
+const AddPost = ({ communityId }: AddPostProps) => {
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
+  const { weaveDB } = useWeaveDB();
 
-  const handleSubmitPost = () => {
-    console.log("aloja"); // TODO
+  const handleSubmitPost = async () => {
+    try {
+      await weaveDB.addPost({
+        title: postTitle,
+        text: postText,
+        communityId: communityId,
+        public: true,
+        image: "", // TODO
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <article className="h-auto w-full rounded-lg bg-collectible-medium-purple p-7">
-      {/* <input
+      <input
         name="search"
         type="text"
         placeholder={"Title..."}
         className={`mb-4 h-[52px] w-full rounded-lg bg-collectible-dark-purple p-4 text-gray-weak placeholder-gray-weak`}
         onChange={(e) => setPostTitle(e.target.value)}
         value={postTitle}
-      /> */}
+      />
       <textarea
         name="post-text"
         placeholder="Post to your community"

@@ -11,7 +11,6 @@ import CommunityCollections from "../../../components/community/CommunityCollect
 import Head from "next/head";
 import Image from "next/image";
 import CommunityBenefits from "../../../components/community/CommunityBenefits";
-import { Community } from "../../../common/interfaces/community.interface";
 
 enum CommunityTabs {
   FEED = "feed",

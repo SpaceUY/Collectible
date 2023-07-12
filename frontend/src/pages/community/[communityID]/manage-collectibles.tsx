@@ -8,6 +8,7 @@ import Button from "../../../components/UI/Button";
 import { useDropzone } from "react-dropzone";
 import { BsBoxArrowInDown } from "react-icons/bs";
 import Image from "next/image";
+import { useWeaveDB } from "../../../context/WeaveDBContext";
 
 const ManageCollectibles = () => {
   const { user } = useUser();
@@ -19,6 +20,7 @@ const ManageCollectibles = () => {
     collectionUnits: number;
     collectionDescription: string;
   }>({ collectionName: "", collectionUnits: 0, collectionDescription: "" });
+  const { weaveDB } = useWeaveDB();
 
   /**  @DEV to be implemented */
   const community = COMMUNITY_LIST.find(
@@ -43,8 +45,16 @@ const ManageCollectibles = () => {
     );
   };
 
-  const handleSumbit = () => {
+  const handleSumbit = async () => {
     // TODO define data
+    await weaveDB.addCollection({
+      name: formData.collectionName,
+      description: formData.collectionDescription,
+      address: user.address,
+      collectionUnits: formData.collectionUnits,
+    });
+
+    // TODO images
     console.log("sent", { formData, imagePaths: imagePaths });
   };
 
@@ -61,7 +71,7 @@ const ManageCollectibles = () => {
           <div className="w-1/2">
             <p className="mb-3 text-gray-strong">Collection name</p>
             <input
-              name="search"
+              name="collection-name"
               type="text"
               maxLength={40}
               placeholder={"Insert Collection name"}
@@ -78,7 +88,7 @@ const ManageCollectibles = () => {
           <div className="w-1/2">
             <p className="mb-3 text-gray-strong">Collection Units</p>
             <input
-              name="search"
+              name="collection-units"
               type="number"
               max={9999}
               placeholder={"Put Collection Units"}

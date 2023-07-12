@@ -10,6 +10,7 @@ import BenefitIllustration from "../../../components/brand/BenefitIllustration";
 import Button from "../../../components/UI/Button";
 import { DayRange } from "@amir04lm26/react-modern-calendar-date-picker";
 import { BenefitOptions } from "../../../common/enums/benefit-options.enum";
+import { useWeaveDB } from "../../../context/WeaveDBContext";
 
 const ManageBenefits = () => {
   const { user } = useUser();
@@ -23,15 +24,21 @@ const ManageBenefits = () => {
     to: null,
   });
   const [selectedIllustration, setSelectedIllustration] = useState("");
+  const { weaveDB } = useWeaveDB();
 
   /**  @DEV to be implemented */
   const community = COMMUNITY_LIST.find(
     (community) => community.communityId === communityID,
   );
 
-  const handleSubmit = () => {
-    // TODO sent data
-    alert('TODO: send data')
+  const handleSubmit = async () => {
+    await weaveDB.addBenefit({
+      type: communityBenefit,
+      name: benefitName,
+      initialDate: selectedDayRange.from.toString(),
+      finishDate: selectedDayRange.from.toString(),
+      content: "", // TODO
+    });
     console.log("sent");
   };
 
@@ -56,7 +63,6 @@ const ManageBenefits = () => {
           <div className="w-1/2">
             <h2 className="mb-3 text-gray-strong">Benefit type</h2>
             <BenefitSelector
-              
               benefit={communityBenefit}
               onSelectBenefit={setCommunityBenefit}
             />
