@@ -1,0 +1,16 @@
+{
+  "format": "standard-v1",
+  "tree": [
+    "0x623abbbb75e1a0ecf09ccba73b3eaed21c462c0e65de225d218c54e551c128c9",
+    "0xce1a3b1430d76fd8c9eb581411896c81b1b197e207a06a37f9601c27dab44f42",
+    "0xb2f9e40da169d9964720b79a4c011caa5529918f13e0ba2908f56f3da50a64f6",
+    "0xacf9d155c7608e22f4b1b10848811e36e2d4ad431f9089d4020166904deeb23a",
+    "0x37e04469566d41053de807375390a3fd336d076f391831b543a49610d9122a16"
+  ],
+  "values": [
+    { "value": ["1", "https://my-nft.com/token/1", "passcode1"], "treeIndex": 2 },
+    { "value": ["2", "https://my-nft.com/token/2", "passcode2"], "treeIndex": 4 },
+    { "value": ["3", "https://my-nft.com/token/3", "passcode3"], "treeIndex": 3 }
+  ],
+  "leafEncoding": ["uint256", "string", "string"]
+}
