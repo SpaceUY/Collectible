@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 // (1) Load the values from the JSON file
-const valuesJson = fs.readFileSync(path.join(__dirname, "..", "raw-merkle-values.json"), "utf8");
+const valuesJson = fs.readFileSync(path.join(__dirname, "..", "merkle-tree/raw-merkle-values.json"), "utf8");
 const values = JSON.parse(valuesJson);
 console.log("Loaded values!", values);
 
@@ -12,12 +12,12 @@ const tree = StandardMerkleTree.of(values, ["uint256", "string", "string"]);
 
 // (3)
 console.log("Merkle Root:", tree.root);
-fs.writeFileSync("merkle-root.json", JSON.stringify({ merkleRoot: tree.root }));
+fs.writeFileSync("merkle-tree/merkle-root.json", JSON.stringify({ merkleRoot: tree.root }));
 
 // (4) Write the Merkle tree to a JSON file
-fs.writeFileSync("tree.json", JSON.stringify(tree.dump()));
+fs.writeFileSync("merkle-tree/merkle-proof.json", JSON.stringify(tree.dump()));
 
 // (5) Also save the Merkle tree inside the frontend folder (for the frontend to use)
-const frontendOutputPath = "../frontend/public/tree.json";
+const frontendOutputPath = "../frontend/public/merkle-proof.json";
 fs.mkdirSync(path.dirname(frontendOutputPath), { recursive: true });
 fs.writeFileSync(frontendOutputPath, JSON.stringify(tree.dump()));
