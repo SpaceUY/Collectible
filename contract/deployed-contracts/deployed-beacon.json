@@ -1,0 +1,14 @@
+[
+  {
+    "implementationAddress": "0x45f5B6DB43B832C2279B592d56cf58F39cC4f026",
+    "beaconAddress": "0xD80b8e51fa33c0070113C8310801Af4054410d75",
+    "chain": "maticmum",
+    "time": "7/13/2023, 2:36:53 PM"
+  },
+  {
+    "implementationAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "beaconAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "chain": "localhost",
+    "time": "7/14/2023, 11:21:09 AM"
+  }
+]

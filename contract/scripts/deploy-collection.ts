@@ -1,28 +1,59 @@
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 dotenv.config();
 
-const collectionName = "collection-test-01"; // Replace with your actual collection name
-const collectionSymbol = "CT1"; // Replace with your actual collection symbol
-const merkleRoot = "0x623abbbb75e1a0ecf09ccba73b3eaed21c462c0e65de225d218c54e551c128c9"; // Replace with your actual Merkle root
+const collectionName = "hp-collection-01"; // Replace with your actual collection name
+const collectionSymbol = "HP1"; // Replace with your actual collection symbol
+const merkleRoot = "0x484d22fe68a613f51457bfacae929dae61af9268bb782c3394c00803a8ef58fb"; // Replace with your actual Merkle root
 
+const trustedForwarder = "0xc0f2B485cFe95B3A1df92dA2966EeB46857fe2a6";
 async function main() {
+  const network = await ethers.provider.getNetwork();
+  const chainName = network.name === "unknown" ? "localhost" : network.name;
+
+  console.log("triying to deploy...");
   // Load the implementation contract
   const CollectibleCollection = await ethers.getContractFactory("CollectibleCollection");
+  const proxy = await upgrades.deployProxy(
+    CollectibleCollection,
+    ["0xc0f2B485cFe95B3A1df92dA2966EeB46857fe2a6"],
+    {
+      initializer: "initialize",
+    }
+  );
 
-  // Load the beacon (this should already be deployed)
-  const beacon = CollectibleCollection.attach(process.env.BEACON_ADDRESS as string);
+  console.log("Deployed to:", proxy.address);
 
-  // Deploy a new proxy for the collection
-  const Proxy = await ethers.getContractFactory("TransparentUpgradeableProxy");
-  const proxy = await Proxy.deploy(beacon.address, process.env.FORWARDER_ADDRESS, "0x");
-  await proxy.deployed();
-  console.log("Proxy address:", proxy.address);
+  await upgrades.upgradeProxy(proxy.address, CollectibleCollection, {
+    call: { fn: "initialize", args: [collectionName, collectionSymbol, merkleRoot] },
+  });
 
-  // Initialize the new collection
-  const proxyAsCollectibleCollection = CollectibleCollection.attach(proxy.address);
-  await proxyAsCollectibleCollection.initialize(collectionName, collectionSymbol, merkleRoot);
-  console.log("Collection has been initialized");
+  // Save addresses to a JSON file inside a "deployed-contracts" folder
+  const contractsPath = path.resolve(__dirname, "..", "deployed-contracts");
+  if (!fs.existsSync(contractsPath)) {
+    fs.mkdirSync(contractsPath);
+  }
+
+  const filePath = path.join(contractsPath, "deployed-proxy.json");
+
+  // Check if the file exists. If it does, read its content, otherwise initialize an empty array
+  let data = [];
+  if (fs.existsSync(filePath)) {
+    data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  }
+
+  // Append the new deployment information
+  data.push({
+    proxyAddress: proxy.address,
+    chain: chainName,
+    time: new Date().toLocaleString(),
+  });
+
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+  console.log(`Contract addresses have been saved to ${filePath}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
