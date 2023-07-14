@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import { useWeaveDB } from "../../context/WeaveDBContext";
+import { useCollectible } from "../../context/CollectibleContext";
 
 interface AddPostProps {
   communityId: string;
@@ -10,6 +11,12 @@ const AddPost = ({ communityId }: AddPostProps) => {
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
   const { weaveDB } = useWeaveDB();
+  const { fetchHomeData } = useCollectible();
+
+  const resetForm = () => {
+    setPostTitle("");
+    setPostText("");
+  };
 
   const handleSubmitPost = async () => {
     try {
@@ -20,6 +27,10 @@ const AddPost = ({ communityId }: AddPostProps) => {
         public: true,
         image: "", // TODO
       });
+
+      resetForm();
+
+      await fetchHomeData();
     } catch (error) {
       console.log(error);
     }
@@ -44,11 +55,11 @@ const AddPost = ({ communityId }: AddPostProps) => {
       />
       <input
         type="file"
-        className="mb-4 w-full rounded-lg  bg-collectible-dark-purple text-gray-weak file:mr-3 file:rounded-lg file:border-none file:bg-collectible-purple file:p-2 file:text-gray-strong"
+        className="mt-3 w-full rounded-lg  bg-collectible-dark-purple text-gray-weak file:mr-3 file:rounded-lg file:border-none file:bg-collectible-purple file:p-2 file:text-gray-strong"
         onChange={() => console.log("a")}
       />
 
-      <div className="mt-1 flex w-full items-center justify-end">
+      <div className="mt-5 flex w-full items-center justify-end">
         <Button className="px-6" action={handleSubmitPost}>
           Post
         </Button>

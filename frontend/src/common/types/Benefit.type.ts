@@ -6,6 +6,7 @@ export type Benefit = {
   data: {
     type: BenefitOptions;
     name: string;
+    communityId: string;
     creationDate: string;
     initialDate: string;
     finishDate: string;

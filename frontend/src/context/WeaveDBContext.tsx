@@ -14,16 +14,21 @@ import { WeaveDBCollections } from "../common/enums/weave-db-collections.enum";
 import { CommunityPost } from "../common/types/CommunityPost.type";
 import { Benefit } from "../common/types/Benefit.type";
 import { Collection } from "../common/types/Collection.type";
+import { Community } from "../common/types/Community.type";
 
 type WeaveDB = {
   addPost: (addPost: AddPost) => Promise<void>;
   getAllPosts: () => Promise<CommunityPost[] | void>;
+  getAllCommunities: () => Promise<Community[] | void>;
   getCommunityPosts: (communityId: string) => Promise<CommunityPost[] | void>;
   checkUser: (address: string, name: string, avatar: string) => Promise<void>;
   addBenefit: (benefit: Omit<Benefit["data"], "creationDate">) => Promise<void>;
+  getCommunityBenefits: (communityId: string) => Promise<Benefit[] | void>;
+  getAllBenefits: () => Promise<Benefit[] | void>;
   addCollection: (
     collection: Omit<Collection["data"], "creationDate">,
   ) => Promise<void>;
+  getAllCollections: () => Promise<Collection[] | void>;
 };
 
 type WeaveDBContextType = {
@@ -71,29 +76,24 @@ export const WeaveDBProvider = ({
   };
 
   // Initialize Web3
-  const startWeaveDB = useCallback(async () => {
-    console.log("AHEEEEM");
+  const startWeaveDB = async () => {
+    if (!web3) {
+      return console.error("web3 must be connected and loaded");
+    }
+    if (!user?.isLoggedIn) {
+      return console.error("web3 must be connected and loaded");
+    }
+    const db = new WeaveDB({
+      customProvider: magic.rpcProvider,
+      contractTxId: "ea8oIvy-BxcvJVJEdOrOjnU7OB3ttBfX4uVgQA90ntw",
+    });
 
-    const initializeWeaveDB = async () => {
-      if (!web3) {
-        return console.error("web3 must be connected and loaded");
-      }
-      if (!user?.isLoggedIn) {
-        return console.error("web3 must be connected and loaded");
-      }
-      const db = new WeaveDB({
-        customProvider: magic.rpcProvider,
-        contractTxId: "ea8oIvy-BxcvJVJEdOrOjnU7OB3ttBfX4uVgQA90ntw",
-      });
-
-      await db.initializeWithoutWallet();
-      setDb(db);
-      console.log("Initialized DB successfully!", db);
-      overwriteEthereum();
-      console.log("window.ethereum overriten successfully!", window.ethereum);
-    };
-    initializeWeaveDB();
-  }, []);
+    await db.initializeWithoutWallet();
+    setDb(db);
+    console.log("Initialized DB successfully!", db);
+    overwriteEthereum();
+    console.log("window.ethereum overriten successfully!", window.ethereum);
+  };
 
   const weaveDB = {
     addPost: async (addPost: AddPost) => {
@@ -116,16 +116,22 @@ export const WeaveDBProvider = ({
       communityId: string,
     ): Promise<CommunityPost[] | void> => {
       try {
-        return await db.cget(WeaveDBCollections.POST, communityId);
+        return await db.cget(
+          WeaveDBCollections.POST,
+          ["communityId"],
+          ["communityId", "==", communityId],
+        );
       } catch (error) {
         console.log(error);
       }
     },
 
-    getAllCommunities: async () => {
+    getAllCommunities: async (): Promise<Community[] | void> => {
       try {
         return await db.cget(WeaveDBCollections.BRAND);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     checkUser: async (
@@ -159,6 +165,28 @@ export const WeaveDBProvider = ({
       }
     },
 
+    getCommunityBenefits: async (
+      communityId: string,
+    ): Promise<Benefit[] | void> => {
+      try {
+        return await db.cget(
+          WeaveDBCollections.BENEFIT,
+          ["communityId"],
+          ["communityId", "==", communityId],
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    getAllBenefits: async (): Promise<Benefit[] | void> => {
+      try {
+        return await db.cget(WeaveDBCollections.BENEFIT);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     addCollection: async (collection: Collection["data"]) => {
       try {
         await db.add(
@@ -170,7 +198,7 @@ export const WeaveDBProvider = ({
       }
     },
 
-    getAllCollections: async (): Promise<Collection | void> => {
+    getAllCollections: async (): Promise<Collection[] | void> => {
       try {
         return await db.cget(WeaveDBCollections.COLLECTION);
       } catch (error) {
@@ -181,7 +209,7 @@ export const WeaveDBProvider = ({
 
   useEffect(() => {
     startWeaveDB();
-  }, []);
+  }, [web3, user?.isLoggedIn]);
 
   return (
     <WeaveDBContext.Provider

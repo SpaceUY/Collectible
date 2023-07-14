@@ -6,9 +6,11 @@ import CommunityPost from "../components/UI/CommunityPost";
 import Head from "next/head";
 import { COLLECTIONS } from "../../mock/collections";
 import CollectiblesReel from "../components/UI/CollectiblesReel";
+import { useCollectible } from "../context/CollectibleContext";
 
 export default function CollectiblesPage() {
   const { user } = useUser();
+  const { collections, communities, posts } = useCollectible();
 
   // initialize the state used to track the current page's data
   const [loading, setLoading] = useState(user?.refreshCollectibles);
@@ -29,19 +31,17 @@ export default function CollectiblesPage() {
 
   const feedContent: { date: string; element: JSX.Element }[] = [];
 
-  COMMUNITY_POSTS.forEach((post) => {
+  posts.forEach((post) => {
     feedContent.push({
-      date: post.createdAt,
+      date: post.data.date,
       element: (
         <CommunityPost
-          title={post.title}
-          postText={post.postText}
-          postId={post.postId}
-          communityId={post.communityId}
-          authorName={post.authorName}
-          authorPicture={post.authorPicture}
-          key={post.postId}
-          createdAt={post.createdAt}
+          title={post.data.title}
+          postText={post.data.text}
+          postId={post.id}
+          communityId={post.data.communityId}
+          key={post.id}
+          createdAt={post.data.date}
         />
       ),
     });

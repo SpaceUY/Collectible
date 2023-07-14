@@ -1,8 +1,8 @@
 export enum WeaveDBCollections {
   BRAND = "brand",
   USER = "user",
-  COLLECTION = "collections",
-  POST = "post",
-  COLLECTABLE = "test",
+  COLLECTION = "collection",
+  POST = "posts",
+  COLLECTABLE = "collectable",
   BENEFIT = "benefit",
 }

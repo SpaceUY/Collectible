@@ -3,6 +3,7 @@ export type Collection = {
   setter: string; // address
   data: {
     name: string;
+    communityId: string;
     description: string;
     creationDate: string;
     collectionUnits: number;

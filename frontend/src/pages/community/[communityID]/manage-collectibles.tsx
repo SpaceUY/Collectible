@@ -46,16 +46,16 @@ const ManageCollectibles = () => {
   };
 
   const handleSumbit = async () => {
-    // TODO define data
     await weaveDB.addCollection({
       name: formData.collectionName,
       description: formData.collectionDescription,
       address: user.address,
       collectionUnits: formData.collectionUnits,
+      communityId: communityID as string,
     });
 
     // TODO images
-    console.log("sent", { formData, imagePaths: imagePaths });
+    console.log("sent", { imagePaths: imagePaths });
   };
 
   return (

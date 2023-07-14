@@ -1,21 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { nameToUrl } from "utils/functions";
+import { Community } from "../../common/types/Community.type";
 
-const CommunityListItem = ({
-  communityPicture,
-  name,
-}: {
-  communityPicture: string;
-  name: string;
-}) => {
+const CommunityListItem = ({ community }: { community: Community }) => {
+  //console.log("dasdsadsadasdas", key);
+  const { logo, name } = community.data;
+
   return (
     <li>
-      <Link href={`/community/${nameToUrl(name)}`} className="">
+      <Link href={`/community/${community.id}`} className="">
         <div className="group flex items-center">
           <Image
             className="h-12 w-12 rounded-full bg-gray-strong object-cover "
-            src={communityPicture}
+            src={logo}
             width={65}
             height={65}
             alt=""
