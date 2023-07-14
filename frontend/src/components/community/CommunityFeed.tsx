@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { COMMUNITY_POSTS } from "../../../mock/community-post";
 import CommunityPost from "../UI/CommunityPost";
 import AddPost from "../UI/AddPost";
-import { useCollectible } from "../../context/CollectibleContext";
 import { Community } from "../../common/types/Community.type";
 import { CommunityPost as CommunityPostType } from "../../common/types/CommunityPost.type";
+import LoadingWheel from "../UI/LoadingWheel";
 
 interface CommunityFeedProps {
   community: Community;
@@ -21,8 +20,6 @@ const CommunityFeed = ({
 }: CommunityFeedProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  // TODO fetch by id
-
   return !isLoading ? (
     <div className="mb-40 flex flex-col gap-4">
       {isOwner && <AddPost communityId={community.id} />}
@@ -38,7 +35,9 @@ const CommunityFeed = ({
       ))}
     </div>
   ) : (
-    <> TODO LOADING wheel or skeleton? </>
+    <div className="h-56">
+      <LoadingWheel />
+    </div>
   );
 };
 

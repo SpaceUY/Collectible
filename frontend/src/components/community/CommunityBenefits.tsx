@@ -7,6 +7,7 @@ import { Community } from "../../common/types/Community.type";
 import { useWeaveDB } from "../../context/WeaveDBContext";
 import { Benefit } from "../../common/types/Benefit.type";
 import { BenefitType } from "../../common/interfaces/community-benefit.interface";
+import LoadingWheel from "../UI/LoadingWheel";
 
 interface CommunityBenefitsProps {
   community: Community;
@@ -23,7 +24,7 @@ const CommunityBenefits = ({ community, isMember }: CommunityBenefitsProps) => {
   };
 
   useEffect(() => {
-    fetchBenefits()
+    fetchBenefits();
   }, []);
 
   return !isLoading ? (
@@ -32,7 +33,7 @@ const CommunityBenefits = ({ community, isMember }: CommunityBenefitsProps) => {
         Available Benefits for {community.data.name} members
       </h3>
       <div className="mb-40 flex gap-4">
-        {communityBenefits.map((benefit) => (
+        {/* {communityBenefits.map((benefit) => (
           <BenefitCard
             key={benefit.id}
             id={benefit.id}
@@ -42,11 +43,13 @@ const CommunityBenefits = ({ community, isMember }: CommunityBenefitsProps) => {
             type={benefit.data.type as unknown as BenefitType}
             isMember={isMember}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   ) : (
-    <> TODO LOADING wheel or skeleton? </>
+    <div className="h-56">
+      <LoadingWheel />
+    </div>
   );
 };
 
