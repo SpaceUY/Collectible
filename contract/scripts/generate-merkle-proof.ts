@@ -19,14 +19,12 @@ function generateProof(tokenId: number) {
       const proof = tree.getProof(i);
       console.log("Value:", v);
       console.log("Proof:", proof);
-
       // Write the proof to a JSON file
       fs.writeFileSync("merkle-tree/merkle-proof.json", JSON.stringify(proof, null, 2));
-
       break;
     }
   }
 }
 
 // Replace with the tokenId you want to generate a proof for
-generateProof(0);
+generateProof(3);

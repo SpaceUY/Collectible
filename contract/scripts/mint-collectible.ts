@@ -5,25 +5,27 @@ const path = require("path");
 dotenv.config();
 
 const contractJsonPath = path.resolve(
-  __dirname, '..',
+  __dirname,
+  "..",
   "artifacts/contracts/CollectibleCollection.sol/CollectibleCollection.json"
 );
 
 const contractJson = JSON.parse(fs.readFileSync(contractJsonPath, "utf8"));
 const contractABI = contractJson.abi;
 const provider = new ethers.providers.JsonRpcProvider(process.env.ALCHEMY_MUMBAI_URL);
-const privateKey = process.env.PRIVATE_KEY;
+const privateKey = process.env.PRIVATE_KEY_3;
 const wallet = new ethers.Wallet(privateKey, provider);
+console.log("wallet minting", wallet);
 const contractAddress = "0xbe5058039c88d3d7a4919168c910002dc0f7cf01"; // hp-01 beaconProxy collection address
 const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 // Define the arguments for the mint function
-const tokenId = 0;
-const tokenUri = "ipfs://QmYCaxMhWtdgow1LYaFJpT9S1WYB7U8nQbCMNsDe1ai4RD";
-const passcode = "0x5e759fb534f669e505baa23e180c0023cadfe06f4203d87b65b1a74ad9e78c31";
+const tokenId = 3;
+const tokenUri = "ipfs://QmXqSh5oJbZcvfYucNj5ezXykYH8HEXXBBToFugjibJZHU";
+const passcode = "0x3dc09f953244c2fa5c554ef5c2c3e8d9356638bcb7ae9393c946bfcf478f7e23";
 
 // Load the proof from the merkle-proof.json file
-const proofPath = path.resolve(__dirname, '..', "merkle-tree/merkle-proof.json");
+const proofPath = path.resolve(__dirname, "..", "merkle-tree/merkle-proof.json");
 const proofJson = JSON.parse(fs.readFileSync(proofPath, "utf8"));
 
 // Convert the proof to bytes32[]
@@ -31,6 +33,7 @@ const proof = proofJson.map((p: any) => ethers.utils.arrayify(p));
 
 // Call the mint function
 async function mintToken() {
+  console.log("parameters", [tokenId, tokenUri, passcode, proof]);
   const tx = await contract.safeMint(tokenId, tokenUri, passcode, proof);
   console.log("Transaction hash: ", tx.hash);
 

@@ -24,7 +24,6 @@ async function main() {
   if (!fs.existsSync(contractsPath)) {
     fs.mkdirSync(contractsPath);
   }
-
   const filePath = path.join(contractsPath, "deployed-beacon.json");
 
   // Check if the file exists. If it does, read its content, otherwise initialize an empty array
@@ -44,26 +43,8 @@ async function main() {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   console.log(`Contract addresses have been saved to ${filePath}`);
-
-  // Begin verification process after the file write operation
-  // console.log("Waiting for transactions to be mined before verification...");
-  // await new Promise(resolve => setTimeout(resolve, 15000));
-
-  // console.log("Verifying Implementation contract...");
-  // run("verify:verify", {
-  //   address: implementation.address,
-  //   constructorArguments: [process.env.FORWARDER_ADDRESS],
-  // });
-
-  // console.log("Verifying Beacon contract...");
-  // run("verify:verify", {
-  //   address: beacon.address,
-  //   constructorArguments: [],
-  // });
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch(error => {
   console.error(error);
   process.exitCode = 1;

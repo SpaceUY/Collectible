@@ -31,7 +31,6 @@ async function main() {
   if (!fs.existsSync(contractsPath)) {
     fs.mkdirSync(contractsPath);
   }
-
   const filePath = path.join(contractsPath, "deployed-proxy.json");
 
   // Check if the file exists. If it does, read its content, otherwise initialize an empty array
