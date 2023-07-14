@@ -1,6 +1,4 @@
 import Layout from "@/components/Layout";
-import { useUser } from "@/context/UserContext";
-import { COMMUNITY_LIST } from "mock/communities";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -10,9 +8,10 @@ import BenefitIllustration from "../../../components/brand/BenefitIllustration";
 import Button from "../../../components/UI/Button";
 import { DayRange } from "@amir04lm26/react-modern-calendar-date-picker";
 import { BenefitOptions } from "../../../common/enums/benefit-options.enum";
+import { useWeaveDB } from "../../../context/WeaveDBContext";
+import { useCollectible } from "../../../context/CollectibleContext";
 
 const ManageBenefits = () => {
-  const { user } = useUser();
   const router = useRouter();
   const { communityID } = router.query;
   const [benefitName, setBenefitName] = useState("");
@@ -23,22 +22,30 @@ const ManageBenefits = () => {
     to: null,
   });
   const [selectedIllustration, setSelectedIllustration] = useState("");
+  const { weaveDB } = useWeaveDB();
+  const { communities } = useCollectible();
 
   /**  @DEV to be implemented */
-  const community = COMMUNITY_LIST.find(
-    (community) => community.communityId === communityID,
+  const community = communities.find(
+    (community) => community.id === communityID,
   );
 
-  const handleSubmit = () => {
-    // TODO sent data
-    alert('TODO: send data')
+  const handleSubmit = async () => {
+    await weaveDB.addBenefit({
+      type: communityBenefit,
+      name: benefitName,
+      communityId: community.id,
+      initialDate: selectedDayRange.from.toString(),
+      finishDate: selectedDayRange.from.toString(),
+      content: "", // TODO
+    });
     console.log("sent");
   };
 
   return (
     <Layout title="Holders Only Area" className="">
       <Head>
-        <title>Collectible - {community?.name}</title>
+        <title>Collectible - {community?.data.name}</title>
       </Head>
 
       <>
@@ -56,7 +63,6 @@ const ManageBenefits = () => {
           <div className="w-1/2">
             <h2 className="mb-3 text-gray-strong">Benefit type</h2>
             <BenefitSelector
-              
               benefit={communityBenefit}
               onSelectBenefit={setCommunityBenefit}
             />

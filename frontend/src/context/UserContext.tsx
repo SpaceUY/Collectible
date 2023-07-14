@@ -5,6 +5,7 @@ import { getUserData } from "@/api/accountApi";
 import { fetchMockedNFTs, fetchNFTs } from "@/api/nftApi";
 import { useRouter } from "next/router";
 import { UserData } from "../common/interfaces/user-data.interface";
+import { Community } from "../common/types/Community.type";
 
 const initialUserState: UserData = {
   loading: true,
@@ -44,6 +45,9 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Get web3 and contract instances from Web3Context
   const { web3, contract, isAccountChanged, initializeWeb3 } = useWeb3();
+  const [communityMemberships, setCommunityMemberships] = useState<Community[]>(
+    [],
+  );
   const router = useRouter();
 
   // State to hold the user data

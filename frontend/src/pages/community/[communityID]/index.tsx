@@ -11,7 +11,8 @@ import CommunityCollections from "../../../components/community/CommunityCollect
 import Head from "next/head";
 import Image from "next/image";
 import CommunityBenefits from "../../../components/community/CommunityBenefits";
-import { Community } from "../../../common/interfaces/community.interface";
+import { useCollectible } from "../../../context/CollectibleContext";
+import { CoverColor } from "../../../common/interfaces/community.interface";
 
 enum CommunityTabs {
   FEED = "feed",
@@ -35,15 +36,16 @@ export default function CollectiblesPage() {
   const [loading, setLoading] = useState(user?.refreshCollectibles);
   const [selectedSectionParam, setSelectedSectionParam] =
     useState<CommunityTabs>(CommunityTabs.FEED);
+  const { communities, posts, collections } = useCollectible();
 
   /**  @DEV to be implemented */
-  const community = COMMUNITY_LIST.find(
-    (community) => community.communityId === communityID,
+  const community = communities.find(
+    (community) => community.id === communityID,
   );
 
-  const isOwner = user?.communityOwnerships?.find(
-    (community) => community.communityId === communityID,
-  )
+  const { name, logo, backgroundColor, description, owners } = community.data;
+
+  const isOwner = owners.find((address) => address === user.address)
     ? true
     : false;
 
@@ -74,18 +76,26 @@ export default function CollectiblesPage() {
     router.replace({ query: { ...router.query, tab: sectionParam } });
   };
 
+  const communityPostsById = posts.filter(
+    (post) => post.data.communityId === community.id,
+  );
+
+  const collectionsById = collections.filter(
+    (collection) => collection.data.communityId === community.id,
+  );
+
   return (
     <Layout title="Community Page" className="">
       <Head>
-        <title>Collectible - {community?.name}</title>
+        <title>Collectible - {name}</title>
       </Head>
       <CommunityOverviewCard
-        description={community?.description}
-        communityName={community?.name}
-        communityPicture={community?.communityPicture}
+        description={description}
+        communityName={name}
+        communityPicture={logo}
         isOwner={isOwner}
         isMember={isMember}
-        coverColor={community?.coverColor}
+        coverColor={backgroundColor as CoverColor}
       />
 
       <div className="mt-10 mb-11 flex gap-5 ">
@@ -147,23 +157,22 @@ export default function CollectiblesPage() {
       <div className="flex flex-col gap-5">
         {selectedSectionParam === CommunityTabs.FEED && (
           <CommunityFeed
-            communityId={community?.communityId}
-            communityPicture={community?.communityPicture}
-            communityName={community?.name}
+            community={community}
+            posts={communityPostsById}
             isMember={isMember}
             isOwner={isOwner}
           />
         )}
 
         {selectedSectionParam === CommunityTabs.BENEFITS && (
-          <CommunityBenefits
-            communityId={community?.communityId}
-            communityName={community?.name}
-            isMember={isMember}
-          />
+          <CommunityBenefits community={community} isMember={isMember} />
         )}
+
         {selectedSectionParam === CommunityTabs.COLLECTIONS && (
-          <CommunityCollections communityId={community?.communityId} />
+          <CommunityCollections
+            community={community}
+            collections={collectionsById}
+          />
         )}
       </div>
     </Layout>

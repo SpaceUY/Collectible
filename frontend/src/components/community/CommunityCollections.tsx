@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 import { COLLECTIONS } from "../../../mock/collections";
 import CollectiblesReel from "../UI/CollectiblesReel";
+import { Community } from "../../common/types/Community.type";
+import { Collection } from "../../common/types/Collection.type";
 
-const CommunityCollections = ({ communityId }: { communityId: string }) => {
+const CommunityCollections = ({
+  community,
+  collections,
+}: {
+  community: Community;
+  collections: Collection[];
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // TODO fetch by id
-  const collectionsById = COLLECTIONS.filter(
-    (collection) => collection.communityId === communityId,
-  );
 
   return !isLoading ? (
-    <div className="flex flex-col gap-10 mb-40">
-      {collectionsById
-        .sort((a, b) => {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        })
+    <div className="mb-40 flex flex-col gap-10">
+      {collections
+        // .sort((a, b) => {
+        //   return (
+        //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        //   );
+        // })
         .map((collection) => (
           <>
             <CollectiblesReel
-              key={collection.name}
-              collectibleCards={collection.collectibles}
-              headerText={collection.name}
+              key={collection.id}
+              collectibleCards={[]} // TODO
+              headerText={collection.data.name}
             />
           </>
         ))}

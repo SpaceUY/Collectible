@@ -6,6 +6,7 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
 import { BiLogOut } from "react-icons/bi";
+import { useCollectible } from "../../context/CollectibleContext";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
@@ -15,6 +16,8 @@ const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
 const Sidebar = () => {
   const { user, disconnectUser } = useUser();
   const { handleOpenConnectModal } = useModal();
+  const { communities } = useCollectible();
+
   return (
     <>
       <ul className="mb-4">
@@ -41,13 +44,13 @@ const Sidebar = () => {
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
-            {user?.communityMemberships.map(({ communityPicture, name }) => (
+            {/* {user?.communityMemberships.map(({ communityPicture, name }) => (
               <CommunityListItem
                 key={name}
                 communityPicture={communityPicture}
                 name={name}
               />
-            ))}
+            ))} */}
           </ul>
         </div>
       )}
