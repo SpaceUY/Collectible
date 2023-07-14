@@ -9,15 +9,15 @@ async function main() {
   const chainName = network.name === "unknown" ? "localhost" : network.name;
 
   const CollectibleCollection = await ethers.getContractFactory("CollectibleCollection");
-  const implementation = await CollectibleCollection.deploy(process.env.FORWARDER_ADDRESS);
-  await implementation.deployed();
-  console.log("Implementation address:", implementation.address);
 
   // Deploy the beacon and link it to the implementation
   const beacon = await upgrades.deployBeacon(CollectibleCollection, {
     constructorArgs: [process.env.FORWARDER_ADDRESS],
   });
   console.log("Beacon address:", beacon.address);
+
+  const implementationAddress = await beacon.implementation();
+  console.log("Implementation address:", implementationAddress);
 
   // Save addresses to a JSON file inside a "deployed-contracts" folder
   const contractsPath = path.resolve(__dirname, "..", "deployed-contracts");
@@ -35,7 +35,7 @@ async function main() {
 
   // Append the new deployment information
   data.push({
-    implementationAddress: implementation.address,
+    implementationAddress,
     beaconAddress: beacon.address,
     chain: chainName,
     time: new Date().toLocaleString(),

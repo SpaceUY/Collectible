@@ -15,9 +15,9 @@ console.log("Merkle Root:", tree.root);
 fs.writeFileSync("merkle-tree/merkle-root.json", JSON.stringify({ merkleRoot: tree.root }));
 
 // (4) Write the Merkle tree to a JSON file
-fs.writeFileSync("merkle-tree/merkle-proof.json", JSON.stringify(tree.dump()));
+fs.writeFileSync("merkle-tree/merkle-tree.json", JSON.stringify(tree.dump()));
 
 // (5) Also save the Merkle tree inside the frontend folder (for the frontend to use)
-const frontendOutputPath = "../frontend/public/merkle-proof.json";
+const frontendOutputPath = "../frontend/public/merkle-tree.json";
 fs.mkdirSync(path.dirname(frontendOutputPath), { recursive: true });
 fs.writeFileSync(frontendOutputPath, JSON.stringify(tree.dump()));

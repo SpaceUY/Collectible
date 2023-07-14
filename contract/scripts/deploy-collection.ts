@@ -1,4 +1,4 @@
-import { ethers, upgrades } from "hardhat";
+const { ethers, upgrades } = require("hardhat");
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
@@ -7,28 +7,24 @@ dotenv.config();
 const collectionName = "hp-collection-01"; // Replace with your actual collection name
 const collectionSymbol = "HP1"; // Replace with your actual collection symbol
 const merkleRoot = "0x484d22fe68a613f51457bfacae929dae61af9268bb782c3394c00803a8ef58fb"; // Replace with your actual Merkle root
+const beaconAddress = process.env.BEACON_ADDRESS;
 
-const trustedForwarder = "0xc0f2B485cFe95B3A1df92dA2966EeB46857fe2a6";
 async function main() {
   const network = await ethers.provider.getNetwork();
   const chainName = network.name === "unknown" ? "localhost" : network.name;
 
-  console.log("triying to deploy...");
   // Load the implementation contract
   const CollectibleCollection = await ethers.getContractFactory("CollectibleCollection");
-  const proxy = await upgrades.deployProxy(
+
+  // const beacon = await ethers.getContractAt("Beacon", beaconAddress);
+  const beaconProxy = await upgrades.deployBeaconProxy(
+    beaconAddress,
     CollectibleCollection,
-    ["0xc0f2B485cFe95B3A1df92dA2966EeB46857fe2a6"],
-    {
-      initializer: "initialize",
-    }
+    [collectionName, collectionSymbol, merkleRoot],
+    { initializer: "initialize" }
   );
 
-  console.log("Deployed to:", proxy.address);
-
-  await upgrades.upgradeProxy(proxy.address, CollectibleCollection, {
-    call: { fn: "initialize", args: [collectionName, collectionSymbol, merkleRoot] },
-  });
+  console.log("BeaconProxy deployed to:", beaconProxy.address);
 
   // Save addresses to a JSON file inside a "deployed-contracts" folder
   const contractsPath = path.resolve(__dirname, "..", "deployed-contracts");
@@ -46,7 +42,8 @@ async function main() {
 
   // Append the new deployment information
   data.push({
-    proxyAddress: proxy.address,
+    beaconProxyAddress: beaconProxy.address,
+    deployedWithBeaconAddress: beaconAddress,
     chain: chainName,
     time: new Date().toLocaleString(),
   });
