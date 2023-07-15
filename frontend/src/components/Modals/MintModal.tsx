@@ -12,8 +12,8 @@ interface MintModalProps {
 }
 
 const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
-  const { user, setUser, connectUser } = useUser();
-  const { web3, contract } = useWeb3();
+  const { user,  connectUser } = useUser();
+  const { web3, contract} = useWeb3();
   const router = useRouter();
   const { key } = router.query;
 
@@ -45,11 +45,11 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
       const balance = web3.utils.fromWei(wei);
 
       // Update the user's state to refresh the collectibles and set the new token ID and balance
-      setUser({
-        ...user,
-        refreshCollectibles: true,
-        balance,
-      });
+      // setUser({
+      //   ...user,
+      //   refreshCollectibles: true,
+      //   balance,
+      // });
       setThrowConfetti(true);
     } catch (error) {
       // Log any errors that occur during the process

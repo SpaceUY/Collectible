@@ -9,7 +9,6 @@ export interface UserData {
   balance: string;
   shortAddress: string;
   collectibles: CollectibleCardProps[];
-  refreshCollectibles: boolean;
-  communityMemberships?: Community[];
-  communityOwnerships?: Community[];
+  communityMemberships: Community[];
+  communityOwnerships: Community[];
 }

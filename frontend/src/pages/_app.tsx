@@ -16,8 +16,8 @@ export default function App({ Component, pageProps }) {
     <Web3Provider>
       <UserProvider>
         <WeaveDBProvider>
-          <ModalProvider>
-            <CollectibleProvider>
+          <CollectibleProvider>
+            <ModalProvider>
               <style jsx global>
                 {`
                   :root {
@@ -26,8 +26,8 @@ export default function App({ Component, pageProps }) {
                 `}
               </style>
               <Component {...pageProps} />
-            </CollectibleProvider>
-          </ModalProvider>
+            </ModalProvider>
+          </CollectibleProvider>
         </WeaveDBProvider>
       </UserProvider>
     </Web3Provider>
