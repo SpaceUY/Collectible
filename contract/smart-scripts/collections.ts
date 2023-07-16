@@ -66,7 +66,7 @@ collection
 
       console.log("\n3. Deploying collection contract...");
     // 3. Deploy Collection
-    await deployCollection(brandName, collectionName, symbol);
+    await deployCollection(brandName, collectionName, symbol, nftCount);
 
     console.log("Collection created successfully.");
   });
