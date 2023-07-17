@@ -5,6 +5,7 @@ require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config();
 
 const config: HardhatUserConfig = {
+  defaultNetwork: "mumbai", // Default network to use for hardhat commands, comment line to use localhost
   networks: {
     hardhat: {},
     mumbai: {

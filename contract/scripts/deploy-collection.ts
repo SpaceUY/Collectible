@@ -4,25 +4,47 @@ import path from "path";
 import fs from "fs";
 dotenv.config();
 
-const collectionName = "hp-collection-01"; // Replace with your actual collection name
-const collectionSymbol = "HP1"; // Replace with your actual collection symbol
-const merkleRoot = "0x484d22fe68a613f51457bfacae929dae61af9268bb782c3394c00803a8ef58fb"; // Replace with your actual Merkle root
 const beaconAddress = process.env.BEACON_ADDRESS;
 
-async function main() {
+export async function deployCollection(
+  communityId: string,
+  collectionName: string,
+  collectionSymbol: string,
+  nftCount: number
+): Promise<string> {
   const network = await ethers.provider.getNetwork();
   const chainName = network.name === "unknown" ? "localhost" : network.name;
 
   // Load the implementation contract
   const CollectibleCollection = await ethers.getContractFactory("CollectibleCollection");
 
-  // const beacon = await ethers.getContractAt("Beacon", beaconAddress);
+  const merkleRootPath = path.join(
+    __dirname,
+    `../nft-metadata/brands/${communityId}/${collectionName}/output/merkle-root.json`
+  );
+  const merkleRootJson = fs.readFileSync(merkleRootPath, "utf8");
+  const merkleRoot = JSON.parse(merkleRootJson).merkleRoot;
+
   const beaconProxy = await upgrades.deployBeaconProxy(
     beaconAddress,
     CollectibleCollection,
     [collectionName, collectionSymbol, merkleRoot],
     { initializer: "initialize" }
   );
+
+  // Wait for the transaction to be mined and get the transaction receipt
+  const receipt = await beaconProxy.deployTransaction.wait();
+
+  // Calculate the cost in MATIC
+  const costInWei = receipt.gasUsed.mul(beaconProxy.deployTransaction.gasPrice);
+  const costInMatic = ethers.utils.formatEther(costInWei);
+  console.log(`Deployment cost: ${costInMatic} MATIC`);
+
+  // Get the current balance of the deployer
+  const deployerWallet = ethers.provider.getSigner(); // Get the signer
+  const deployerBalanceWei = await ethers.provider.getBalance(await deployerWallet.getAddress());
+  const deployerBalanceMatic = ethers.utils.formatEther(deployerBalanceWei);
+  console.log(`Remaining balance in deployer's account: ${deployerBalanceMatic} MATIC`);
 
   console.log("BeaconProxy deployed to:", beaconProxy.address);
 
@@ -41,20 +63,18 @@ async function main() {
 
   // Append the new deployment information
   data.push({
-    beaconProxyAddress: beaconProxy.address,
-    deployedWithBeaconAddress: beaconAddress,
+    collectionAddress: beaconProxy.address,
     chain: chainName,
-    time: new Date().toLocaleString(),
+    communityId: communityId,
+    collectionName: collectionName,
+    creationDate: new Date().toLocaleString(),
+    units: nftCount,
+    deployedWithBeaconAddress: beaconAddress,
   });
 
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   console.log(`Contract addresses have been saved to ${filePath}`);
-}
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  return beaconProxy.address;
+}

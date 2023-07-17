@@ -13,7 +13,12 @@
     "deploy-beacon-mumbai": "npx hardhat run scripts/deploy-beacon.ts --network mumbai",
     "deploy-collection": "npx hardhat run scripts/deploy-collection.ts",
     "deploy-collection-mumbai": "npx hardhat run scripts/deploy-collection.ts --network mumbai",
-    "mint-collectible-mumbai": "ts-node scripts/mint-collectible.ts"
+    "mint-collectible-mumbai": "ts-node scripts/mint-collectible.ts",
+    "create-community": "npx ts-node ./index.ts community create",
+    "list-communities": "npx ts-node ./index.ts community list",
+    "create-collection": "npx ts-node ./index.ts collection create",
+    "list-collections": "npx ts-node ./index.ts collection list",
+    "mint-collectible": "npx ts-node ./index.ts collectible mint"
   },
   "author": "",
   "license": "MIT",
@@ -49,6 +54,7 @@
     "files-from-path": "^0.2.6",
     "ipfs-core": "^0.18.1",
     "ipfs-http-client": "^56.0.2",
-    "nft.storage": "^7.0.0"
+    "nft.storage": "^7.0.0",
+    "weavedb-sdk-node": "^0.27.25"
   }
 }

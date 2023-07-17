@@ -22,19 +22,26 @@ const ipfs = create({
   },
 });
 
-const collectionName = "harry-potter-collection-01";
-const brandName = "harry-potter";
+// Helper function to cycle through image uploads in a round-robin manner
+const roundRobinCid = (ipfsUploads: any[], i: number): string => {
+  return `ipfs://${ipfsUploads[i % ipfsUploads.length].cid.toString()}`;
+};
 
-async function main() {
+export async function uploadMetadata(
+  communityId: string,
+  collectionName: string,
+  description: string,
+  nftCount: number
+) {
   const inputDir = path.join(
     __dirname,
-    `../nft-metadata/brands/${brandName}/${collectionName}/input`
+    `../nft-metadata/brands/${communityId}/${collectionName}/input`
   );
 
   // Create an output directory if it doesn't exist
   const outputDir = path.join(
     __dirname,
-    `../nft-metadata/brands/${brandName}/${collectionName}/output`
+    `../nft-metadata/brands/${communityId}/${collectionName}/output`
   );
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
@@ -58,12 +65,12 @@ async function main() {
   // Generate metadata for all NFTs and upload to IPFS
   const metadataUploads = [];
   const rawMerkleValues = [];
-  console.log(`Number of images: ${imgUploads.length}`);
-  for (let i = 0; i < imgUploads.length; i++) {
+  console.log(`Uploaded Images to IPFS: ${imgUploads.length}`);
+  for (let i = 0; i < nftCount; i++) {
     const metadata = {
       name: `${collectionName} #${i}`,
-      description: `Part of the ${collectionName} collection, by ${brandName}`,
-      image: `ipfs://${imgUploads[i].cid}`,
+      description: `${description}`,
+      image: roundRobinCid(imgUploads, i),
     };
 
     const result = await ipfs.add(JSON.stringify(metadata));
@@ -77,7 +84,7 @@ async function main() {
 
     // Token ID is i+1, Metadata IPFS link is `ipfs://${resultCopy.cid}`, passcode is passcode
     rawMerkleValues.push([i, `ipfs://${resultCopy.cid}`, passcode]);
-    console.log(`Generated merkle value for token ${i}`); // Add this line
+    console.log(`Uploaded Metadata to IPFS and generated Merkle Value (leaf) for token ${i}`); // Add this line
   }
 
   const metadataUploadsPath = path.join(outputDir, "metadata-uploads.json");
@@ -87,8 +94,3 @@ async function main() {
   const rawMerkleValuesPath = path.join(outputDir, "raw-merkle-values.json");
   fs.writeFileSync(rawMerkleValuesPath, JSON.stringify(rawMerkleValues, null, 2));
 }
-
-main().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
-});
