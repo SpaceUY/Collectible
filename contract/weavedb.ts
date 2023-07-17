@@ -6,11 +6,9 @@ export async function weaveDB(): Promise<any> {
     constructor(privateKey: string) {
       super(privateKey);
     }
-
     getAddressString() {
       return this.address;
     }
-
     getPrivateKey() {
       return new Uint8Array(Buffer.from(this.privateKey.slice(2), "hex"));
     }

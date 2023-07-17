@@ -2,6 +2,10 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import fs from "fs";
 import path from "path";
 
+/**
+ @DEV Not being used, currently being executed directly on smart-scripts/mint-collectible.ts
+ */
+
 // Load the Merkle Tree from the JSON file
 const treeJson = fs.readFileSync(
   path.resolve(__dirname, "..", "merkle-tree/merkle-tree.json"),
