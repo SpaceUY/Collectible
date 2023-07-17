@@ -4,7 +4,7 @@ import { magic } from "@/lib/magic";
 import { getUserChainData, getUserData } from "@/api/accountApi";
 import { useRouter } from "next/router";
 import { UserData } from "../common/interfaces/user-data.interface";
-import { Community } from "@/common/interfaces/community.interface";
+import { Community } from "../../../types";
 
 const initialUserState: UserData = {
   loading: true,
@@ -120,10 +120,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3]);
-
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
 
   return (
     <UserContext.Provider

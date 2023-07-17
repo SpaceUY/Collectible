@@ -1,4 +1,3 @@
-import { Community } from "./community.interface";
 import { CollectibleCardProps } from "./collectable-card-props.interface";
 
 export interface UserData {
@@ -9,6 +8,6 @@ export interface UserData {
   balance: string;
   shortAddress: string;
   collectibles: CollectibleCardProps[];
-  communityMemberships: Community[];
-  communityOwnerships: Community[];
+  communityMemberships: string[];
+  communityOwnerships: string[];
 }

@@ -4,7 +4,7 @@ import { magic } from "../lib/magic";
 import { useUser } from "./UserContext";
 import { useWeb3 } from "./Web3Context";
 import { WeaveDBApi } from "@/api/weaveApi";
-import { Community } from '../common/types';
+import { Community } from "../../../types";
 
 type WeaveDBContextType = {
   db: WeaveDB;
@@ -43,6 +43,44 @@ export const WeaveDBProvider = ({
   const [weaveDBApi, setWeaveDBApi] = useState(null);
   const [allCommunities, setAllCommunities] = useState<Community[]>([]);
 
+  const [identity, setIdentity] = useState(null);
+
+  /**
+    @DEV Similar to the AuthSig, generate an Identity to be able to sign with the Magic Wallet
+    This only needs to be done once per session, utile to avoid multiple signing
+  */
+  const signIdentity = async () => {
+    if (!user?.isLoggedIn) {
+      return alert("user must be connected in order to SignIdentity");
+    }
+    if (!web3) {
+      return alert(
+        "web3 must be connected and loaded in order to SignIdentity",
+      );
+    }
+    if (!db) {
+      return alert("db must be connected and loaded in order to SignIdentity");
+    }
+    const account = user?.address;
+    try {
+      const { identity } = await db.createTempAddress(account);
+      setIdentity(identity);
+      console.log("Identity created and signed succesfully!", identity);
+    } catch (error) {
+      console.error("Error creating temp address", error);
+    }
+  };
+
+  // To be executed before writting calls towards WeaveDB, inside WeaveDBApi
+  const checkOrSignIdentity = async () => {
+    if (!identity) {
+      console.log("Identity not signed, asking for identity signing...");
+      await signIdentity();
+    } else {
+      console.log("Identity already signed", identity);
+    }
+  };
+
   const overwriteEthereum = () => {
     window.ethereum = {
       request: async ({ method }) => {
@@ -70,7 +108,7 @@ export const WeaveDBProvider = ({
       contractTxId: process.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID,
     });
 
-    const weaveDBApi = new WeaveDBApi(db);
+    const weaveDBApi = new WeaveDBApi(db, checkOrSignIdentity);
 
     await db.initializeWithoutWallet();
 

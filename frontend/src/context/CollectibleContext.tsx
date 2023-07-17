@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useWeaveDB } from "./WeaveDBContext";
 import { CommunityPost } from "../common/types/CommunityPost.type";
 import { Collection } from "../common/types/Collection.type";
-import { Community } from "../common/types/Community.type";
+import { Community } from "../../../types";
 import { Benefit } from "../common/types/Benefit.type";
 
 type CollectibleContextType = {

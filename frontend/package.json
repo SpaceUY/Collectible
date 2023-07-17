@@ -9,9 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
+    "@lit-protocol/lit-node-client": "^2.2.39",
+    "@next/font": "13.1.6",
+    "@openzeppelin/merkle-tree": "^1.0.5",
+    "alchemy-sdk": "^2.9.2",
+    "commander": "^11.0.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
-    "@next/font": "13.1.6",
+    "magic-sdk": "^17.1.4",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-confetti": "^6.1.0",
@@ -20,13 +26,9 @@
     "react-icons": "^4.10.1",
     "react-loader-spinner": "^5.3.4",
     "react-modern-calendar-datepicker": "^3.1.6",
-    "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
     "react-select": "^5.7.3",
     "swiper": "^9.4.1",
-    "magic-sdk": "^17.1.4",
     "weavedb-sdk": "^0.27.26",
-    "@lit-protocol/lit-node-client": "^2.2.39",
-    "@openzeppelin/merkle-tree": "^1.0.5",
     "web3": "^1.8.2"
   },
   "devDependencies": {

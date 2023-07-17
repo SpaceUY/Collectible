@@ -3,12 +3,14 @@ import { WeaveDBCollections } from "@/common/enums/weave-db-collections.enum";
 import { AddPost } from "./../common/types/AddPost.type";
 import { Benefit } from "./../common/types/Benefit.type";
 import { Collection } from "./../common/types/Collection.type";
-import { Community } from '../common/types';
+import { Community } from "../common/types";
 
 export class WeaveDBApi {
   private db: WeaveDB;
+  private checkOrSignIdentity: () => Promise<void>;
 
-  constructor(db: WeaveDB) {
+  constructor(db: WeaveDB, checkOrSignIdentity: () => Promise<void>) {
+    this.checkOrSignIdentity = checkOrSignIdentity;
     this.db = db;
   }
 
@@ -17,6 +19,17 @@ export class WeaveDBApi {
       const response = await this.db.cget(WeaveDBCollections.COMMUNITIES);
       const communities = response.map((community) => community.data);
       return communities;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async addCollection(collection: Collection["data"]) {
+    try {
+      await this.db.add(
+        { ...collection, creationDate: this.db.ts() },
+        WeaveDBCollections.COLLECTION,
+      );
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +60,7 @@ export class WeaveDBApi {
   //   }
 
   async addPost(addPost: AddPost) {
+    await this.checkOrSignIdentity();
     try {
       await this.db.add(
         { ...addPost, date: this.db.ts() },
@@ -58,21 +72,11 @@ export class WeaveDBApi {
   }
 
   async addBenefit(benefit: Benefit["data"]) {
+    await this.checkOrSignIdentity();
     try {
       await this.db.add(
         { ...benefit, creationDate: this.db.ts() },
         WeaveDBCollections.BENEFIT,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async addCollection(collection: Collection["data"]) {
-    try {
-      await this.db.add(
-        { ...collection, creationDate: this.db.ts() },
-        WeaveDBCollections.COLLECTION,
       );
     } catch (error) {
       console.log(error);

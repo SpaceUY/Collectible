@@ -27,7 +27,6 @@ export const useWeb3 = () => useContext(Web3Context);
 export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   // State variable to hold an instance of Web3 and the contract
   const [web3, setWeb3] = useState<Web3 | null>(null);
-  const [contract, setContract] = useState<any | null>(null);
 
   // Initialize Web3
   const initializeWeb3 = useCallback(async () => {
