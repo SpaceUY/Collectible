@@ -1,5 +1,3 @@
-import { USER_COLLECTIBLES } from "mock/collectible-cards";
-
 export async function requestMintNFT(address, contract) {
   try {
     // Print initial log message.
@@ -98,7 +96,3 @@ export function ipfsToHttps(uri) {
   uri = uri.replace("ipfs://", "https://nftstorage.link/ipfs/").toString();
   return uri;
 }
-
-export const fetchMockedNFTs = async (address, contract) => {
-  return USER_COLLECTIBLES;
-};

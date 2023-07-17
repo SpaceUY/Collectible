@@ -1,37 +1,30 @@
 import { useState } from "react";
 import CommunityPost from "../UI/CommunityPost";
 import AddPost from "../UI/AddPost";
-import { Community } from "../../common/types/Community.type";
 import { CommunityPost as CommunityPostType } from "../../common/types/CommunityPost.type";
 import LoadingWheel from "../UI/LoadingWheel";
+import { Community, Post } from "../../../../types";
 
 interface CommunityFeedProps {
   community: Community;
-  posts: CommunityPostType[];
   isOwner: boolean;
   isMember: boolean;
 }
 
 const CommunityFeed = ({
   community,
-  posts,
   isOwner,
   isMember,
 }: CommunityFeedProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const posts: Post[] = community.posts;
+  console.log("posts", posts);
 
   return !isLoading ? (
     <div className="mb-40 flex flex-col gap-4">
-      {isOwner && <AddPost communityId={community.id} />}
-      {posts.map((post) => (
-        <CommunityPost
-          postText={post.data.text}
-          title={post.data.title}
-          key={post.id}
-          postId={post.id}
-          communityId={community.id}
-          createdAt={post.data.date}
-        />
+      {/* {isOwner && <AddPost communityId={community.communityId} />} */}
+      {posts.map((post, idx) => (
+        <CommunityPost community={community} post={post} key={idx} />
       ))}
     </div>
   ) : (

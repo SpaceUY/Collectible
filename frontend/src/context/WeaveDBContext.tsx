@@ -10,6 +10,7 @@ type WeaveDBContextType = {
   db: WeaveDB;
   weaveDBApi: WeaveDBApi;
   allCommunities: Community[];
+  loadingDB: boolean;
 };
 
 /**
@@ -28,6 +29,7 @@ export const WeaveDBContext = createContext<WeaveDBContextType>({
   db: null,
   weaveDBApi: {} as WeaveDBApi,
   allCommunities: [],
+  loadingDB: true,
 });
 
 export const useWeaveDB = () => useContext(WeaveDBContext);
@@ -43,6 +45,7 @@ export const WeaveDBProvider = ({
   const [weaveDBApi, setWeaveDBApi] = useState(null);
   const [allCommunities, setAllCommunities] = useState<Community[]>([]);
 
+  const [loadingDB, setLoadingDB] = useState<boolean>(true);
   const [identity, setIdentity] = useState(null);
 
   /**
@@ -123,7 +126,8 @@ export const WeaveDBProvider = ({
 
     const allCommunities = await weaveDBApi.getAllCommunities();
     setAllCommunities(allCommunities);
-    console.log("allCommunities", allCommunities);
+
+    setLoadingDB(false);
   };
 
   useEffect(() => {
@@ -156,6 +160,7 @@ export const WeaveDBProvider = ({
         db,
         weaveDBApi,
         allCommunities,
+        loadingDB,
       }}
     >
       {children}

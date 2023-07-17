@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { useUser } from "@/context/UserContext";
-import { COMMUNITY_LIST } from "mock/communities";
+
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
@@ -13,18 +13,17 @@ import { useWeaveDB } from "../../../context/WeaveDBContext";
 const ManageCollectibles = () => {
   const { user } = useUser();
   const router = useRouter();
-  const { communityID } = router.query;
+  const { communityId } = router.query;
   const [imagePaths, setImagePaths] = useState<string[]>([]);
   const [formData, setFormData] = useState<{
     collectionName: string;
     collectionUnits: number;
     collectionDescription: string;
   }>({ collectionName: "", collectionUnits: 0, collectionDescription: "" });
-  const { weaveDB } = useWeaveDB();
+  const { allCommunities } = useWeaveDB();
 
-  /**  @DEV to be implemented */
-  const community = COMMUNITY_LIST.find(
-    (community) => community.communityId === communityID,
+  const community = allCommunities.find(
+    (community) => community.communityId === communityId,
   );
 
   const onDrop = useCallback(
@@ -46,13 +45,14 @@ const ManageCollectibles = () => {
   };
 
   const handleSumbit = async () => {
-    await weaveDB.addCollection({
-      name: formData.collectionName,
-      description: formData.collectionDescription,
-      address: user.address,
-      collectionUnits: formData.collectionUnits,
-      communityId: communityID as string,
-    });
+    alert("TBD");
+    // await weaveDB.addCollection({
+    //   name: formData.collectionName,
+    //   description: formData.collectionDescription,
+    //   address: user.address,
+    //   collectionUnits: formData.collectionUnits,
+    //   communityId: communityID as string,
+    // });
 
     // TODO images
     console.log("sent", { imagePaths: imagePaths });
@@ -65,7 +65,9 @@ const ManageCollectibles = () => {
       </Head>
 
       <>
-        <h1 className="mb-5 text-xl text-gray-strong">Metallica Collection</h1>
+        <h1 className="mb-5 text-xl text-gray-strong">
+          New {community.name} Collection
+        </h1>
 
         <div className="flex gap-5">
           <div className="w-1/2">
@@ -119,7 +121,7 @@ const ManageCollectibles = () => {
 
         <p className="mb-3 text-gray-strong">Select Images</p>
         <div
-          className="flex h-56 gap-4 rounded-lg bg-collectible-medium-purple py-3 px-5"
+          className="flex h-56 gap-4 rounded-lg bg-collectible-medium-purple px-5 py-3"
           {...getRootProps()}
         >
           <input {...getInputProps()} />

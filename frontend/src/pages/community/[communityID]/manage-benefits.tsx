@@ -9,11 +9,10 @@ import Button from "../../../components/UI/Button";
 import { DayRange } from "@amir04lm26/react-modern-calendar-date-picker";
 import { BenefitOptions } from "../../../common/enums/benefit-options.enum";
 import { useWeaveDB } from "../../../context/WeaveDBContext";
-import { useCollectible } from "../../../context/CollectibleContext";
 
 const ManageBenefits = () => {
   const router = useRouter();
-  const { communityID } = router.query;
+  const { communityId } = router.query;
   const [benefitName, setBenefitName] = useState("");
   const [communityBenefit, setCommunityBenefit] =
     useState<BenefitOptions>(null);
@@ -22,30 +21,29 @@ const ManageBenefits = () => {
     to: null,
   });
   const [selectedIllustration, setSelectedIllustration] = useState("");
-  const { weaveDB } = useWeaveDB();
-  const { communities } = useCollectible();
+  const { allCommunities } = useWeaveDB();
 
-  /**  @DEV to be implemented */
-  const community = communities.find(
-    (community) => community.id === communityID,
+  const community = allCommunities.find(
+    (community) => community.communityId === communityId,
   );
 
   const handleSubmit = async () => {
-    await weaveDB.addBenefit({
-      type: communityBenefit,
-      name: benefitName,
-      communityId: community.id,
-      initialDate: selectedDayRange.from.toString(),
-      finishDate: selectedDayRange.from.toString(),
-      content: "", // TODO
-    });
-    console.log("sent");
+    alert("tbd");
+    // await weaveDB.addBenefit({
+    //   type: communityBenefit,
+    //   name: benefitName,
+    //   communityId: community.id,
+    //   initialDate: selectedDayRange.from.toString(),
+    //   finishDate: selectedDayRange.from.toString(),
+    //   content: "", // TODO
+    // });
+    // console.log("sent");
   };
 
   return (
     <Layout title="Holders Only Area" className="">
       <Head>
-        <title>Collectible - {community?.data.name}</title>
+        <title>Collectible - {community?.name}</title>
       </Head>
 
       <>

@@ -1,81 +1,95 @@
 import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
-import { useUser } from "@/context/UserContext";
-import { COMMUNITY_POSTS } from "../../mock/community-post";
 import CommunityPost from "../components/UI/CommunityPost";
 import Head from "next/head";
-import { COLLECTIONS } from "../../mock/collections";
 import CollectiblesReel from "../components/UI/CollectiblesReel";
-import { useCollectible } from "../context/CollectibleContext";
+import { useWeaveDB } from "@/context/WeaveDBContext";
+import LoadingWheel from "@/components/UI/LoadingWheel";
+import { useEffect, useState } from "react";
+
+interface FeedContent {
+  date: string;
+  element: JSX.Element;
+}
 
 export default function CollectiblesPage() {
-  const { user } = useUser();
-  const { collections, communities, posts } = useCollectible();
+  const { allCommunities, loadingDB } = useWeaveDB();
 
-  // initialize the state used to track the current page's data
-  const [loading, setLoading] = useState(user?.refreshCollectibles);
+  const [feedContent, setFeedContent] = useState<FeedContent[]>([]);
 
   useEffect(() => {
-    // do nothing if the user is not logged in
-    if (!user?.address) {
-      setLoading(true);
-      return;
+    if (!loadingDB) {
+      const allPostsWithCommunities = allCommunities
+        .map((community) => {
+          return community.posts.map((post) => ({
+            ...post,
+            community: community, // Needed in CommunityPost component, can be improved.
+          }));
+        })
+        .flat();
+      console.log("All posts", allPostsWithCommunities);
+
+      const allPublicPostsWithCommunities = allPostsWithCommunities.filter(
+        (post) => post.isPublic,
+      );
+      console.log("All public posts", allPublicPostsWithCommunities);
+
+      const allCollections = allCommunities
+        .map((community) => {
+          return community.collections.map((collection) => collection);
+        })
+        .flat();
+      console.log("All collections", allCollections);
+
+      const feed = [];
+      allPublicPostsWithCommunities.forEach((post, idx) => {
+        feed.push({
+          date: post.creationDate,
+          element: (
+            <CommunityPost
+              post={post}
+              key={post.postId}
+              community={post.community}
+            />
+          ),
+        });
+      });
+      // allCollections.forEach((collection, idx) => {
+      //   feedContent.push({
+      //     date: collection.creationDate,
+      //     element: (
+      //       <CollectiblesReel
+      //         key={collection.address}
+      //         collectionWithNfts={collection}
+      //       />
+      //     ),
+      //   });
+      // });
+
+      setFeedContent(feed);
     }
-
-    // disable the loading after collectibles have already been loaded
-    if (user?.address && !user?.refreshCollectibles && user?.collectibles) {
-      setLoading(false);
-      return;
-    }
-  }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
-
-  const feedContent: { date: string; element: JSX.Element }[] = [];
-
-  posts.forEach((post) => {
-    feedContent.push({
-      date: post.data.date,
-      element: (
-        <CommunityPost
-          title={post.data.title}
-          postText={post.data.text}
-          postId={post.id}
-          communityId={post.data.communityId}
-          key={post.id}
-          createdAt={post.data.date}
-        />
-      ),
-    });
-  });
-
-  COLLECTIONS.forEach((collection) => {
-    feedContent.push({
-      date: collection.createdAt,
-      element: (
-        <CollectiblesReel
-          key={collection.id}
-          collectibleCards={collection.collectibles}
-          headerText={
-            "New " + collection.communityId + " collection: " + collection.name
-          }
-        />
-      ),
-    });
-  });
+  }, [loadingDB, allCommunities]);
 
   return (
     <Layout title="Home" className="">
       <Head>
         <title>Collectible - Home</title>
       </Head>
+      {loadingDB && (
+        <div className="flex h-[calc(100vh-200px)] items-center justify-center">
+          <LoadingWheel />
+        </div>
+      )}
 
       {/** @DEV Home Feed */}
-      <div className="flex flex-col gap-8">
-        {feedContent
-          .sort((a, b) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-          })
-          .map((content) => content.element)}
-      </div>
+      {!loadingDB && (
+        <div className="flex flex-col gap-8">
+          {feedContent
+            .sort((a, b) => {
+              return new Date(b.date).getTime() - new Date(a.date).getTime();
+            })
+            .map((content) => content.element)}
+        </div>
+      )}
     </Layout>
   );
 }

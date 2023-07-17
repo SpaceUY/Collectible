@@ -15,6 +15,11 @@ const nextConfig = {
       "i0.wp.com",
       "d3ugyf2ht6aenh.cloudfront.net",
       "http2.mlstatic.com",
+      "example.com",
+      "i.pinimg.com",
+      "",
+      "alchemy.mypinata.cloud",
+      "nft-cdn.alchemy.com",
     ],
   },
   webpack: (config) => {

@@ -1,25 +1,42 @@
+import { useUser } from "@/context/UserContext";
+import { useWeaveDB } from "@/context/WeaveDBContext";
 import Image from "next/image";
 import Link from "next/link";
 import { nameToUrl } from "utils/functions";
-import { Community } from "../../common/types/Community.type";
 
-const CommunityListItem = ({ community }: { community: Community }) => {
-  //console.log("dasdsadsadasdas", key);
-  const { logo, name } = community.data;
+interface CommunityListItemProps {
+  communityId: string;
+}
+const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
+  const { user } = useUser();
+  const { allCommunities } = useWeaveDB();
 
+  const community = allCommunities.find(
+    (community) => communityId === community.communityId,
+  );
+
+  const isOwner = user?.communityOwnerships.includes(communityId);
+
+  console.log(" communityId", communityId, " is owner", isOwner);
   return (
     <li>
-      <Link href={`/community/${community.id}`} className="">
+      <Link href={`/community/${communityId}`} className="">
         <div className="group flex items-center">
           <Image
             className="h-12 w-12 rounded-full bg-gray-strong object-cover "
-            src={logo}
+            src={community.picture}
             width={65}
             height={65}
             alt=""
           />
-          <p className="ml-3 text-base font-medium text-gray-medium group-hover:text-gray-strong">
-            {name}
+          <p
+            className={`ml-3 text-base font-medium ${
+              isOwner
+                ? "text-purple-500 group-hover:text-purple-300"
+                : "text-gray-medium  group-hover:text-gray-strong"
+            }`}
+          >
+            {community.name}
           </p>
         </div>
       </Link>

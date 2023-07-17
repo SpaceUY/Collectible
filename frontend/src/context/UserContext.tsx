@@ -3,8 +3,7 @@ import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserChainData, getUserData } from "@/api/accountApi";
 import { useRouter } from "next/router";
-import { UserData } from "../common/interfaces/user-data.interface";
-import { Community } from "../../../types";
+import { Community, UserData } from '../../../types';
 
 const initialUserState: UserData = {
   loading: true,

@@ -2,34 +2,37 @@ import Image from "next/image";
 import React from "react";
 import Button from "../UI/Button";
 import Backdrop from "./Backdrop";
-import { CollectibleIdentifier } from "../../context/ModalContext";
-import { COLLECTIONS } from "mock/collections";
 import Link from "next/link";
+import { AlchemyNFT } from "../../../../types";
+import { useWeaveDB } from "@/context/WeaveDBContext";
 
 interface CollectibleModalProps {
   handleCloseCollectibleModal: () => void;
-  selectedCollectibleIdentifier: CollectibleIdentifier;
+  selectedCollectible: AlchemyNFT;
 }
-
-const findCollectible = (collectibleIdentifier: CollectibleIdentifier) => {
-  console.log("collectible identifier", collectibleIdentifier);
-  const collection = COLLECTIONS.find(
-    (collection) => collection.id === collectibleIdentifier.collectionID,
-  );
-  console.log("collection", collection);
-
-  const collectible = collection?.collectibles.find(
-    (collectible) => collectible.tokenID === collectibleIdentifier.tokenID,
-  );
-  console.log("collectible", collectible);
-  return collectible;
-};
 
 const CollectibleModal = ({
   handleCloseCollectibleModal,
-  selectedCollectibleIdentifier,
+  selectedCollectible,
 }: CollectibleModalProps) => {
-  const collectible = findCollectible(selectedCollectibleIdentifier);
+  const { allCommunities } = useWeaveDB();
+
+  const allCollections = allCommunities
+    .map((community) => {
+      return community.collections;
+    })
+    .flat();
+
+  const communityId = allCollections.find((collection) => {
+    return (
+      collection.address.toLowerCase() === selectedCollectible.contract.address
+    );
+  })?.communityId;
+
+  const community = allCommunities.find((community) => {
+    return community.communityId === communityId;
+  });
+  console.log("comm", community);
 
   return (
     <>
@@ -63,23 +66,23 @@ const CollectibleModal = ({
           <div className="mb-8 flex gap-8">
             <Image
               className="h-[300px] w-[300px] rounded-lg object-cover"
-              src={collectible?.pictureUrl}
+              src={selectedCollectible.media[0].gateway}
               width={300}
               height={300}
-              alt="the nft about to be claimed"
+              quality={100}
+              alt="Collectible Image"
             />
             <div className="flex h-[300px] flex-col justify-between  border-blue-500">
               <div className="">
                 <h3 className="mb-4 mt-2 text-2xl font-semibold text-gray-strong">
-                  {collectible.name}
+                  {selectedCollectible.title}
                 </h3>
                 <p className="mb-4 max-w-[420px] text-gray-strong">
-                  Description about your NFT, the creator and the community
-                  youre about to become a member of
+                  {selectedCollectible.description}
                 </p>
                 <p className="max-w-[420px] text-gray-strong">
-                  Description about your NFT, the creator and the community
-                  youre about to become a member of
+                  Total units distribuited:{" "}
+                  {selectedCollectible.contract.totalSupply}
                 </p>
               </div>
 
@@ -88,7 +91,7 @@ const CollectibleModal = ({
                 <div className="mb-1 flex w-full justify-between gap-4 self-end">
                   <Link
                     className="rounded-full"
-                    href={`/community/${collectible?.communityID}?tab=collections`}
+                    href={`/community/${community.communityId}?tab=collections`}
                     onClick={() => {
                       handleCloseCollectibleModal();
                     }}
@@ -105,7 +108,7 @@ const CollectibleModal = ({
                   </Link>
                   <a
                     className="rounded-full"
-                    href="https://testnets.opensea.io/es"
+                    href={`https://testnets.opensea.io/assets/mumbai/${selectedCollectible.contract.address}/${selectedCollectible.tokenId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

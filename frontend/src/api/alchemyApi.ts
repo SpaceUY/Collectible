@@ -1,4 +1,3 @@
-// This script demonstrates access to the NFT API via the Alchemy SDK.
 import { Network, Alchemy } from "alchemy-sdk";
 
 // Optional Config object, but defaults to demo api-key and eth-mainnet.
@@ -9,8 +8,19 @@ const settings = {
 
 const alchemy = new Alchemy(settings);
 
-export const testAlchemy = async (address: string) => {
-  const nftsForOwner = await alchemy.nft.getNftsForOwner(address);
-    console.log("nftsForOwner(), ", nftsForOwner);
-    
+export const getUserNFTsOnCollections = async (
+  address: string,
+  collections: string[],
+) => {
+  const userNftsOnCollections = await alchemy.nft.getNftsForOwner(address, {
+    contractAddresses: collections,
+  });
+  console.log("getNftsForOwner(), ", userNftsOnCollections);
+  return userNftsOnCollections.ownedNfts;
+};
+
+export const getCollectionNfts = async (collectionAddress: string) => {
+  const collectibles = await alchemy.nft.getNftsForContract(collectionAddress);
+  console.log("getNftsForContract(), ", collectibles);
+  return collectibles.nfts;
 };
