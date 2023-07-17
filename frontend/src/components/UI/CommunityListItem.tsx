@@ -17,7 +17,9 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
 
   const isOwner = user?.communityOwnerships.includes(communityId);
 
-  console.log(" communityId", communityId, " is owner", isOwner);
+  if (!community) return null;
+
+  console.log("communityId", communityId, " is owner", isOwner);
   return (
     <li>
       <Link href={`/community/${communityId}`} className="">

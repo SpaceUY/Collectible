@@ -20,6 +20,7 @@ const nextConfig = {
       "",
       "alchemy.mypinata.cloud",
       "nft-cdn.alchemy.com",
+      "gateway.pinata.cloud",
     ],
   },
   webpack: (config) => {
