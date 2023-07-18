@@ -44,6 +44,11 @@
       "address": "0xf87d5188a2870317b65886e259fFd62e99eED783",
       "txHash": "0x48dc5a6faafe200656699dacd97c00e7ff02c0018cd47d3f07931a59d79ccae6",
       "kind": "beacon"
+    },
+    {
+      "address": "0x1D22FD446400950495ddd394362531BfF9103aA0",
+      "txHash": "0x13e9e267886608b93e125508c309362822e64fb057fb973a67e74c4e0b29cc9c",
+      "kind": "beacon"
     }
   ],
   "impls": {

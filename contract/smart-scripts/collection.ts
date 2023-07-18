@@ -7,6 +7,7 @@ import { generateMerkleTree } from "../scripts/generate-merkle-tree";
 import { deployCollection } from "../scripts/deploy-collection";
 import dotenv from "dotenv";
 import { WeaveDBCommunity } from "../../types";
+import { generateQRCodes } from "../scripts/generate-qrs";
 
 dotenv.config();
 
@@ -73,6 +74,9 @@ collection
     }
 
     try {
+      // Add validation to check if the community exists
+      // Add validation to check if the collection name is unique
+
       // 1. Upload Metadata
       console.log("\n1. Uploading metadata...");
       await uploadMetadata(communityId, collectionName, description, nftCount);
@@ -90,7 +94,11 @@ collection
         nftCount
       );
 
-      // 4. Upload collection to the WeaveDB community
+      // 4. Generate QRs and URLs
+      console.log("\n4. Generating QRs and URLs...");
+      await generateQRCodes(communityId, collectionName, collectionAddress);
+
+      // 5. Upload collection to the WeaveDB community
       console.log("\n4. Uploadiing collection to the WeaveDB community...");
       await weaveDBCreateCollection(communityId, collectionName, collectionAddress);
     } catch (error) {

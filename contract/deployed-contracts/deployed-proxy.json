@@ -16,5 +16,14 @@
     "creationDate": "7/16/2023, 8:21:03 PM",
     "units": 20,
     "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x1D22FD446400950495ddd394362531BfF9103aA0",
+    "chain": "maticmum",
+    "communityId": "harry-potter",
+    "collectionName": "harry-potter-collection-03",
+    "creationDate": "7/17/2023, 5:44:17 PM",
+    "units": 30,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
   }
 ]

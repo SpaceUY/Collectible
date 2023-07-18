@@ -5,15 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
-    "deploy-goerli": "npx hardhat run scripts/deploy.ts --network goerli",
     "upload-metadata": "ts-node scripts/upload-metadata.ts",
-    "generate-merkle-tree": "ts-node scripts/generate-merkle-tree.ts",
-    "generate-merkle-proof": "ts-node scripts/generate-merkle-proof.ts",
     "deploy-beacon": "ts-node scripts/deploy-beacon.ts",
-    "deploy-beacon-mumbai": "npx hardhat run scripts/deploy-beacon.ts --network mumbai",
     "deploy-collection": "npx hardhat run scripts/deploy-collection.ts",
-    "deploy-collection-mumbai": "npx hardhat run scripts/deploy-collection.ts --network mumbai",
-    "mint-collectible-mumbai": "ts-node scripts/mint-collectible.ts",
     "create-community": "npx ts-node ./index.ts community create",
     "list-communities": "npx ts-node ./index.ts community list",
     "create-collection": "npx ts-node ./index.ts collection create",
@@ -35,6 +29,7 @@
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.18",
+    "@types/qrcode": "^1.5.1",
     "chai": "^4.3.6",
     "ethers": "^5.7.1",
     "hardhat": "^2.11.2",
@@ -55,6 +50,7 @@
     "ipfs-core": "^0.18.1",
     "ipfs-http-client": "^56.0.2",
     "nft.storage": "^7.0.0",
+    "qrcode": "^1.5.3",
     "weavedb-sdk-node": "^0.27.25"
   }
 }
