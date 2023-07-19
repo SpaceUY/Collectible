@@ -1,10 +1,6 @@
 import WeaveDB from "weavedb-sdk";
-import { WeaveDBCollections } from "@/common/enums/weave-db-collections.enum";
-import { AddPost } from "./../common/types/AddPost.type";
-import { Benefit } from "./../common/types/Benefit.type";
-import { Collection } from "./../common/types/Collection.type";
-import { Community } from '../../../types';
-
+import { Community, PostCreationPayload } from "../../../types";
+import { generateRandomId } from "../../utils/functions";
 
 export class WeaveDBApi {
   private db: WeaveDB;
@@ -17,7 +13,7 @@ export class WeaveDBApi {
 
   async getAllCommunities(): Promise<Community[]> {
     try {
-      const response = await this.db.cget(WeaveDBCollections.COMMUNITIES);
+      const response = await this.db.cget("communities");
       const communities = response.map((community) => community.data);
       return communities;
     } catch (error) {
@@ -25,17 +21,62 @@ export class WeaveDBApi {
     }
   }
 
-  async addCollection(collection: Collection["data"]) {
-    await this.checkOrSignIdentity();
+  async createCommunityPost(
+    communityId: string,
+    postCreationPayload: PostCreationPayload,
+  ) {
+    // 0. validate identity
     try {
-      await this.db.add(
-        { ...collection, creationDate: this.db.ts() },
-        WeaveDBCollections.COLLECTION,
-      );
+      await this.checkOrSignIdentity();
+
+      try {
+        // 1. get updated community
+        const latestCommunitySnapshot = await this.db.get(
+          "communities",
+          communityId,
+        );
+        console.log("latest community snapshot", latestCommunitySnapshot);
+
+        const { text, isPublic } = postCreationPayload;
+
+        // images to be added to payload
+
+        const updatedCommunity: Community = {
+          ...latestCommunitySnapshot,
+          posts: [
+            ...latestCommunitySnapshot.posts,
+            {
+              communityId: communityId,
+              content: text,
+              creationDate: new Date().toISOString(),
+              isPublic: isPublic,
+              postId: generateRandomId(),
+            },
+          ],
+        };
+
+        await this.db.set(updatedCommunity as any, "communities", communityId);
+        console.log("Post published successfully!");
+      } catch (error) {
+        console.log("createCommunity Post failed", error);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("createCommunityPost failed on checkOrSignIdentity", error);
+      return;
     }
   }
+
+  // async addCollection(collection: Collection["data"]) {
+  //   await this.checkOrSignIdentity();
+  //   try {
+  //     await this.db.add(
+  //       { ...collection, creationDate: this.db.ts() },
+  //       WeaveDBCollections.COLLECTION,
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   //   async getAllPosts(): Promise<CommunityPost[] | void> {
   //     try {
@@ -61,29 +102,17 @@ export class WeaveDBApi {
   //     }
   //   }
 
-  async addPost(addPost: AddPost) {
-    await this.checkOrSignIdentity();
-    try {
-      await this.db.add(
-        { ...addPost, date: this.db.ts() },
-        WeaveDBCollections.POST,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async addBenefit(benefit: Benefit["data"]) {
-    await this.checkOrSignIdentity();
-    try {
-      await this.db.add(
-        { ...benefit, creationDate: this.db.ts() },
-        WeaveDBCollections.BENEFIT,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async addBenefit(benefit: Benefit["data"]) {
+  //   await this.checkOrSignIdentity();
+  //   try {
+  //     await this.db.add(
+  //       { ...benefit, creationDate: this.db.ts() },
+  //       WeaveDBCollections.BENEFIT,
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   //   async getCommunityPosts(
   //     communityId: string,

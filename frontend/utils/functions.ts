@@ -69,7 +69,6 @@ function toHexString(byteArray) {
   );
 }
 
-
 export function generateMerkleProof(tokenId: number, treeJson: any) {
   // Load the tree
   const tree = StandardMerkleTree.load(treeJson);
@@ -82,4 +81,9 @@ export function generateMerkleProof(tokenId: number, treeJson: any) {
   }
 
   throw new Error(`Token ID ${tokenId} not found in tree`);
+}
+
+export function generateRandomId(): string {
+  const wallet = ethers.Wallet.createRandom();
+  return wallet.address;
 }

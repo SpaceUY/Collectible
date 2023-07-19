@@ -78,13 +78,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     router.push("/");
   };
 
+  useEffect(() => {
+    console.log("user changed", user);
+  }, [user]);
+
   const fetchUserData = async () => {
     if (!web3) {
       return console.error(
         "web3 must be connected and loaded to fetch the user data",
       );
     }
-    setUser({ ...user, loading: true });
     const accounts = await web3.eth.getAccounts();
     const address = accounts[0];
     if (address) {
@@ -120,6 +123,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       allCollectionAddreses,
     );
 
+    console.log("fetchUserChainData being executed");
     setUser({
       ...user,
       collectibles: userChainData.collectibles,

@@ -21,7 +21,7 @@ const CommunityFeed = ({
 
   return !isLoading ? (
     <div className="mb-40 flex flex-col gap-4">
-      {/* {isOwner && <AddPost communityId={community.communityId} />} */}
+      {isOwner && <AddPost community={community} />}
       {posts.map((post, idx) => (
         <CommunityPost community={community} post={post} key={idx} />
       ))}

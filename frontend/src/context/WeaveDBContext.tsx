@@ -69,6 +69,11 @@ export const WeaveDBProvider = ({
     This only needs to be done once per session, utile to avoid multiple signing
   */
   const signIdentity = async () => {
+    console.log("signIdentity call");
+    console.log("user", user);
+    console.log("web3", web3);
+    console.log("db", db);
+    console.log(!user?.isLoggedIn, !web3, !db);
     if (!user?.isLoggedIn) {
       return alert("user must be connected in order to SignIdentity");
     }
@@ -80,8 +85,10 @@ export const WeaveDBProvider = ({
     if (!db) {
       return alert("db must be connected and loaded in order to SignIdentity");
     }
+    console.log("Sign Identity reached this point");
     const account = user?.address;
     try {
+      console.log("createTempAddress call with account", account);
       const { identity } = await db.createTempAddress(account);
       setIdentity(identity);
       console.log("Identity created and signed succesfully!", identity);
@@ -94,7 +101,20 @@ export const WeaveDBProvider = ({
   const checkOrSignIdentity = async () => {
     if (!identity) {
       console.log("Identity not signed, asking for identity signing...");
-      await signIdentity();
+
+      try {
+        // await signIdentity();
+        console.log("checking or signing identity...");
+        console.log("checking of signing identity user", user);
+        console.log("checking of signing identity web3", web3);
+        console.log("checking of signing identity db", db);
+        const { identity } = await db.createTempAddress(user?.address);
+
+        setIdentity(identity);
+        console.log("Identity created and signed succesfully!", identity);
+      } catch (error) {
+        console.log("Error at checkOrSignIdentity", error);
+      }
     } else {
       console.log("Identity already signed", identity);
     }
@@ -122,6 +142,7 @@ export const WeaveDBProvider = ({
         "web3 must be connected and loaded to run startWeaveDB",
       );
     }
+    console.log("startWeaveDB passing the web3 validation");
     const db = new WeaveDB({
       customProvider: magic.rpcProvider,
       contractTxId: process.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID,
@@ -181,6 +202,10 @@ export const WeaveDBProvider = ({
 
     setLoadingDB(false);
   };
+
+  useEffect(() => {
+    console.log("startWeaveDB, db has changed", db);
+  }, [db]);
 
   useEffect(() => {
     if (!web3) {
