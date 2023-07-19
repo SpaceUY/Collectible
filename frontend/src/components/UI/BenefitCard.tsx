@@ -10,7 +10,6 @@ interface BenefitCardProps {
 }
 
 const BenefitCard = ({ benefit, isMember, isOwner }: BenefitCardProps) => {
-  console.log("benefit", benefit);
 
   let imagePath = "";
   switch (benefit.type) {

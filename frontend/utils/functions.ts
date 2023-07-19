@@ -1,3 +1,6 @@
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { ethers } from "ethers";
+
 export const nameToUrl = (name: string) => {
   return name
     .toLowerCase()
@@ -32,12 +35,6 @@ export const formatTime = (timeString) => {
   return `${days}d ago`;
 };
 
-export function encodeVariables(contractAddress, tokenID, tokenUri, password) {
-  const data = `${contractAddress}:::${tokenID}:::${tokenUri}:::${password}`;
-  const encodedData = btoa(data);
-  return encodedData;
-}
-
 export function decodeVariables(encodedData) {
   try {
     if (!isValidBase64(encodedData)) {
@@ -46,8 +43,9 @@ export function decodeVariables(encodedData) {
     }
 
     const data = atob(encodedData);
-    const [contractAddress, tokenId, tokenURI, password] = data.split(":::");
-    return { contractAddress, tokenId, tokenURI, password };
+    const [contractAddress, merkleTreeCID, tokenId, tokenURI, password] =
+      data.split(":::");
+    return { contractAddress, merkleTreeCID, tokenId, tokenURI, password };
   } catch (error) {
     console.error("Failed to decode variables:", error);
     return null;
@@ -60,4 +58,28 @@ function isValidBase64(str) {
   } catch (err) {
     return false;
   }
+}
+
+function toHexString(byteArray) {
+  return (
+    "0x" +
+    Array.from(byteArray, function (byte) {
+      return ("0" + ((byte as number) & 0xff).toString(16)).slice(-2);
+    }).join("")
+  );
+}
+
+
+export function generateMerkleProof(tokenId: number, treeJson: any) {
+  // Load the tree
+  const tree = StandardMerkleTree.load(treeJson);
+
+  for (const [i, v] of Array.from(tree.entries())) {
+    if (v[0] === tokenId) {
+      const proof = tree.getProof(i);
+      return proof.map((p: any) => toHexString(ethers.utils.arrayify(p)));
+    }
+  }
+
+  throw new Error(`Token ID ${tokenId} not found in tree`);
 }

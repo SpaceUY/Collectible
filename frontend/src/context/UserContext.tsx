@@ -3,7 +3,7 @@ import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserChainData, getUserData } from "@/api/accountApi";
 import { useRouter } from "next/router";
-import { Community, UserData } from '../../../types';
+import { Community, UserData } from "../../../types";
 
 const initialUserState: UserData = {
   loading: true,
@@ -84,16 +84,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const accounts = await web3.eth.getAccounts();
     const address = accounts[0];
     if (address) {
-      const userData = await getUserData(web3, address);
-      setUser({
-        ...user,
-        isLoggedIn: userData.isLoggedIn,
-        address: userData.address,
-        shortAddress: userData.shortAddress,
-        name: userData.name,
-        balance: userData.balance,
-        loading: userData.loading,
-      });
+      try {
+        const userData = await getUserData(web3, address);
+        setUser({
+          ...user,
+          isLoggedIn: userData.isLoggedIn,
+          address: userData.address,
+          shortAddress: userData.shortAddress,
+          name: userData.name,
+          balance: userData.balance,
+          loading: userData.loading,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       setUser({ ...user, loading: false });
     }

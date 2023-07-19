@@ -14,7 +14,6 @@ export const CollectibleCard = ({
   const { handleSelectCollectible, handleOpenCollectibleModal } = useModal();
 
   const inspectCollectible = () => {
-    console.log("Inspecting collectible", nft);
     handleSelectCollectible(nft);
     handleOpenCollectibleModal();
   };

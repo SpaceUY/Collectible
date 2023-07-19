@@ -18,24 +18,20 @@ const CommunityCollections = ({ community }: CommunityCollectionsProps) => {
   @DEV To be saved in a state manager to avoid re-fetching on every page change
    */
   const [isLoading, setIsLoading] = useState(true);
-  const [collectionsWithNfts, setCollectionsWithNfts] = useState<CollectionWithNfts[]>(
-    [],
-  );
+  const [collectionsWithNfts, setCollectionsWithNfts] = useState<
+    CollectionWithNfts[]
+  >([]);
 
   useEffect(() => {
     const fetchCommunityCollections = async () => {
       const fetchedCollections = [];
       await Promise.all(
         community.collections.map(async (collection) => {
-          console.log(
-            "Fetching the Alchemy NFT Api for collection",
-            collection,
-          );
           const nfts = await getCollectionNfts(collection.address);
           fetchedCollections.push({ ...collection, nfts });
         }),
       );
-      console.log("fetchedCollections", fetchedCollections);
+
       setCollectionsWithNfts(fetchedCollections);
       setIsLoading(false);
     };

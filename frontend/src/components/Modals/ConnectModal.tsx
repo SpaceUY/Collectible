@@ -12,7 +12,6 @@ interface ConnectModalProps {
 const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
   const { user, connectUser } = useUser();
 
-  console.log(user, connectUser);
   useEffect(() => {
     if (user?.isLoggedIn) {
       handleCloseConnectModal();
@@ -63,7 +62,6 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
             >
               Connect as a creator
             </Button>
-            ;
           </div>
         </div>
       </div>

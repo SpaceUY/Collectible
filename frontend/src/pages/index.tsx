@@ -26,19 +26,16 @@ export default function CollectiblesPage() {
           }));
         })
         .flat();
-      console.log("All posts", allPostsWithCommunities);
 
       const allPublicPostsWithCommunities = allPostsWithCommunities.filter(
         (post) => post.isPublic,
       );
-      console.log("All public posts", allPublicPostsWithCommunities);
 
       const allCollections = allCommunities
         .map((community) => {
           return community.collections.map((collection) => collection);
         })
         .flat();
-      console.log("All collections", allCollections);
 
       const feed = [];
       allPublicPostsWithCommunities.forEach((post, idx) => {

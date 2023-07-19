@@ -14,7 +14,6 @@ const CollectiblesReel = ({
   collectionWithNfts,
   headerText,
 }: CollectiblesReelProps) => {
-  console.log("collectionWithNfts", collectionWithNfts);
   return (
     <div>
       {headerText && (

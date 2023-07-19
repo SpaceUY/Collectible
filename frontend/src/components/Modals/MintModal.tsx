@@ -6,34 +6,16 @@ import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import { useWeb3 } from "@/context/Web3Context";
 import Confetti from "react-confetti";
-import { requestMintNFT } from "@/api/nftApi";
-import { encodeVariables, decodeVariables } from "utils/functions";
+import { decodeVariables } from "utils/functions";
 import LoadingWheel from "../UI/LoadingWheel";
-import { getAddressShortcut } from "../../../utils/functions";
+import ErrorComponent from "@/components/ErrorComponent";
+import { getMerkleProof, getTokenURI } from "@/api/alchemyApi";
+import { CollectibleMetadata, QRValues } from "../../../../types";
+import { collectibleContractAbi } from "../../collectibleContractAbi";
+
 interface MintModalProps {
   handleCloseMintModal: () => void;
 }
-
-interface QRValues {
-  contractAddress: string;
-  tokenId: string;
-  tokenURI: string;
-  password: string;
-}
-
-interface URIValue {
-  name: string;
-  description: string;
-  image: string;
-}
-
-const QRValues: QRValues = {
-  contractAddress: "0x15eFF7A8c5C9d033Fa94B41B7C866d11A869085e",
-  tokenId: "0",
-  tokenURI: "ipfs://QmT8D9yLPxBSH7gswCZgDC6X1mB9ujGRTq8q1remM4V63a",
-  password:
-    "0x827187ac3122d06a757b26d9836bc979368fa0e976581eb50a7ca61f4fb3c5fc",
-};
 
 const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
   const { user, connectUser } = useUser();
@@ -43,65 +25,140 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
 
   const [isMinting, setIsMinting] = useState(false);
   const [throwConfetti, setThrowConfetti] = useState(false);
+
+  const [collectibleURI, setCollectibleURI] =
+    useState<CollectibleMetadata | null>(null);
   const [keyVariables, setKeyVariables] = useState<QRValues | null>(null);
-  const [collectibleURI, setCollectibleURI] = useState<URIValue | null>(null);
 
-  useEffect(() => {
-    const encodedData = encodeVariables(
-      QRValues.contractAddress,
-      QRValues.tokenId,
-      QRValues.tokenURI,
-      QRValues.password,
+  const [alreadyClaimed, setAlreadyClaimed] = useState<boolean | null>(null);
+  // const [claimedBy, setClaimedBy] = useState<string | null>(null);
+  const [merkleProof, setMerkleProof] = useState<any | null>(null);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const checkAlreadyClaimed = async (
+    contractAddress: string,
+    tokenID: number,
+  ): Promise<boolean> => {
+    const contract = new web3.eth.Contract(
+      collectibleContractAbi,
+      contractAddress,
     );
-    console.log("encoded data", encodedData);
-  }, [key]);
-
-  useEffect(() => {
-    if (key) {
-      const decodedData = decodeVariables(key);
-      console.log("decoded data", decodedData);
-      if (decodedData) {
-        setKeyVariables(decodedData);
+    let availabilityError;
+    try {
+      const nftAvailability = await contract.methods.ownerOf(tokenID).call();
+      // setClaimedBy(nftAvailability);
+    } catch (error) {
+      availabilityError = error.message;
+    } finally {
+      if (availabilityError && availabilityError.includes("invalid token ID")) {
+        console.log("The NFT is available for minting");
+        return false;
+      } else {
+        console.log("The NFT is not available for minting");
+        return true;
       }
     }
-  }, [key]);
+  };
 
-  // Find NFT about to be claimed
   useEffect(() => {
-    if (keyVariables) {
-      const { contractAddress, tokenId, tokenURI, password } = keyVariables;
-      console.log("key variables", keyVariables);
+    if (key && web3) {
+      const getCollectible = async () => {
+        const decodedData = decodeVariables(key);
+        console.log("decoded data obtained from url", decodedData);
 
-      const fetchTokenURI = async () => {
-        const gatewayUri = tokenURI.replace(
-          "ipfs://",
-          "https://alchemy.mypinata.cloud/ipfs/",
-        );
+        if (decodedData) {
+          const tokenID = decodedData.tokenId;
+          const tokenURI = decodedData.tokenURI;
+          const merkleTreeCID = decodedData.merkleTreeCID;
+          const contractAddress = decodedData.contractAddress;
+          setKeyVariables(decodedData);
 
-        console.log("code gateway", gatewayUri);
-        const response = await fetch(gatewayUri);
-        const data = await response.json();
-        console.log("code data", data);
-        setCollectibleURI(data);
+          const isAlreadyClaimed = await checkAlreadyClaimed(
+            contractAddress,
+            +tokenID,
+          );
+          if (isAlreadyClaimed) {
+            setAlreadyClaimed(true);
+            setLoading(false);
+          } else {
+            // if it is available, fetch the nft, the merkle proof and generate the proof
+
+            const uri = await getTokenURI(tokenURI);
+            console.log("obtained URI from getTokenURI", uri);
+            const merkleProof = await getMerkleProof(tokenID, merkleTreeCID);
+            console.log(
+              "obtained merkle proof from getMerkleProof",
+              merkleProof,
+            );
+            setCollectibleURI(uri);
+            setMerkleProof(merkleProof);
+            setLoading(false);
+          }
+        } else {
+          setError("Invalid QR code");
+          setLoading(false);
+        }
       };
-      fetchTokenURI();
+      getCollectible();
     }
-  }, [keyVariables]);
+  }, [key, web3]);
 
   const handleMint = async () => {
-    setIsMinting(true);
+    console.log("trigerred mint with variables");
+    console.log("user address", user?.address);
+    console.log("contract address", keyVariables?.contractAddress);
+    console.log("tokenID", keyVariables?.tokenId);
+    console.log("tokenURI", keyVariables?.tokenURI);
+    console.log("password", keyVariables?.password);
+    console.log("merkleProof", merkleProof);
+
+    console.log("starting the minting ");
+    const contractInstance = new web3.eth.Contract(
+      collectibleContractAbi,
+      keyVariables?.contractAddress,
+    );
+    const tokenId = keyVariables?.tokenId;
+    const tokenUri = keyVariables?.tokenURI;
+    const password = keyVariables?.password;
+    const proof = merkleProof;
+
+    if (!tokenId || !tokenUri || !password || !proof) {
+      console.error("One of the parameters is missing or undefined");
+      return;
+    }
+    if (
+      !Array.isArray(proof) ||
+      !proof.every((p) => /^0x[0-9a-fA-F]{64}$/.test(p))
+    ) {
+      console.error("Proof must be an array of 32-byte hexadecimal strings");
+      return;
+    }
 
     try {
-      console.log("Mint complete!");
+      const result = await contractInstance.methods
+        .safeMint(+tokenId, tokenUri, password, proof)
+        .send({ from: user?.address });
+      console.log("Transaction receipt:", result);
 
-      const wei = await web3.eth.getBalance(user.address);
-      const balance = web3.utils.fromWei(wei);
+      // Check for the modal here
+      const magicModal = document.getElementById("modal-portal");
+
+      if (magicModal) {
+        console.log("Magic modal found:", magicModal);
+      } else {
+        console.log("Magic modal not found");
+      }
+      //minted: 12, 0
 
       setThrowConfetti(true);
     } catch (error) {
-      console.error("handleMint", error);
-    } finally {
-      setIsMinting(false);
+      alert(
+        "There was an error while minting the NFT. Please try again later.",
+      );
+      console.error(error);
     }
   };
 
@@ -124,39 +181,62 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
               width={20}
               height={20}
               alt="Close Mint modal"
-              // onClick={handleCloseMintModal}
+               onClick={handleCloseMintModal}
             />
           </div>
           <div className="mb-8 flex flex-col items-center justify-center gap-4">
-            <h3 className="text-2xl font-semibold text-gray-strong"></h3>
-            {throwConfetti && (
-              <Confetti
-                confettiSource={{
-                  x: window.innerWidth / 2 - 300,
-                  y: window.innerHeight / 2 - 300,
-                  w: 600,
-                  h: 600,
-                }}
-                // shape="circle"
-                // friction={0.99}
-                recycle={false}
-                numberOfPieces={250}
-                colors={["#7A5FC8", "#F5F5F5", "#201F23", "#26252C", "#433273"]}
-                wind={0}
-                gravity={0.1}
-                onConfettiComplete={() => {
-                  setThrowConfetti(false);
-                }}
-              />
-            )}
-
-            {!collectibleURI && (
-              <div className="flex items-center justify-center h-[220px] mb-8">
+            {loading && (
+              <div className="mb-8 flex h-[220px] items-center justify-center">
                 <LoadingWheel />
               </div>
             )}
-            {collectibleURI && (
+
+            {!loading && error && (
+              <div className="mb-8 flex h-[220px] items-center justify-center">
+                <ErrorComponent errorMessage={error} />
+              </div>
+            )}
+
+            {!loading && !error && alreadyClaimed && (
+              <div className="mb-8 flex h-[220px] items-center justify-center">
+                <ErrorComponent
+                  errorMessage={"This Collectible was already collected."}
+                />
+              </div>
+            )}
+
+            {!loading && !error && !alreadyClaimed && (
               <>
+                <h3 className="text-2xl font-semibold text-gray-strong">
+                  {collectibleURI.name}
+                </h3>
+                {throwConfetti && (
+                  <Confetti
+                    confettiSource={{
+                      x: window.innerWidth / 2 - 250,
+                      y: window.innerHeight / 2 - 250,
+                      w: 500,
+                      h: 500,
+                    }}
+                    // shape="circle"
+                    // friction={0.99}
+                    recycle={false}
+                    numberOfPieces={250}
+                    colors={[
+                      "#7A5FC8",
+                      "#F5F5F5",
+                      "#201F23",
+                      "#26252C",
+                      "#433273",
+                    ]}
+                    wind={0}
+                    gravity={0.1}
+                    onConfettiComplete={() => {
+                      setThrowConfetti(false);
+                    }}
+                  />
+                )}
+
                 <Image
                   className=""
                   src={`
@@ -169,14 +249,14 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
                   height={200}
                   alt="the nft about to be claimed"
                 />
-                <p className="max-w-[480px] text-center text-gray-strong">
+                {/* <p className="max-w-[480px] text-center text-gray-strong">
                   {collectibleURI.name}
-                </p>
+                </p> */}
 
                 <p className="max-w-[480px] text-center text-gray-strong">
                   {collectibleURI.description}
                 </p>
-{/* 
+                {/* 
                 <p className="mb-3 text-gray-strong opacity-50">
                   key: {getAddressShortcut(key as string)}
                 </p> */}
@@ -184,22 +264,29 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
             )}
           </div>
           <div className="flex flex-col justify-center">
-            {!user?.loading && !user?.isLoggedIn && (
-              <Button isLarge fullWidth action={connectUser}>
-                Connect Account
-              </Button>
-            )}
-            {!user?.loading && user?.isLoggedIn && !isMinting && (
-              <Button isLarge fullWidth action={handleMint}>
-                Claim your Collectible
-              </Button>
-            )}
-            {isMinting && (
+            {!alreadyClaimed &&
+              !error &&
+              !user?.loading &&
+              !user?.isLoggedIn && (
+                <Button isLarge fullWidth action={connectUser}>
+                  Connect Account
+                </Button>
+              )}
+            {!alreadyClaimed &&
+              !error &&
+              !user?.loading &&
+              user?.isLoggedIn &&
+              !isMinting && (
+                <Button isLarge fullWidth action={handleMint}>
+                  Claim your Collectible
+                </Button>
+              )}
+            {!error && isMinting && (
               <Button isLarge fullWidth action={() => {}}>
                 Claiming your Collectible...
               </Button>
             )}
-            {user?.loading && (
+            {!alreadyClaimed && !error && user?.loading && (
               <Button
                 isLarge
                 fullWidth

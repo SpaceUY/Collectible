@@ -11,8 +11,7 @@ interface CommunityPostProps {
 
 const CommunityPost = ({ community, post }: CommunityPostProps) => {
   const { communityId, isPublic, creationDate, content } = post;
-  console.log("post", post);
-
+  
   return (
     <article className="h-auto w-full rounded-lg bg-collectible-medium-purple px-5 py-6 ">
       {community && (

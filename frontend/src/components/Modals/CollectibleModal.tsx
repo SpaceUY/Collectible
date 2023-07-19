@@ -32,8 +32,7 @@ const CollectibleModal = ({
   const community = allCommunities.find((community) => {
     return community.communityId === communityId;
   });
-  console.log("comm", community);
-
+  
   return (
     <>
       <Backdrop />

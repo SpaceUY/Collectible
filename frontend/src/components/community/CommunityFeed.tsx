@@ -18,7 +18,6 @@ const CommunityFeed = ({
 }: CommunityFeedProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const posts: Post[] = community.posts;
-  console.log("posts", posts);
 
   return !isLoading ? (
     <div className="mb-40 flex flex-col gap-4">

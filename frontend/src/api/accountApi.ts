@@ -18,14 +18,26 @@ export async function getUserData(
 > {
   try {
     console.log("Fetching user data...");
+    console.log("get user data being called with", address, web3);
+    console.log("getting user balance");
 
-    // Get the user's balance
-    const balanceInWei = await web3.eth.getBalance(address);
-    const balance = web3.utils.fromWei(balanceInWei);
+    /**
+       @DEV Obtaining balance via await web3.eth.getBalance not currently working
+    */
+
+    let balance = "0";
+    try {
+      const balanceInWei = await web3.eth.getBalance(address);
+      console.log("balance obtained in wei", balanceInWei);
+      balance = web3.utils.fromWei(balanceInWei);
+    } catch (error) {
+      console.error(error);
+    }
+
+    console.log("heyyy I have reached this point");
 
     // Truncate the user's address for display purposes
     const shortAddress = getAddressShortcut(address);
-
     console.log("Fetched user data!, address: ", address);
     return {
       isLoggedIn: true,
@@ -51,9 +63,6 @@ export async function getUserChainData(
   >
 > {
   try {
-    console.log("Fetching user chain data...");
-    console.log("getUserChainData, allCommunities: ", allCommunities);
-
     // 1. Determine community ownerships
     const communityOwnerships = [];
     for (const community of allCommunities) {
@@ -61,7 +70,6 @@ export async function getUserChainData(
         communityOwnerships.push(community.communityId);
       }
     }
-    console.log("User communityOwnerships", communityOwnerships);
 
     // 2. Get all the user collectibles
     // 2.1 Get all the collections from all the communities (WeaveDB)
@@ -72,13 +80,11 @@ export async function getUserChainData(
         communityId: community.communityId,
       })),
     );
-    console.log("getUserChainData, allCollections: ", allCollections);
 
     // 2.2 Get all the collections addresses
     const allCollectionsAddresses = allCollections.map((collection) =>
       collection.collectionAddress.toLowerCase(),
     );
-    console.log("allCollectionsAddresses", allCollectionsAddresses);
 
     // 2.3 Get all the user NFTs on the collections
     /** /
@@ -88,20 +94,17 @@ export async function getUserChainData(
       dev3,
       allCollectionsAddresses,
     )) as unknown as AlchemyNFT[];
-    console.log("userNftsOnCollections(), ", userNftsOnCollections);
 
     // 3. Determine community memberships
     // 3.1 Get all the user Collectible Collections addresses
     const userCollectionsAddresses = userNftsOnCollections.map(
       (nft) => nft.contract.address as string,
     );
-    console.log("userNftsAddresses", userCollectionsAddresses);
 
     // 3.2 Remove duplicates
     const uniqueUserCollectionsAddresses = Array.from(
       new Set(userCollectionsAddresses),
     );
-    console.log("uniqueUserNftsAddresses", uniqueUserCollectionsAddresses);
 
     // 3.3 Get all the user NFTs on the collections
     const communityMemberships = [];
@@ -113,7 +116,6 @@ export async function getUserChainData(
         communityMemberships.push(communityId);
       }
     }
-    console.log("User communityMemberships", communityMemberships);
 
     return {
       collectibles: userNftsOnCollections,

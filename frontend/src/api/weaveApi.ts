@@ -3,7 +3,8 @@ import { WeaveDBCollections } from "@/common/enums/weave-db-collections.enum";
 import { AddPost } from "./../common/types/AddPost.type";
 import { Benefit } from "./../common/types/Benefit.type";
 import { Collection } from "./../common/types/Collection.type";
-import { Community } from "../common/types";
+import { Community } from '../../../types';
+
 
 export class WeaveDBApi {
   private db: WeaveDB;
@@ -25,6 +26,7 @@ export class WeaveDBApi {
   }
 
   async addCollection(collection: Collection["data"]) {
+    await this.checkOrSignIdentity();
     try {
       await this.db.add(
         { ...collection, creationDate: this.db.ts() },

@@ -19,7 +19,6 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
 
   if (!community) return null;
 
-  console.log("communityId", communityId, " is owner", isOwner);
   return (
     <li>
       <Link href={`/community/${communityId}`} className="">
