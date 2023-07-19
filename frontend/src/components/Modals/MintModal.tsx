@@ -171,7 +171,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
           <div className="mb-8 flex justify-between">
             <Image
               className="w-28 "
-              src={"/collectible-logo.svg"}
+              src={"/isologo.svg"}
               width={60}
               height={50}
               alt="Collectible Logo"
@@ -182,7 +182,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
               width={20}
               height={20}
               alt="Close Mint modal"
-               onClick={handleCloseMintModal}
+              onClick={handleCloseMintModal}
             />
           </div>
           <div className="mb-8 flex flex-col items-center justify-center gap-4">

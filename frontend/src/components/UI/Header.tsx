@@ -12,7 +12,7 @@ const Header = () => {
     <>
       <Link className="mr-[14px] w-[250px] shrink-0 px-4" href="/">
         <Image
-          src={"/collectible-logo.svg"}
+          src={"/isologo.svg"}
           width={145.54}
           height={47.05}
           alt="Collectible Logo"

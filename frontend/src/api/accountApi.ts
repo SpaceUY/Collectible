@@ -1,11 +1,7 @@
 import { getAddressShortcut } from "utils/functions";
 import Web3 from "web3";
-import { Community, UserData, AlchemyNFT } from "../../../types";
+import { Community, UserData, AlchemyNFT, Collection } from "../../../types";
 import { getUserNFTsOnCollections } from "./alchemyApi";
-
-const dev = "0xc0f2B485cFe95B3A1df92dA2966EeB46857fe2a6";
-const dev2 = "0xc6f7E8DB9dE361bBF1Aa4fEff6Aa54a510449Fe1";
-const dev3 = "0x228DBe53617f2a668079aDbaF9141FCB0a83BEaF";
 
 export async function getUserData(
   web3: Web3,
@@ -17,10 +13,6 @@ export async function getUserData(
   >
 > {
   try {
-    console.log("Fetching user data...");
-    console.log("get user data being called with", address, web3);
-    console.log("getting user balance");
-
     /**
        @DEV Obtaining balance via await web3.eth.getBalance not currently working
     */
@@ -33,8 +25,6 @@ export async function getUserData(
     } catch (error) {
       console.error(error);
     }
-
-    console.log("heyyy I have reached this point");
 
     // Truncate the user's address for display purposes
     const shortAddress = getAddressShortcut(address);
@@ -56,6 +46,8 @@ export async function getUserChainData(
   web3: Web3,
   address: string,
   allCommunities: Community[],
+  allCollections: Collection[],
+  allCollectionsAddresses: string[],
 ): Promise<
   Omit<
     UserData,
@@ -70,28 +62,12 @@ export async function getUserChainData(
         communityOwnerships.push(community.communityId);
       }
     }
-
     // 2. Get all the user collectibles
-    // 2.1 Get all the collections from all the communities (WeaveDB)
-    const allCollections = allCommunities.flatMap((community) =>
-      community.collections.map((collection) => ({
-        collectionAddress: collection.address.toLowerCase(),
-        collectionName: collection.name,
-        communityId: community.communityId,
-      })),
-    );
-
-    // 2.2 Get all the collections addresses
-    const allCollectionsAddresses = allCollections.map((collection) =>
-      collection.collectionAddress.toLowerCase(),
-    );
-
-    // 2.3 Get all the user NFTs on the collections
     /** /
       @DEV Note: the Alchemy NFT API only supports up to 20 collections to filter at a time
     **/
     const userNftsOnCollections = (await getUserNFTsOnCollections(
-      dev3,
+      address,
       allCollectionsAddresses,
     )) as unknown as AlchemyNFT[];
 
@@ -111,11 +87,13 @@ export async function getUserChainData(
     for (const collectionAddress of uniqueUserCollectionsAddresses) {
       if (allCollectionsAddresses.includes(collectionAddress)) {
         const communityId = allCollections.find(
-          (collection) => collection.collectionAddress === collectionAddress,
+          (collection) => collection.address === collectionAddress,
         )?.communityId;
         communityMemberships.push(communityId);
       }
     }
+
+    console.log("user nfts on collections", userNftsOnCollections);
 
     return {
       collectibles: userNftsOnCollections,

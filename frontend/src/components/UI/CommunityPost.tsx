@@ -7,25 +7,31 @@ import { formatTime } from "utils/functions";
 interface CommunityPostProps {
   community: Community;
   post: Post;
+  disableCommunityLink?: boolean;
 }
 
-const CommunityPost = ({ community, post }: CommunityPostProps) => {
+const CommunityPost = ({
+  community,
+  post,
+  disableCommunityLink,
+}: CommunityPostProps) => {
   const { communityId, isPublic, creationDate, content } = post;
-  
+
   return (
     <article className="h-auto w-full rounded-lg bg-collectible-medium-purple px-5 py-6 ">
       {community && (
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex cursor-default items-center gap-4">
             <Link
-              href={`/community/${communityId}`}
-              className="flex items-center"
+              href={!disableCommunityLink ? `/community/${communityId}` : ""}
+              className={`flex items-center`}
             >
               <Image
-                className="h-8 w-8 rounded-full bg-gray-medium bg-gray-strong object-cover"
+                className="h-10 w-10 rounded-full bg-white/10 object-contain"
                 src={community.picture}
-                width={10}
-                height={10}
+                width={100}
+                height={100}
+                quality={100}
                 alt=""
               />
               <h3 className="ml-2.5 font-medium text-gray-medium">
@@ -33,7 +39,9 @@ const CommunityPost = ({ community, post }: CommunityPostProps) => {
               </h3>
             </Link>
 
-            <p className="text-gray-medium text-sm">{formatTime(creationDate)}</p>
+            <p className="text-sm text-gray-medium">
+              {formatTime(creationDate)}
+            </p>
           </div>
 
           {!isPublic && (

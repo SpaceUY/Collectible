@@ -30,7 +30,7 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
         <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
           <div className="mb-14 flex justify-between">
             <Image
-              src={"/collectible-logo.svg"}
+              src={"/isologo.svg"}
               width={60}
               height={50}
               alt="Collectible Logo"

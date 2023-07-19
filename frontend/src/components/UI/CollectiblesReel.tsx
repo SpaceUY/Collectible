@@ -3,23 +3,35 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CollectibleCard from "./CollectibleCard";
-import { CollectionWithNfts } from "../../../../types";
+import { CollectionWithNfts, AlchemyNFT } from "../../../../types";
+import { formatTime } from "utils/functions";
 
 interface CollectiblesReelProps {
-  collectionWithNfts: CollectionWithNfts;
+  nfts: AlchemyNFT[];
   headerText?: string;
+  creationDate?: string;
 }
 
 const CollectiblesReel = ({
-  collectionWithNfts,
+  nfts,
   headerText,
+  creationDate,
 }: CollectiblesReelProps) => {
   return (
     <div>
-      {headerText && (
-        <h2 className="mb-4 text-xl font-semibold text-gray-strong">
-          {headerText}
-        </h2>
+      {(headerText || creationDate) && (
+        <div className="mb-4 flex items-center gap-4">
+          {headerText && (
+            <h2 className="text-lg font-semibold text-gray-strong">
+              {headerText}
+            </h2>
+          )}
+          {creationDate && (
+            <p className="text-sm text-gray-medium">
+              {formatTime(creationDate)}
+            </p>
+          )}
+        </div>
       )}
       <div className="relative">
         {/* <div className="absolute top-0 left-0 z-20 h-full w-[90px] rounded-lg bg-gradient-to-l from-transparent to-collectible-dark-purple/60"></div> */}
@@ -42,9 +54,9 @@ const CollectiblesReel = ({
               spaceBetween: 12,
             },
           }}
-          mousewheel={true} // Enable mousewheel control here
+          mousewheel={nfts.length >= 4} // Enable mousewheel control here
         >
-          {collectionWithNfts.nfts.map((nft) => (
+          {nfts.map((nft) => (
             <SwiperSlide key={nft.tokenId}>
               <CollectibleCard nft={nft} />
             </SwiperSlide>

@@ -43,10 +43,7 @@ const Sidebar = () => {
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
             {user?.communityMemberships.map((communityId) => (
-              <CommunityListItem
-                key={communityId}
-                communityId={communityId}
-              />
+              <CommunityListItem key={communityId} communityId={communityId} />
             ))}
           </ul>
         </div>
@@ -63,7 +60,7 @@ const Sidebar = () => {
                @DEV remove opacity-0 to display image
                **/
               className="h-12 w-12 rounded-full border-gray-strong opacity-0"
-              src={"collectible-logo.svg"}
+              src={"isologo.svg"}
               width={50}
               height={50}
               alt="Collectible Logo"

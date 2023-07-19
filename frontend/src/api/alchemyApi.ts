@@ -25,19 +25,6 @@ export const getCollectionNfts = async (collectionAddress: string) => {
   return collectibles.nfts;
 };
 
-// export const checkNftAvailability = async (
-//   collectionAddress: string,
-//   tokenId: number,
-// ) => {
-//   console.log("checking availability for", collectionAddress, tokenId);
-//   const response = await alchemy.nft.getOwnersForNft(
-//     collectionAddress,
-//     tokenId,
-//   );
-//   console.log("nft availability response", response);
-//   return response;
-// };
-
 // custom function using Alchemy Pinata Cloud to gate tokenURIs
 export const getTokenURI = async (
   tokenURI: string,

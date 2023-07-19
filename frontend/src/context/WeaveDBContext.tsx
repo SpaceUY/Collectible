@@ -4,12 +4,17 @@ import { magic } from "../lib/magic";
 import { useUser } from "./UserContext";
 import { useWeb3 } from "./Web3Context";
 import { WeaveDBApi } from "@/api/weaveApi";
-import { Community } from "../../../types";
+import { Community, Collection, CollectionWithNfts } from "../../../types";
+import { getCollectionNfts } from "@/api/alchemyApi";
+import { NEW_COLLECTIONS_LENGTH } from "../../constants";
 
 type WeaveDBContextType = {
   db: WeaveDB;
   weaveDBApi: WeaveDBApi;
   allCommunities: Community[];
+  allCollections: Collection[];
+  allCollectionsAddresses: string[];
+  newCollections: CollectionWithNfts[];
   loadingDB: boolean;
 };
 
@@ -29,6 +34,9 @@ export const WeaveDBContext = createContext<WeaveDBContextType>({
   db: null,
   weaveDBApi: {} as WeaveDBApi,
   allCommunities: [],
+  allCollections: [],
+  allCollectionsAddresses: [],
+  newCollections: [],
   loadingDB: true,
 });
 
@@ -43,7 +51,15 @@ export const WeaveDBProvider = ({
   const { web3 } = useWeb3();
   const [db, setDb] = useState(null);
   const [weaveDBApi, setWeaveDBApi] = useState(null);
+
   const [allCommunities, setAllCommunities] = useState<Community[]>([]);
+  const [allCollections, setAllCollections] = useState<Collection[]>([]);
+  const [allCollectionsAddresses = [], setAllCollectionsAddresses] = useState<
+    string[]
+  >([]);
+  const [newCollections, setNewCollections] = useState<CollectionWithNfts[]>(
+    [],
+  );
 
   const [loadingDB, setLoadingDB] = useState<boolean>(true);
   const [identity, setIdentity] = useState(null);
@@ -127,6 +143,42 @@ export const WeaveDBProvider = ({
     const allCommunities = await weaveDBApi.getAllCommunities();
     setAllCommunities(allCommunities);
 
+    const allCollections = allCommunities.flatMap((community) =>
+      community.collections.map((collection) => ({
+        address: collection.address.toLowerCase(),
+        name: collection.name,
+        communityId: community.communityId,
+        creationDate: collection.creationDate,
+        availableMetadataResources: collection.availableMetadataResources,
+      })),
+    );
+    console.log("allCollections", allCollections);
+    setAllCollections(allCollections);
+
+    const allCollectionsAddresses = allCollections.map((collection) =>
+      collection.address.toLowerCase(),
+    );
+    setAllCollectionsAddresses(allCollectionsAddresses);
+
+    // Take into account that a request to the alchemy API is made for each collection
+    let newCollections = JSON.parse(JSON.stringify(allCollections));
+    newCollections = newCollections
+      .sort((a, b) => Date.parse(b.creationDate) - Date.parse(a.creationDate))
+      .slice(0, NEW_COLLECTIONS_LENGTH);
+
+    // Query the alchemy API to get the collection metadata
+    const promises = newCollections.map((collection) =>
+      getCollectionNfts(collection.address),
+    );
+    const nftData = await Promise.all(promises);
+
+    newCollections = newCollections.map((collection, index) => {
+      collection.nfts = nftData[index];
+      return collection;
+    });
+    console.log("new collections", newCollections);
+    setNewCollections(newCollections);
+
     setLoadingDB(false);
   };
 
@@ -144,7 +196,7 @@ export const WeaveDBProvider = ({
         "allCommunities must be loaded to run fetchUserChainData",
       );
     }
-    fetchUserChainData(allCommunities);
+    fetchUserChainData(allCommunities, allCollections, allCollectionsAddresses);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3, user?.isLoggedIn, allCommunities]);
@@ -160,6 +212,9 @@ export const WeaveDBProvider = ({
         db,
         weaveDBApi,
         allCommunities,
+        allCollections,
+        allCollectionsAddresses,
+        newCollections,
         loadingDB,
       }}
     >

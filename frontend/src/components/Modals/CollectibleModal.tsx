@@ -32,7 +32,7 @@ const CollectibleModal = ({
   const community = allCommunities.find((community) => {
     return community.communityId === communityId;
   });
-  
+
   return (
     <>
       <Backdrop />
@@ -48,7 +48,7 @@ const CollectibleModal = ({
         >
           <div className="mb-8 flex justify-between ">
             <Image
-              src={"/collectible-logo.svg"}
+              src={"/isologo.svg"}
               width={120}
               height={50}
               alt="Collectible Logo"

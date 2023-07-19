@@ -3,7 +3,7 @@ import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserChainData, getUserData } from "@/api/accountApi";
 import { useRouter } from "next/router";
-import { Community, UserData } from "../../../types";
+import { Community, UserData, Collection } from "../../../types";
 
 const initialUserState: UserData = {
   loading: true,
@@ -22,7 +22,11 @@ type UserContextType = {
   user: UserData;
   connectUser: () => void;
   disconnectUser: () => void;
-  fetchUserChainData: (allCommunities: Community[]) => Promise<void>;
+  fetchUserChainData: (
+    allCommunities: Community[],
+    allCollections: Collection[],
+    allCollectionAddreses: string[],
+  ) => Promise<void>;
 };
 
 // Create context with default values
@@ -103,11 +107,17 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const fetchUserChainData = async (allCommunities: Community[]) => {
+  const fetchUserChainData = async (
+    allCommunities: Community[],
+    allCollections: Collection[],
+    allCollectionAddreses: string[],
+  ) => {
     const userChainData = await getUserChainData(
       web3,
       user.address,
       allCommunities,
+      allCollections,
+      allCollectionAddreses,
     );
 
     setUser({

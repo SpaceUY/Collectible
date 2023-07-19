@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CollectiblesReel from "../UI/CollectiblesReel";
 import LoadingWheel from "../UI/LoadingWheel";
-import {
-  Community,
-  AlchemyNFT,
-  Collection,
-  CollectionWithNfts,
-} from "../../../../types";
+import { Community, CollectionWithNfts } from "../../../../types";
 import { getCollectionNfts } from "@/api/alchemyApi";
 
 interface CommunityCollectionsProps {
@@ -28,7 +23,9 @@ const CommunityCollections = ({ community }: CommunityCollectionsProps) => {
       await Promise.all(
         community.collections.map(async (collection) => {
           const nfts = await getCollectionNfts(collection.address);
-          fetchedCollections.push({ ...collection, nfts });
+          if (nfts.length > 0) {
+            fetchedCollections.push({ ...collection, nfts });
+          }
         }),
       );
 
@@ -43,7 +40,7 @@ const CommunityCollections = ({ community }: CommunityCollectionsProps) => {
       {collectionsWithNfts.map((collectionWithNfts) => (
         <CollectiblesReel
           key={collectionWithNfts.address}
-          collectionWithNfts={collectionWithNfts} // TODO
+          nfts={collectionWithNfts.nfts}
           headerText={collectionWithNfts.name}
         />
       ))}
