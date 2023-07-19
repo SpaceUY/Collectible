@@ -6,8 +6,6 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
 import { BiLogOut } from "react-icons/bi";
-import { useCollectible } from "../../context/CollectibleContext";
-import { useWeaveDB } from "@/context/WeaveDBContext";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },

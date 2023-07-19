@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import { useWeaveDB } from "../../context/WeaveDBContext";
-import { useCollectible } from "../../context/CollectibleContext";
 
 interface AddPostProps {
   communityId: string;
@@ -10,8 +9,7 @@ interface AddPostProps {
 const AddPost = ({ communityId }: AddPostProps) => {
   const [postTitle, setPostTitle] = useState("");
   const [postText, setPostText] = useState("");
-  const { weaveDB } = useWeaveDB();
-  const { fetchHomeData } = useCollectible();
+  const { weaveDBApi } = useWeaveDB();
 
   const resetForm = () => {
     setPostTitle("");
@@ -19,21 +17,21 @@ const AddPost = ({ communityId }: AddPostProps) => {
   };
 
   const handleSubmitPost = async () => {
-    try {
-      await weaveDB.addPost({
-        title: postTitle,
-        text: postText,
-        communityId: communityId,
-        public: true,
-        image: "", // TODO
-      });
+    // try {
+    //   await weaveDB.addPost({
+    //     title: postTitle,
+    //     text: postText,
+    //     communityId: communityId,
+    //     public: true,
+    //     image: "", // TODO
+    //   });
 
-      resetForm();
+    //   resetForm();
 
-      await fetchHomeData();
-    } catch (error) {
-      console.log(error);
-    }
+    //   await fetchHomeData();
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (

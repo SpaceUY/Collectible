@@ -104,6 +104,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
       };
       getCollectible();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, web3]);
 
   const handleMint = async () => {

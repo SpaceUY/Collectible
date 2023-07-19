@@ -4,34 +4,32 @@ import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useWeb3 } from "@/context/Web3Context";
-import { fetchMockedNFTs, fetchNFTs } from "@/api/nftApi";
-import { getAddressShortcut } from "@/api/accountApi";
 import CollectibleCardSkeleton from "@/components/CollectibleCardSkeleton";
 import Head from "next/head";
 import CollectiblesReel from "@/components/UI/CollectiblesReel";
+import { getAddressShortcut } from "utils/functions";
 
 export default function CollectiblesPage() {
   const { user } = useUser();
   console.log("USER", user);
   const router = useRouter();
   const { profileAddress } = router.query;
-  const { contract } = useWeb3();
 
   const [profileCollectibles, setProfileCollectibles] = useState([]);
   const [loadingCollectibles, setLoadingCollectibles] = useState(true);
   console.log('user collectibles', user?.collectibles)
 
-  useEffect(() => {
-    const fetchProfileNFTs = async () => {
-      setLoadingCollectibles(true);
-      const collectibles = await fetchMockedNFTs(profileAddress, contract);
-      if (Array.isArray(collectibles)) {
-        setProfileCollectibles(collectibles);
-      }
-      setLoadingCollectibles(false);
-    };
-    fetchProfileNFTs();
-  }, [profileAddress, contract]);
+  // useEffect(() => {
+  //   const fetchProfileNFTs = async () => {
+  //     setLoadingCollectibles(true);
+  //     const collectibles = await fetchMockedNFTs(profileAddress, contract);
+  //     if (Array.isArray(collectibles)) {
+  //       setProfileCollectibles(collectibles);
+  //     }
+  //     setLoadingCollectibles(false);
+  //   };
+  //   fetchProfileNFTs();
+  // }, [profileAddress, contract]);
 
   return (
     <Layout title="Profile" className="min-h-[calc(100vh-100px)]">
@@ -64,9 +62,9 @@ export default function CollectiblesPage() {
 
       <div className="mb-8 flex flex-col justify-center gap-3">
         <h3 className="text-xl font-semibold text-gray-strong">Collectibles</h3>
-        {user?.collectibles?.length > 0 && (
+        {/* {user?.collectibles?.length > 0 && (
           <CollectiblesReel collectibleCards={user.collectibles} />
-        )}
+        )} */}
         {user?.collectibles?.length === 0 && <CollectibleCardSkeleton hidden />}
         {/* <section className="inline-grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           {loadingCollectibles ? (

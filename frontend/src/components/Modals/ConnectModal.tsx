@@ -16,6 +16,7 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
     if (user?.isLoggedIn) {
       handleCloseConnectModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.isLoggedIn]);
 
   /**  
