@@ -20,7 +20,6 @@ export async function getUserData(
     let balance = "0";
     try {
       const balanceInWei = await web3.eth.getBalance(address);
-      console.log("balance obtained in wei", balanceInWei);
       balance = web3.utils.fromWei(balanceInWei);
     } catch (error) {
       console.error(error);
@@ -28,7 +27,6 @@ export async function getUserData(
 
     // Truncate the user's address for display purposes
     const shortAddress = getAddressShortcut(address);
-    console.log("Fetched user data!, address: ", address);
     return {
       isLoggedIn: true,
       loading: false,
@@ -92,8 +90,6 @@ export async function getUserChainData(
         communityMemberships.push(communityId);
       }
     }
-
-    console.log("user nfts on collections", userNftsOnCollections);
 
     return {
       collectibles: userNftsOnCollections,

@@ -1,5 +1,10 @@
 import WeaveDB from "weavedb-sdk";
-import { Community, PostCreationPayload } from "../../../types";
+import {
+  Community,
+  Post,
+  PostCreationPayload,
+  PrePostedCommunity,
+} from "../../../types";
 import { generateRandomId } from "../../utils/functions";
 
 export class WeaveDBApi {
@@ -13,8 +18,21 @@ export class WeaveDBApi {
 
   async getAllCommunities(): Promise<Community[]> {
     try {
-      const response = await this.db.cget("communities");
-      const communities = response.map((community) => community.data);
+      const [communityResponse, postsResponse] = await Promise.all([
+        this.db.cget("communities"),
+        this.db.cget("posts"),
+      ]);
+
+      const communities = communityResponse.map((community) => community.data);
+      const posts = postsResponse.map((post) => post.data);
+
+      // Map posts to their respective communities
+      communities.forEach((community) => {
+        community.posts = posts.filter(
+          (post) => post.communityId === community.communityId,
+        );
+      });
+
       return communities;
     } catch (error) {
       console.log(error);
@@ -25,45 +43,33 @@ export class WeaveDBApi {
     communityId: string,
     postCreationPayload: PostCreationPayload,
   ) {
-    // 0. validate identity
     try {
-      await this.checkOrSignIdentity();
-
       try {
-        // 1. get updated community
-        const latestCommunitySnapshot = await this.db.get(
-          "communities",
-          communityId,
+        const { text, isPublic, creationDate } = postCreationPayload;
+        const postId = generateRandomId();
+        await this.db.set(
+          {
+            communityId: communityId,
+            content: text,
+            creationDate: creationDate,
+            isPublic: isPublic,
+            postId: postId,
+          },
+          "posts",
+          postId,
         );
-        console.log("latest community snapshot", latestCommunitySnapshot);
-
-        const { text, isPublic } = postCreationPayload;
-
-        // images to be added to payload
-
-        const updatedCommunity: Community = {
-          ...latestCommunitySnapshot,
-          posts: [
-            ...latestCommunitySnapshot.posts,
-            {
-              communityId: communityId,
-              content: text,
-              creationDate: new Date().toISOString(),
-              isPublic: isPublic,
-              postId: generateRandomId(),
-            },
-          ],
-        };
-
-        await this.db.set(updatedCommunity as any, "communities", communityId);
-        console.log("Post published successfully!");
       } catch (error) {
-        console.log("createCommunity Post failed", error);
+        console.error("createCommunityPost() failed", error);
+        throw error;
       }
     } catch (error) {
-      console.log("createCommunityPost failed on checkOrSignIdentity", error);
-      return;
+      console.error(
+        "createCommunityPost() failed on checkOrSignIdentity()",
+        error,
+      );
+      throw error;
     }
+    console.log("createCommunityPost() succeeded");
   }
 
   // async addCollection(collection: Collection["data"]) {

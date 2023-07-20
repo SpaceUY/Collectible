@@ -57,7 +57,6 @@ const ManageCollectibles = () => {
     // });
 
     // TODO images
-    // console.log("sent", { imagePaths: imagePaths });
   };
 
   return (

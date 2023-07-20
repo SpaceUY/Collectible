@@ -29,31 +29,23 @@ export default function CollectiblesPage() {
     }
   };
 
-  // if inspected profile is not the current user, fetch the nfts.
   useEffect(() => {
     if (!profileAddress) return;
-    // if (user?.loading) return;
-    // if (profileAddress !== user?.address) {
     const getUserNfts = async () => {
       try {
-        console.log("trigerring request to user nfts");
         const userNfts = await getUserNFTsOnCollections(
           profileAddress as string,
           allCollectionsAddresses,
         );
-        console.log("user nfts", userNfts);
-        console.log("user", user);
         setProfileNfts(userNfts as unknown as AlchemyNFT[]);
       } catch (error) {
-        console.log("error at fetching profile nfts", error);
+        console.error("error at fetching profile nfts", error);
       } finally {
         setLoadingProfileNfts(false);
       }
     };
     getUserNfts();
-    // } else {
-    //   setProfileNfts(user?.collectibles as unknown as AlchemyNFT[]);
-    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileAddress, user]);
 
   return (
@@ -69,9 +61,7 @@ export default function CollectiblesPage() {
         >
           <div className="rounded-full border-[1px] bg-gray-strong">
             <Image
-              /** 
-               @DEV remove opacity-0 to display image
-            **/
+              // Remove opacity-0 to display image
               className="h-16 w-16 rounded-full border-gray-strong opacity-0"
               src={"isologo.svg"}
               width={50}
@@ -102,9 +92,7 @@ export default function CollectiblesPage() {
             <CollectibleCardSkeleton />
           </section>
         )}
-
         {profileNfts.length > 0 && <CollectiblesReel nfts={profileNfts} />}
-
         {profileNfts.length === 0 && <CollectibleCardSkeleton hidden />}
       </div>
     </Layout>

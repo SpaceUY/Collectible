@@ -4,6 +4,7 @@ import { useWeaveDB } from "../../context/WeaveDBContext";
 import Image from "next/image";
 import { Community } from "../../../../types";
 import { useUser } from "@/context/UserContext";
+import { generateRandomId } from "../../../utils/functions";
 
 interface AddPostProps {
   community: Community;
@@ -11,7 +12,7 @@ interface AddPostProps {
 
 const AddPost = ({ community }: AddPostProps) => {
   const [postText, setPostText] = useState("");
-  const { weaveDBApi } = useWeaveDB();
+  const { weaveDBApi, handleAppendNewPost } = useWeaveDB();
   const { user } = useUser();
 
   const resetForm = () => {
@@ -19,17 +20,33 @@ const AddPost = ({ community }: AddPostProps) => {
   };
 
   const handleSubmitPost = async () => {
-    console.log("submiting post..");
-    console.log("user", user);
-    weaveDBApi.createCommunityPost(community.communityId, {
-      text: postText,
-      isPublic: true, // TODO: add option to make post private
-    });
+    console.log("handleSubmitPost() call");
+
+    const isPublic = true;
+    const postId = generateRandomId();
+    try {
+      await weaveDBApi.createCommunityPost(community.communityId, {
+        text: postText,
+        creationDate: new Date().toISOString(),
+        isPublic: isPublic, // TODO: add option to make post private
+      });
+      handleAppendNewPost(community, {
+        communityId: community.communityId,
+        content: postText,
+        creationDate: new Date().toISOString(),
+        isPublic: isPublic,
+        postId: postId,
+      });
+
+      resetForm();
+    } catch (e) {
+      console.error("Error at submiting post", e);
+    }
   };
 
   return (
-    <article className="h-auto w-full rounded-lg bg-collectible-medium-purple p-7">
-      <div className={`mb-4 flex items-center`}>
+    <article className="relative h-auto w-full rounded-lg bg-collectible-medium-purple px-5 py-6 ">
+      <div className={`mb-3.5 flex items-center`}>
         <Image
           className="h-10 w-10 rounded-full bg-white/10 object-contain"
           src={community.picture}
@@ -57,8 +74,8 @@ const AddPost = ({ community }: AddPostProps) => {
         onChange={() => console.log("a")}
       /> */}
 
-      <div className="mt-4 flex w-full items-center justify-end">
-        <Button className="px-6" action={handleSubmitPost}>
+      <div className="mb-[-4px] mt-2 flex w-full items-center justify-end">
+        <Button className="px-8" action={handleSubmitPost}>
           Post
         </Button>
       </div>

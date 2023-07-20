@@ -37,7 +37,6 @@ const ManageBenefits = () => {
     //   finishDate: selectedDayRange.from.toString(),
     //   content: "", // TODO
     // });
-    // console.log("sent");
   };
 
   return (

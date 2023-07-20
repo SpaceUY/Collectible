@@ -54,10 +54,8 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
       availabilityError = error.message;
     } finally {
       if (availabilityError && availabilityError.includes("invalid token ID")) {
-        console.log("The NFT is available for minting");
         return false;
       } else {
-        console.log("The NFT is not available for minting");
         return true;
       }
     }
@@ -67,8 +65,6 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
     if (key && web3) {
       const getCollectible = async () => {
         const decodedData = decodeVariables(key);
-        console.log("decoded data obtained from url", decodedData);
-
         if (decodedData) {
           const tokenID = decodedData.tokenId;
           const tokenURI = decodedData.tokenURI;
@@ -85,14 +81,8 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
             setLoading(false);
           } else {
             // if it is available, fetch the nft, the merkle proof and generate the proof
-
             const uri = await getTokenURI(tokenURI);
-            console.log("obtained URI from getTokenURI", uri);
             const merkleProof = await getMerkleProof(tokenID, merkleTreeCID);
-            console.log(
-              "obtained merkle proof from getMerkleProof",
-              merkleProof,
-            );
             setCollectibleURI(uri);
             setMerkleProof(merkleProof);
             setLoading(false);
@@ -108,15 +98,6 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
   }, [key, web3]);
 
   const handleMint = async () => {
-    console.log("trigerred mint with variables");
-    console.log("user address", user?.address);
-    console.log("contract address", keyVariables?.contractAddress);
-    console.log("tokenID", keyVariables?.tokenId);
-    console.log("tokenURI", keyVariables?.tokenURI);
-    console.log("password", keyVariables?.password);
-    console.log("merkleProof", merkleProof);
-
-    console.log("starting the minting ");
     const contractInstance = new web3.eth.Contract(
       collectibleContractAbi,
       keyVariables?.contractAddress,
@@ -139,20 +120,9 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
     }
 
     try {
-      const result = await contractInstance.methods
+      await contractInstance.methods
         .safeMint(+tokenId, tokenUri, password, proof)
         .send({ from: user?.address });
-      console.log("Transaction receipt:", result);
-
-      // Check for the modal here
-      const magicModal = document.getElementById("modal-portal");
-
-      if (magicModal) {
-        console.log("Magic modal found:", magicModal);
-      } else {
-        console.log("Magic modal not found");
-      }
-      //minted: 12, 0
 
       setThrowConfetti(true);
     } catch (error) {

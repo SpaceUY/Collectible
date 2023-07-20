@@ -17,7 +17,6 @@ const initialUserState: UserData = {
   communityOwnerships: [],
 };
 
-// Define user context type
 type UserContextType = {
   user: UserData;
   connectUser: () => void;
@@ -68,6 +67,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     // Disconnect from magic
     await magic.user.logout();
     console.log("disconnected from Magic");
+
     // Clear the user state
     setUser(initialUserState);
 
@@ -77,10 +77,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     // Redirect to homepage
     router.push("/");
   };
-
-  useEffect(() => {
-    console.log("user changed", user);
-  }, [user]);
 
   const fetchUserData = async () => {
     if (!web3) {
@@ -123,7 +119,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       allCollectionAddreses,
     );
 
-    console.log("fetchUserChainData being executed");
     setUser({
       ...user,
       collectibles: userChainData.collectibles,

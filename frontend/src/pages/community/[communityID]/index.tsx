@@ -31,7 +31,7 @@ export default function CollectiblesPage() {
   const { user } = useUser();
   const router = useRouter();
   const { communityId } = router.query;
-  const { allCommunities, loadingDB } = useWeaveDB();
+  const { allCommunities, loadingDB, loadingDBData } = useWeaveDB();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
 
@@ -54,7 +54,7 @@ export default function CollectiblesPage() {
   };
 
   useEffect(() => {
-    if (!loadingDB) {
+    if (!loadingDB && !loadingDBData) {
       const community = allCommunities.find(
         (community) => community.communityId === communityId,
       );
@@ -70,18 +70,18 @@ export default function CollectiblesPage() {
       setIsOwner(isOwner);
       setIsMember(isMember);
     }
-  }, [allCommunities, communityId, user, loadingDB]);
+  }, [allCommunities, communityId, user, loadingDB, loadingDBData]);
 
   return (
     <Layout title="Community Page" className="">
       {error && <ErrorComponent errorMessage={error} />}
 
-      {loadingDB && (
+      {loadingDBData && (
         <div className="flex h-[calc(100vh-200px)] items-center justify-center">
           <LoadingWheel />
         </div>
       )}
-      {community && (
+      {!loadingDBData && community && (
         <>
           <Head>
             <title>Collectible - {community.name}</title>
