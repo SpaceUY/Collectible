@@ -5,33 +5,34 @@ import {
   PostCreationPayload,
   PrePostedCommunity,
 } from "../../../types";
-import { generateRandomId } from "../../utils/functions";
 
 export class WeaveDBApi {
   private db: WeaveDB;
-  private checkOrSignIdentity: () => Promise<void>;
+  // private checkOrSignIdentity: () => Promise<void>;
 
   constructor(db: WeaveDB, checkOrSignIdentity: () => Promise<void>) {
-    this.checkOrSignIdentity = checkOrSignIdentity;
+    // this.checkOrSignIdentity = checkOrSignIdentity;
     this.db = db;
   }
 
   async getAllCommunities(): Promise<Community[]> {
     try {
-      const [communityResponse, postsResponse] = await Promise.all([
-        this.db.cget("communities"),
-        this.db.cget("posts"),
-      ]);
-
-      const communities = communityResponse.map((community) => community.data);
-      const posts = postsResponse.map((post) => post.data);
+      // const [communityResponse, postsResponse] = await Promise.all([
+      //   this.db.cget("communities"),
+      //   this.db.cget("posts"),
+      // ]);
+      const communitiesResponse = await this.db.cget("communities");
+      const communities = communitiesResponse.map(
+        (community) => community.data,
+      );
+      // const posts = postsResponse.map((post) => post.data);
 
       // Map posts to their respective communities
-      communities.forEach((community) => {
-        community.posts = posts.filter(
-          (post) => post.communityId === community.communityId,
-        );
-      });
+      // communities.forEach((community) => {
+      //   community.posts = posts.filter(
+      //     (post) => post.communityId === community.communityId,
+      //   );
+      // });
 
       return communities;
     } catch (error) {
@@ -39,44 +40,46 @@ export class WeaveDBApi {
     }
   }
 
-  async createCommunityPost(
-    communityId: string,
-    postCreationPayload: PostCreationPayload,
-  ) {
+  async getCommunity(communityId: string) {
     try {
-      try {
-        const { text, isPublic, creationDate } = postCreationPayload;
-        const postId = generateRandomId();
-        // await this.db.set(
-        //   {
-        //     communityId: communityId,
-        //     content: text,
-        //     creationDate: creationDate,
-        //     isPublic: isPublic,
-        //     postId: postId,
-        //   },
-        //   "posts",
-        //   postId,
-        // );
+      const communityResponse = await this.db.cget("communities", communityId);
+      const community = communityResponse.data;
 
+      return community;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createCommunityPost(postCreationPayload: Post, identity: any) {
+    try {
+      const { content, communityId, isPublic, creationDate, postId } =
+        postCreationPayload;
+
+      const lastestCommunitySnapshot = await this.getCommunity(communityId);
+
+      console.log("latestCommunitySnapshot", lastestCommunitySnapshot);
+
+      console.log("identity", identity);
+      if (identity) {
         await this.db.update(
-          { coverColor: "#f1f1f1" },
+          { posts: [...lastestCommunitySnapshot.posts, postCreationPayload] },
+          "communities",
+          communityId,
+          identity,
+        );
+      } else {
+        await this.db.update(
+          { posts: [...lastestCommunitySnapshot.posts, postCreationPayload] },
           "communities",
           communityId,
         );
-        console.log("updating colorColover of community", communityId);
-      } catch (error) {
-        console.error("createCommunityPost() failed", error);
-        throw error;
       }
+      console.log("created Post for communityId", communityId);
     } catch (error) {
-      console.error(
-        "createCommunityPost() failed on checkOrSignIdentity()",
-        error,
-      );
+      console.error("createCommunityPost() failed", error);
       throw error;
     }
-    console.log("createCommunityPost() succeeded");
   }
 
   // async addCollection(collection: Collection["data"]) {

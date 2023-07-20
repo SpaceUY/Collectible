@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Community } from "../../../../types";
 import { useUser } from "@/context/UserContext";
 import { generateRandomId } from "../../../utils/functions";
+import community from "../../../../contract/smart-scripts/community";
 
 interface AddPostProps {
   community: Community;
@@ -12,7 +13,7 @@ interface AddPostProps {
 
 const AddPost = ({ community }: AddPostProps) => {
   const [postText, setPostText] = useState("");
-  const { weaveDBApi, handleAppendNewPost } = useWeaveDB();
+  const { weaveDBApi, handleAppendNewPost, identity } = useWeaveDB();
   const { user } = useUser();
 
   const resetForm = () => {
@@ -24,16 +25,23 @@ const AddPost = ({ community }: AddPostProps) => {
 
     const isPublic = true;
     const postId = generateRandomId();
+    const creationDate = new Date().toISOString();
+
     try {
-      await weaveDBApi.createCommunityPost(community.communityId, {
-        text: postText,
-        creationDate: new Date().toISOString(),
-        isPublic: isPublic, // TODO: add option to make post private
-      });
+      await weaveDBApi.createCommunityPost(
+        {
+          content: postText,
+          creationDate: creationDate,
+          communityId: community.communityId,
+          postId: postId,
+          isPublic: isPublic, // TODO: add option to make post private
+        },
+        identity,
+      );
       handleAppendNewPost(community, {
         communityId: community.communityId,
         content: postText,
-        creationDate: new Date().toISOString(),
+        creationDate: creationDate,
         isPublic: isPublic,
         postId: postId,
       });
@@ -46,7 +54,7 @@ const AddPost = ({ community }: AddPostProps) => {
 
   return (
     <article className="relative h-auto w-full rounded-lg bg-collectible-medium-purple px-5 py-6 ">
-      <div className={`mb-3.5 flex items-center`}>
+      {/* <div className={`mb-3.5 flex items-center`}>
         <Image
           className="h-10 w-10 rounded-full bg-white/10 object-contain"
           src={community.picture}
@@ -58,7 +66,7 @@ const AddPost = ({ community }: AddPostProps) => {
         <h3 className="ml-2.5 font-medium text-gray-medium">
           {community.name}
         </h3>
-      </div>
+      </div> */}
 
       <textarea
         name="post-text"
@@ -74,7 +82,7 @@ const AddPost = ({ community }: AddPostProps) => {
         onChange={() => console.log("a")}
       /> */}
 
-      <div className="mb-[-4px] mt-2 flex w-full items-center justify-end">
+      <div className="mb-[-8px] mt-2 flex w-full items-center justify-end">
         <Button className="px-8" action={handleSubmitPost}>
           Post
         </Button>

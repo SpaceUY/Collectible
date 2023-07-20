@@ -23,6 +23,7 @@ type WeaveDBContextType = {
   loadingDB: boolean;
   loadingDBData: boolean;
   identity: any;
+  checkOrSignIdentity: () => void;
   handleAppendNewPost: (community: Community, post: Post) => void;
 };
 
@@ -48,6 +49,7 @@ export const WeaveDBContext = createContext<WeaveDBContextType>({
   loadingDB: true,
   loadingDBData: true,
   identity: null,
+  checkOrSignIdentity: () => {},
   handleAppendNewPost: () => {},
 });
 
@@ -80,30 +82,8 @@ export const WeaveDBProvider = ({
     @DEV Similar to the AuthSig, generate an Identity to be able to sign with the Magic Wallet
     This only needs to be done once per session, utile to avoid multiple signing
   */
-  // const signIdentity = async () => {
-  //   if (!user?.isLoggedIn) {
-  //     return alert("user must be connected in order to SignIdentity");
-  //   }
-  //   if (!web3) {
-  //     return alert(
-  //       "web3 must be connected and loaded in order to SignIdentity",
-  //     );
-  //   }
-  //   if (!db) {
-  //     return alert("db must be connected and loaded in order to SignIdentity");
-  //   }
-  //   const account = user?.address;
-  //   try {
-  //     const { identity } = await db.createTempAddress(account);
-  //     setIdentity(identity);
-  //   } catch (error) {
-  //     console.error("Error creating temp address", error);
-  //   }
-  // };
-
-  // To be executed before writting calls towards WeaveDB, inside WeaveDBApi
   const checkOrSignIdentity = async () => {
-    if (!user?.isLoggedIn) {
+    if (!user?.address) {
       return alert("user must be connected in order to SignIdentity");
     }
     if (!web3) {
@@ -114,25 +94,14 @@ export const WeaveDBProvider = ({
     if (!db) {
       return alert("db must be connected and loaded in order to SignIdentity");
     }
-
     console.log("WeaveDBContext - checkOrSignIdentity() call");
-    console.log(
-      "States: ",
-      "\nuser",
-      user,
-      "\nweb3",
-      web3,
-      "\ndb",
-      db,
-      "\nidentity",
-      identity,
-    );
     if (user?.isLoggedIn && web3 && db && !identity) {
       console.log(
-        "WeaveDBContext - checkOrSignIdentity() - All states seems OK",
+        "WeaveDBContext - checkOrSignIdentity() - All states seems OK to Sign Identity",
       );
     }
     if (!identity) {
+      console.log("Identity not yet signed");
       try {
         const { identity } = await db.createTempAddress(user?.address);
         console.log("db.createTempAddress(address) passed");
@@ -266,7 +235,7 @@ export const WeaveDBProvider = ({
         "web3 must be connected and loaded to run fetchUserChainData",
       );
     }
-    if (!user?.isLoggedIn) {
+    if (!user?.address) {
       return console.error("user must be logged in to run fetchUserChainData");
     }
     if (loadingDBData) {
@@ -274,11 +243,25 @@ export const WeaveDBProvider = ({
         "loadingDBData must be false to run fetchUserChainData",
       );
     }
-
-    fetchUserChainData(allCommunities, allCollections, allCollectionsAddresses);
+    (async () => {
+      // try {
+      //   await checkOrSignIdentity();
+      // } catch (error) {
+      //   console.error("Error at checkOrSignIdentity", error);
+      // }
+      await fetchUserChainData(
+        allCommunities,
+        allCollections,
+        allCollectionsAddresses,
+      );
+    })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [web3, user?.isLoggedIn, allCommunities]);
+  }, [web3, user?.address, allCommunities, loadingDBData]);
+
+  useEffect(() => {
+    console.log("identity has changed", identity);
+  }, [identity]);
 
   useEffect(() => {
     startWeaveDB();
@@ -297,6 +280,7 @@ export const WeaveDBProvider = ({
         loadingDB,
         loadingDBData,
         identity,
+        checkOrSignIdentity,
         handleAppendNewPost,
       }}
     >

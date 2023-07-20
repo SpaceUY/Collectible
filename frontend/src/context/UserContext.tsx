@@ -91,18 +91,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         const userData = await getUserData(web3, address);
         setUser({
           ...user,
-          isLoggedIn: userData.isLoggedIn,
           address: userData.address,
           shortAddress: userData.shortAddress,
           name: userData.name,
           balance: userData.balance,
-          loading: userData.loading,
+          // loading: userData.loading,
+          // isLoggedIn: userData.isLoggedIn,
         });
       } catch (e) {
         console.log(e);
       }
     } else {
-      setUser({ ...user, loading: false });
+       setUser({ ...user, loading: false });
     }
   };
 
@@ -118,12 +118,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       allCollections,
       allCollectionAddreses,
     );
-
+    console.log("obtained user chain data");
     setUser({
       ...user,
       collectibles: userChainData.collectibles,
       communityMemberships: userChainData.communityMemberships,
       communityOwnerships: userChainData.communityOwnerships,
+      isLoggedIn: true, // edited
+      loading: false, // edited
     });
   };
 
