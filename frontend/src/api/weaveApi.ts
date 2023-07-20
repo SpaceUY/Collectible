@@ -47,17 +47,24 @@ export class WeaveDBApi {
       try {
         const { text, isPublic, creationDate } = postCreationPayload;
         const postId = generateRandomId();
-        await this.db.set(
-          {
-            communityId: communityId,
-            content: text,
-            creationDate: creationDate,
-            isPublic: isPublic,
-            postId: postId,
-          },
-          "posts",
-          postId,
+        // await this.db.set(
+        //   {
+        //     communityId: communityId,
+        //     content: text,
+        //     creationDate: creationDate,
+        //     isPublic: isPublic,
+        //     postId: postId,
+        //   },
+        //   "posts",
+        //   postId,
+        // );
+
+        await this.db.update(
+          { coverColor: "#f1f1f1" },
+          "communities",
+          communityId,
         );
+        console.log("updating colorColover of community", communityId);
       } catch (error) {
         console.error("createCommunityPost() failed", error);
         throw error;
