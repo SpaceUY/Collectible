@@ -5,13 +5,40 @@ import { Poppins } from "@next/font/google";
 import { ModalProvider } from "@/context/ModalContext";
 import { WeaveDBProvider } from "../context/WeaveDBContext";
 import { LitProvider } from "@/context/LitContext";
+import useWindowSize from "@/hooks/useWindowSize";
+import Image from "next/image";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
+Image;
+const NotAvailableAOnMobileComponent = () => {
+  return (
+    <div
+      className="custom-scrollbar flex h-screen snap-y snap-mandatory flex-col items-center justify-center gap-8 overflow-auto"
+      style={{
+        backgroundImage: `url('/img/landing-system.svg')`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
+      <Image
+        src={"/isologo.svg"}
+        width={180}
+        height={200}
+        alt="Collectible Logo"
+      />
+      <p className="px-8 text-center text-xl text-gray-strong">
+        We will be available in mobile devices soon!
+      </p>
+    </div>
+  );
+};
 
 export default function App({ Component, pageProps }) {
+  const size = useWindowSize();
+
   return (
     <Web3Provider>
       <UserProvider>
@@ -25,7 +52,11 @@ export default function App({ Component, pageProps }) {
                   }
                 `}
               </style>
-              <Component {...pageProps} />
+              {size.width > 1024 ? (
+                <Component {...pageProps} />
+              ) : (
+                <NotAvailableAOnMobileComponent />
+              )}
             </ModalProvider>
           </LitProvider>
         </WeaveDBProvider>
