@@ -1,4 +1,4 @@
-import WeaveDB from "weavedb-sdk";
+import WeaveDB from "custom-weavedb-sdk";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { magic } from "../lib/magic";
 import { useUser } from "./UserContext";

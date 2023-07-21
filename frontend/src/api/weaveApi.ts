@@ -1,4 +1,4 @@
-import WeaveDB from "weavedb-sdk";
+import WeaveDB from "custom-weavedb-sdk";
 import {
   Community,
   Post,
