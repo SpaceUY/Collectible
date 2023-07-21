@@ -7,6 +7,7 @@ interface ButtonProps {
   action: () => void;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -16,6 +17,7 @@ const Button = ({
   action,
   children,
   className = "",
+  disabled,
 }: ButtonProps) => {
   return (
     <button
@@ -35,8 +37,10 @@ const Button = ({
       } ${
         isLarge ? "max-h-12 px-6 py-3 text-base" : "max-h-10 px-5 py-2 text-sm"
       } ${fullWidth ? "w-full" : ""} 
+        ${disabled ? "cursor-default opacity-50" : ""}
       ${className}`}
       onClick={action}
+      disabled={disabled}
     >
       {children}
     </button>

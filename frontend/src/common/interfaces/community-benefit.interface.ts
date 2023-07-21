@@ -5,10 +5,3 @@ export type BenefitType =
   | "custom"
   | "merch";
 
-export interface Benefit {
-  id: string;
-  type: BenefitType;
-  name: string;
-  description: string;
-  image?: string;
-}

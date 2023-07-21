@@ -16,6 +16,7 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
     if (user?.isLoggedIn) {
       handleCloseConnectModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.isLoggedIn]);
 
   /**  
@@ -25,11 +26,11 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
   return (
     <>
       <Backdrop />
-      <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
           <div className="mb-14 flex justify-between">
             <Image
-              src={"/collectible-logo.svg"}
+              src={"/isologo.svg"}
               width={60}
               height={50}
               alt="Collectible Logo"
@@ -62,7 +63,6 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
             >
               Connect as a creator
             </Button>
-            ;
           </div>
         </div>
       </div>

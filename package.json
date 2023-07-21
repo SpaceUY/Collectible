@@ -1,7 +1,7 @@
 {
-  "name": "magic-nft-demo",
+  "name": "collectible-monorepo",
   "version": "1.0.0",
-  "description": "Magic NFT Starter Kit!",
+  "description": "Collectible Monorepo",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -25,8 +25,5 @@
   "devDependencies": {
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.4"
-  },
-  "dependencies": {
-    "swiper": "^9.4.1"
   }
 }

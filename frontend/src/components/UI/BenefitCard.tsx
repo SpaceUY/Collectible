@@ -1,31 +1,39 @@
 import Image from "next/image";
 import React from "react";
-import {
-  BenefitType,
-  Benefit,
-} from "../../common/interfaces/community-benefit.interface";
 import Button from "./Button";
+import { Benefit } from "../../../types";
 
-interface BenefitCardProps extends Benefit {
+interface BenefitCardProps {
+  benefit: Benefit;
   isMember: boolean;
+  isOwner: boolean;
 }
 
-const BenefitCard = ({
-  name,
-  description,
-  image,
-  type,
-  id,
-  isMember,
-}: BenefitCardProps) => {
+const BenefitCard = ({ benefit, isMember, isOwner }: BenefitCardProps) => {
+
+  let imagePath = "";
+  switch (benefit.type) {
+    case "discord-access":
+      imagePath = "/img/benefit-discord.png";
+      break;
+    case "zoom-call-access":
+      imagePath = "/img/benefit-zoom.png";
+      break;
+    case "merch":
+      imagePath = "/img/benefit-merch.png";
+      break;
+    case "content":
+      imagePath = "/img/benefit-content.png";
+      break;
+    default:
+      break;
+  }
   return (
-    <div
-      className="w-[220px] cursor-pointer rounded-lg bg-collectible-medium-purple p-4"
-    >
+    <div className="w-[220px] cursor-pointer rounded-lg bg-collectible-medium-purple p-4">
       <div className="relative w-full rounded-lg bg-gray-medium">
         <Image
           className="w-full rounded-lg object-cover"
-          src={image}
+          src={imagePath}
           width={200}
           height={200}
           alt=""
@@ -34,18 +42,17 @@ const BenefitCard = ({
       </div>
 
       <h3 className="mt-3 truncate text-base font-bold text-gray-strong">
-        {name}
+        {benefit.name}
       </h3>
-      <p className="truncate text-sm font-semibold text-gray-weak">
-        {description}
+      <p className="truncate text-xs font-semibold text-gray-weak">
+        Available from {benefit.startDate} to {benefit.finishDate}
       </p>
-      {isMember && (
+      {(isMember || isOwner) && (
         <Button
           className="mt-4"
           action={() => {
-            alert("clicked claim");
-
             // TODO claim benefit
+            alert("clicked claim");
           }}
         >
           Access

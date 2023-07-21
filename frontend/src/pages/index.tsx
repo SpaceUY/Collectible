@@ -1,81 +1,173 @@
-import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
-import { useUser } from "@/context/UserContext";
-import { COMMUNITY_POSTS } from "../../mock/community-post";
-import CommunityPost from "../components/UI/CommunityPost";
-import Head from "next/head";
-import { COLLECTIONS } from "../../mock/collections";
-import CollectiblesReel from "../components/UI/CollectiblesReel";
+import Link from "next/link";
+import Image from "next/image";
+import Button from "../components/UI/Button";
 
-export default function CollectiblesPage() {
-  const { user } = useUser();
+const LEARN_MORE = "learn-more";
+const DISCOVER = "discover";
+const ABOUT_US = "about-us";
 
-  // initialize the state used to track the current page's data
-  const [loading, setLoading] = useState(user?.refreshCollectibles);
+const headerLinks = [
+  { title: "Discover", path: DISCOVER },
+  { title: "Our Platform", path: LEARN_MORE },
+  { title: "About Us", path: ABOUT_US },
+];
 
-  useEffect(() => {
-    // do nothing if the user is not logged in
-    if (!user?.address) {
-      setLoading(true);
-      return;
-    }
-
-    // disable the loading after collectibles have already been loaded
-    if (user?.address && !user?.refreshCollectibles && user?.collectibles) {
-      setLoading(false);
-      return;
-    }
-  }, [user?.address, user?.refreshCollectibles, user?.collectibles]);
-
-  const feedContent: { date: string; element: JSX.Element }[] = [];
-
-  COMMUNITY_POSTS.forEach((post) => {
-    feedContent.push({
-      date: post.createdAt,
-      element: (
-        <CommunityPost
-          title={post.title}
-          postText={post.postText}
-          postId={post.postId}
-          communityId={post.communityId}
-          authorName={post.authorName}
-          authorPicture={post.authorPicture}
-          key={post.postId}
-          createdAt={post.createdAt}
-        />
-      ),
-    });
-  });
-
-  COLLECTIONS.forEach((collection) => {
-    feedContent.push({
-      date: collection.createdAt,
-      element: (
-        <CollectiblesReel
-          key={collection.id}
-          collectibleCards={collection.collectibles}
-          headerText={
-            "New " + collection.communityId + " collection: " + collection.name
-          }
-        />
-      ),
-    });
-  });
-
+const Landing = () => {
   return (
-    <Layout title="Home" className="">
-      <Head>
-        <title>Collectible - Home</title>
-      </Head>
+    <>
+      <header className="absolute z-10 flex w-full items-center py-[14px]">
+        <Link className="mr-[14px] ml-3 w-[250px] shrink-0 px-4" href="/">
+          <Image
+            src={"/isologo.svg"}
+            width={145.54}
+            height={47.05}
+            alt="Collectible Logo"
+          />
+        </Link>
+        <div className="flex gap-14">
+          {headerLinks.map((link) => (
+            <Link
+              className=" text-gray-medium hover:text-gray-strong"
+              key={link.title}
+              href={`#${link.path}`}
+            >
+              {link.title}
+            </Link>
+          ))}
+        </div>
+        <Link className="ml-auto mr-10 mt-2" href="/app">
+          <Button className="px-10" action={() => console.log("ahem")}>
+            Enter App
+          </Button>
+        </Link>
+      </header>
 
-      {/** @DEV Home Feed */}
-      <div className="flex flex-col gap-8">
-        {feedContent
-          .sort((a, b) => {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-          })
-          .map((content) => content.element)}
+      <div className="custom-scrollbar h-screen snap-y snap-mandatory overflow-auto">
+        <div
+          style={{
+            backgroundImage: `url('/img/landing-system.svg')`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 0 top 0",
+          }}
+        >
+          <div className="mx-auto mb-12 h-screen w-2/3 snap-center items-center pt-14 text-center">
+            <div className="mt-72 flex flex-col items-center justify-center">
+              <h1 className="w-2/3 text-3xl font-bold text-gray-strong ">
+                Explore, Collect and Dive into the World of Your Treasures.
+              </h1>
+              <div className="mt-8 flex w-40">
+                <Link href={`#${DISCOVER}`} scroll={true}>
+                  <Button className="" action={() => console.log("ahem")}>
+                    Discover More
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section
+          id={DISCOVER}
+          className="2xl:w-2/3snap-center mx-auto mb-20 flex h-screen  w-9/12  items-center gap-20 "
+        >
+          <Image
+            className="w-1/2"
+            src={"/img/discover-orbit.svg"}
+            width={1972}
+            height={1988}
+            alt="Collectible Logo"
+          />
+          <article className="w-1/2">
+            <h2 className="mb-4 text-xl font-extrabold text-gray-strong">
+              Discover!
+            </h2>
+            <p className="mb-3 text-gray-strong">
+              You{"'"}ve just bought a book - your ticket to a world of
+              imagination. Hidden inside is a secret, a QR code waiting to be
+              revealed. As you scratch to unveil it, you{"'"}re not just
+              revealing a code, but unlocking a door to an entire universe
+              related to your book. You{"'"}re about to step into a whole new
+              world, leaving the mundane behind.
+            </p>
+            <p className="mb-3  text-gray-strong">
+              Welcome to the Collectible universe! Scan the code, hop onto our
+              website or app, and create your account using just your email.
+              Boom! You are now a verified original book holder, a proud owner
+              of a digital collectible tied to your physical book. You{"'"}ve
+              not just bought a book; you{"'"}ve claimed a unique piece of its
+              existence. And with it, come remarkable experiences.
+            </p>
+          </article>
+        </section>
+
+        <section
+          id={LEARN_MORE}
+          className="mx-auto mb-20 flex h-screen w-9/12 snap-center items-center gap-1 2xl:w-2/3"
+        >
+          <article className="w-1/2 text-right">
+            <h2 className="mb-4 text-xl font-extrabold text-gray-strong">
+              Our Platform
+            </h2>
+            <p className="mb-3 text-gray-strong">
+              Collectible is a platform that serves as a bridge between
+              entertainment products and unlockable experiences via digital
+              collectibles, providing a seamless and user-friendly experience by
+              leveraging blockchain technology.
+            </p>
+            <p className="mb-3 text-gray-strong">
+              Collectible establishes a secure connection between creators and
+              consumers, aiding creators in segmenting their consumer
+              communities, connecting with them, and rewarding them with extras
+              for the products they have already purchased.
+            </p>
+
+            <p className="mb-3 text-gray-strong">
+              When a consumer purchases a product or ticket that contains a
+              collectible and claims it, it becomes blockchain-certified, tied
+              to both them and their original product. As verified holders, they
+              become part of the creator{"'"}s community and begin to receive
+              associated perks.
+            </p>
+          </article>{" "}
+          <Image
+            className="w-1/2"
+            src={"/img/other-orbit.svg"}
+            width={1972}
+            height={1988}
+            alt="Collectible Logo"
+          />
+        </section>
+
+        <section
+          id={ABOUT_US}
+          className="mx-auto mb-20 flex h-screen w-9/12 snap-center items-center gap-10 2xl:w-2/3"
+        >
+          <Image
+            className="w-1/2"
+            src={"/img/collectible-orbit.svg"}
+            width={2368}
+            height={2093}
+            alt="Collectible Logo"
+          />
+          <article className="w-1/2 ">
+            <h2 className="mb-4 text-xl font-extrabold text-gray-strong">
+              About Us
+            </h2>
+            <p className="mb-3  text-gray-strong">
+              Collectible is an innovative platform designed to create an
+              unbreakable bond between creators of entertainment products and
+              their consumers. By bridging physical products and experiences
+              with digital collectibles, it enhances consumer engagement,
+              increases sales, and fosters exclusive communities. Collectible
+              leverages blockchain technology to provide a seamless and friendly
+              user experience, where creators can segment their consumer
+              communities and offer them unique perks tied to their purchases.
+            </p>
+          </article>
+        </section>
       </div>
-    </Layout>
+    </>
   );
-}
+};
+
+export default Landing;
