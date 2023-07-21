@@ -4,6 +4,7 @@ import { Web3Provider } from "@/context/Web3Context";
 import { Poppins } from "@next/font/google";
 import { ModalProvider } from "@/context/ModalContext";
 import { WeaveDBProvider } from "../context/WeaveDBContext";
+import { LitProvider } from "@/context/LitContext";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -15,16 +16,18 @@ export default function App({ Component, pageProps }) {
     <Web3Provider>
       <UserProvider>
         <WeaveDBProvider>
-          <ModalProvider>
-            <style jsx global>
-              {`
-                :root {
-                  --font-inter: ${poppins.style.fontFamily};
-                }
-              `}
-            </style>
-            <Component {...pageProps} />
-          </ModalProvider>
+          <LitProvider>
+            <ModalProvider>
+              <style jsx global>
+                {`
+                  :root {
+                    --font-inter: ${poppins.style.fontFamily};
+                  }
+                `}
+              </style>
+              <Component {...pageProps} />
+            </ModalProvider>
+          </LitProvider>
         </WeaveDBProvider>
       </UserProvider>
     </Web3Provider>

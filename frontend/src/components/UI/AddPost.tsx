@@ -6,6 +6,12 @@ import { Community } from "../../../../types";
 import { useUser } from "@/context/UserContext";
 import { generateRandomId } from "../../../utils/functions";
 import community from "../../../../contract/smart-scripts/community";
+import { useLit } from "@/context/LitContext";
+import {
+  checkAndSignAuthMessage,
+  decryptFromIpfs,
+  encryptToIpfs,
+} from "@lit-protocol/lit-node-client";
 
 interface AddPostProps {
   community: Community;
@@ -15,12 +21,39 @@ const AddPost = ({ community }: AddPostProps) => {
   const [postText, setPostText] = useState("");
   const { weaveDBApi, handleAppendNewPost, identity } = useWeaveDB();
   const { user } = useUser();
+  const { litApi, authSig } = useLit();
+
+  const communityCollections = community.collections.map(
+    (collection) => collection.address,
+  );
 
   const resetForm = () => {
     setPostText("");
   };
 
   const handleSubmitPost = async () => {
+    if (!authSig) {
+      return console.error("AuthSig must be signed in order to post");
+    }
+    console.log("authSig", authSig);
+    try {
+      // const authSig = await checkAndSignAuthMessage({ chain: "mumbai" });
+      const contentCID = await litApi.encrypt(
+        postText,
+        authSig,
+        communityCollections,
+      );
+      console.log(
+        "handleSubmitPost success!, encrypted and pushed, contentCID",
+        contentCID,
+      );
+      resetForm();
+    } catch (error) {
+      console.error("Error at handleSubmitPost, ", error);
+    }
+  };
+
+  const handleSubmitPost2 = async () => {
     console.log("handleSubmitPost() call");
 
     const isPublic = true;

@@ -83,6 +83,9 @@ export const WeaveDBProvider = ({
     This only needs to be done once per session, utile to avoid multiple signing
   */
   const checkOrSignIdentity = async () => {
+    if (identity) {
+      return console.log("Identity already signed");
+    }
     if (!user?.address) {
       return alert("user must be connected in order to SignIdentity");
     }
@@ -108,7 +111,6 @@ export const WeaveDBProvider = ({
         setIdentity(identity);
       } catch (error) {
         console.error("Error at checkOrSignIdentity", error);
-        throw error;
       }
     } else {
       console.log("Identity already signed", identity);
