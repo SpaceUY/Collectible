@@ -23,7 +23,7 @@ const CommunityPost = ({
         <div className="mb-3 flex items-center justify-between">
           <div className="flex cursor-default items-center gap-4">
             <Link
-              href={!disableCommunityLink ? `/community/${communityId}` : ""}
+              href={!disableCommunityLink ? `/app/community/${communityId}` : ""}
               className={`flex items-center`}
             >
               <Image

@@ -2,13 +2,13 @@ import Layout from "@/components/Layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import BenefitSelector from "../../../components/brand/BenefitSelector";
-import CalendarSelector from "../../../components/brand/CalendarSelector";
-import BenefitIllustration from "../../../components/brand/BenefitIllustration";
-import Button from "../../../components/UI/Button";
+import BenefitSelector from "../../../../components/brand/BenefitSelector";
+import CalendarSelector from "../../../../components/brand/CalendarSelector";
+import BenefitIllustration from "../../../../components/brand/BenefitIllustration";
+import Button from "../../../../components/UI/Button";
 import { DayRange } from "@amir04lm26/react-modern-calendar-date-picker";
-import { BenefitOptions } from "../../../common/enums/benefit-options.enum";
-import { useWeaveDB } from "../../../context/WeaveDBContext";
+import { BenefitOptions } from "../../../../common/enums/benefit-options.enum";
+import { useWeaveDB } from "../../../../context/WeaveDBContext";
 
 const ManageBenefits = () => {
   const router = useRouter();

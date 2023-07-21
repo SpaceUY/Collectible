@@ -9,7 +9,7 @@ import { getAddressShortcut } from "utils/functions";
 import { use, useEffect, useState } from "react";
 import { getUserNFTsOnCollections } from "@/api/alchemyApi";
 import { useWeaveDB } from "@/context/WeaveDBContext";
-import { AlchemyNFT } from "../../../types";
+import { AlchemyNFT } from "../../../../types";
 import { magic } from "@/lib/magic";
 
 export default function CollectiblesPage() {

@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import CommunityOverviewCard from "../../../components/home/CommunityOverviewCard";
-import Button from "../../../components/UI/Button";
-import CommunityFeed from "../../../components/community/CommunityFeed";
-import CommunityCollections from "../../../components/community/CommunityCollections";
+import CommunityOverviewCard from "../../../../components/home/CommunityOverviewCard";
+import Button from "../../../../components/UI/Button";
+import CommunityFeed from "../../../../components/community/CommunityFeed";
+import CommunityCollections from "../../../../components/community/CommunityCollections";
 import Head from "next/head";
 import Image from "next/image";
-import CommunityBenefits from "../../../components/community/CommunityBenefits";
-import { CoverColor, Community } from "../../../../types";
+import CommunityBenefits from "../../../../components/community/CommunityBenefits";
+import { CoverColor, Community } from "../../../../../types";
 import { useWeaveDB } from "@/context/WeaveDBContext";
 import ErrorComponent from "@/components/ErrorComponent";
-import LoadingWheel from "../../../components/UI/LoadingWheel";
+import LoadingWheel from "../../../../components/UI/LoadingWheel";
 
 enum CommunityTabs {
   FEED = "feed",

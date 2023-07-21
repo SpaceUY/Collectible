@@ -90,7 +90,7 @@ const CollectibleModal = ({
                 <div className="mb-1 flex w-full justify-between gap-4 self-end">
                   <Link
                     className="rounded-full"
-                    href={`/community/${community.communityId}?tab=collections`}
+                    href={`/app/community/${community.communityId}?tab=collections`}
                     onClick={() => {
                       handleCloseCollectibleModal();
                     }}

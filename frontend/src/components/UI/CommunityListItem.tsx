@@ -21,7 +21,7 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
 
   return (
     <li>
-      <Link href={`/community/${communityId}`} className="">
+      <Link href={`/app/community/${communityId}`} className="">
         <div className="group flex items-center">
           <Image
             className="h-12 w-12 rounded-full bg-gray-strong object-cover "
