@@ -11,6 +11,7 @@ import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { useWeb3 } from "./Web3Context";
 import { useUser } from "./UserContext";
 import { generateRandomId } from "utils/functions";
+import { useRouter } from "next/router";
 
 type LitContextType = {
   litApi: LitApi;
@@ -32,6 +33,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
   const [litApi, setLitApi] = useState<LitApi | null>(null);
   const { web3 } = useWeb3();
   const { user } = useUser();
+  const router = useRouter();
   const [authSig, setAuthSig] = useState<any>(null);
 
   const handleSignAuthSig = async () => {
@@ -93,6 +95,10 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    // if the page url includes app
+    if (!router.pathname.includes("/app")) {
+      return console.log("Not in app, so not signing AuthSig");
+    }
     if (!web3) {
       return console.error(
         "Web3 must be loaded in order to sign AuthSign with Magics",
@@ -108,7 +114,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
       handleSignAuthSig();
     };
     signAuthSig();
-  }, [user?.address, web3, litApi]);
+  }, [user?.address, web3, litApi, router.pathname]);
 
   return (
     <LitContext.Provider

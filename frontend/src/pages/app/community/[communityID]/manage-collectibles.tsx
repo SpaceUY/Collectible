@@ -4,13 +4,13 @@ import { useUser } from "@/context/UserContext";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
-import Button from "../../../components/UI/Button";
+import Button from "../../../../components/UI/Button";
 import { useDropzone } from "react-dropzone";
 import { BsBoxArrowInDown } from "react-icons/bs";
 import Image from "next/image";
-import { useWeaveDB } from "../../../context/WeaveDBContext";
-import LoadingWrapper from '../../../components/LoadingWrapper';
-import LoadingWheel from '@/components/UI/LoadingWheel';
+import { useWeaveDB } from "../../../../context/WeaveDBContext";
+import LoadingWrapper from "../../../../components/LoadingWrapper";
+import LoadingWheel from "@/components/UI/LoadingWheel";
 
 const ManageCollectibles = () => {
   const { user } = useUser();

@@ -11,8 +11,8 @@ import { useWeaveDB } from "@/context/WeaveDBContext";
 import { useLit } from "@/context/LitContext";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
-  { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
-  // { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
+  { text: "Home", icon: "/page-icons/home-icon.svg", href: "/app" },
+  // { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/app" },
 ];
 
 const Sidebar = () => {
@@ -76,7 +76,7 @@ const Sidebar = () => {
           </div>
           <Link
             className="mr-6 flex flex-col"
-            href={`/profile/${user?.address}`}
+            href={`/app/profile/${user?.address}`}
           >
             <p className="text-gray-strong opacity-50">{user?.name}</p>
             <p className="text-sm text-gray-strong opacity-50">
