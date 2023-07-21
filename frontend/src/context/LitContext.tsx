@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { LitApi } from "@/api/litprotocolApi";
 import { ILitNodeClient } from "@lit-protocol/types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
@@ -13,7 +7,23 @@ import { useUser } from "./UserContext";
 import { generateRandomId } from "utils/functions";
 import { useRouter } from "next/router";
 import useWindowSize from "@/hooks/useWindowSize";
+// test
+const siwe = require("siwe");
+const domain = "collectible.vercel.app";
+const origin = "http://localhost:3000/app/";
 
+function createSiweMessage(address, statement) {
+  const siweMessage = new siwe.SiweMessage({
+    domain,
+    address,
+    statement,
+    uri: origin,
+    version: "1",
+    chainId: "1",
+  });
+  return siweMessage.prepareMessage();
+}
+//test
 type LitContextType = {
   litApi: LitApi;
   authSig: any;
@@ -51,19 +61,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
       return console.log("User must be logged in to sign AuthSig ");
     }
     try {
-      const nonce = generateRandomId(); // numeric
-
-      const message = `localhost wants you to sign in with your Ethereum account:
-      ${user?.address}
-
-      This is a test statement. You can put anything you want here.
-
-      URI: https://localhost/login
-      Version: 1
-      Chain ID: 1
-      Nonce: ${nonce}
-      Issued At: ${new Date().toISOString()}
-      `;
+      const message = createSiweMessage(user?.address, "This is a Lit AuthSig");
 
       const sig = await web3.eth.personal.sign(message, user?.address, "");
       const authSig = {
@@ -97,10 +95,10 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    // if the page url includes app
-    if (!router.pathname.includes("/app")) {
-      return console.log("Not in app, so not signing AuthSig");
-    }
+    // To be removed from the landing page
+    // if (!router.pathname.includes("/app")) {
+    //   return console.log("Not in app, so not signing AuthSig");
+    // }
     if (!(size.width > 1024)) {
       return console.log("Must be in desktop to sign AuthSig");
     }
@@ -116,7 +114,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
       return console.error("LitApi must be loaded in order to sign AuthSig");
     }
     const signAuthSig = async () => {
-      handleSignAuthSig();
+      // handleSignAuthSig();
     };
     signAuthSig();
   }, [user?.address, web3, litApi, router.pathname]);

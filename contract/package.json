@@ -12,7 +12,8 @@
     "list-communities": "npx ts-node ./index.ts community list",
     "create-collection": "npx ts-node ./index.ts collection create",
     "list-collections": "npx ts-node ./index.ts collection list",
-    "mint-collectible": "npx ts-node ./index.ts collectible mint"
+    "mint-collectible": "npx ts-node ./index.ts collectible mint",
+    "ecrypt": "npx tsnode run scripts/encryptToIpfs.ts"
   },
   "author": "",
   "license": "MIT",

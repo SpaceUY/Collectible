@@ -69,6 +69,7 @@ export class WeaveDBApi {
           identity,
         );
       } else {
+        console.log("updating without identity. db:", this.db);
         await this.db.update(
           { posts: [...lastestCommunitySnapshot.posts, postCreationPayload] },
           "communities",

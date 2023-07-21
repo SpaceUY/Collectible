@@ -4,12 +4,7 @@ import { magic } from "../lib/magic";
 import { useUser } from "./UserContext";
 import { useWeb3 } from "./Web3Context";
 import { WeaveDBApi } from "@/api/weaveApi";
-import {
-  Community,
-  Collection,
-  CollectionWithNfts,
-  Post,
-} from "../../types";
+import { Community, Collection, CollectionWithNfts, Post } from "../../types";
 import { getCollectionNfts } from "@/api/alchemyApi";
 import { NEW_COLLECTIONS_LENGTH } from "../../constants";
 
@@ -49,7 +44,7 @@ export const WeaveDBContext = createContext<WeaveDBContextType>({
   loadingDB: true,
   loadingDBData: true,
   identity: null,
-  checkOrSignIdentity: () => {},
+  checkOrSignIdentity: async () => {},
   handleAppendNewPost: () => {},
 });
 
@@ -87,26 +82,24 @@ export const WeaveDBProvider = ({
       return console.log("Identity already signed");
     }
     if (!user?.address) {
-      return alert("user must be connected in order to SignIdentity");
+      return console.error("user must be connected in order to SignIdentity");
     }
     if (!web3) {
-      return alert(
+      return console.error(
         "web3 must be connected and loaded in order to SignIdentity",
       );
     }
     if (!db) {
-      return alert("db must be connected and loaded in order to SignIdentity");
-    }
-    console.log("WeaveDBContext - checkOrSignIdentity() call");
-    if (user?.isLoggedIn && web3 && db && !identity) {
-      console.log(
-        "WeaveDBContext - checkOrSignIdentity() - All states seems OK to Sign Identity",
+      return console.error(
+        "db must be connected and loaded in order to SignIdentity",
       );
     }
+    console.log("WeaveDBContext - checkOrSignIdentity() call");
     if (!identity) {
-      console.log("Identity not yet signed");
+      console.log("Identity not yet signed.. asking for signature:");
       try {
         const { identity } = await db.createTempAddress(user?.address);
+
         console.log("db.createTempAddress(address) passed");
         setIdentity(identity);
       } catch (error) {
@@ -132,10 +125,6 @@ export const WeaveDBProvider = ({
     };
   };
 
-  useEffect(() => {
-    console.log("db has changed, db:", db);
-  }, [db]);
-
   const handleAppendNewPost = async (community: Community, post: Post) => {
     community.posts.unshift(post);
     setAllCommunities([
@@ -150,14 +139,7 @@ export const WeaveDBProvider = ({
         "web3 must be connected and loaded to run startWeaveDB",
       );
     }
-    console.log("startWeaveDB() web3", !!web3);
-    console.log(
-      "StartWeaveDB()",
-      "\nmagic.rpcProvider, ",
-      magic.rpcProvider,
-      "\nprocess.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID",
-      process.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID,
-    );
+    console.log("startWeaveDB() call, customProvider is, ", magic.rpcProvider);
     const db = new WeaveDB({
       customProvider: magic.rpcProvider,
       contractTxId: process.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID,
@@ -179,6 +161,33 @@ export const WeaveDBProvider = ({
     setLoadingDB(false);
     console.log("StartWeaveDB() - Finished requests ");
   };
+
+  //test
+  const isAdmin = true;
+  useEffect(() => {
+    if (isAdmin) {
+      if (identity) {
+        return console.log("Identity already signed");
+      }
+      if (!user?.address) {
+        return console.error("user must be connected in order to SignIdentity");
+      }
+      if (!web3) {
+        return console.error(
+          "web3 must be connected and loaded in order to SignIdentity",
+        );
+      }
+      if (!db) {
+        return console.error(
+          "db must be connected and loaded in order to SignIdentity",
+        );
+      }
+      const sign = async () => {
+        await checkOrSignIdentity();
+      };
+      sign();
+    }
+  }, [web3, identity, db, user?.address]);
 
   // Execute side operations after the DB has been loaded
   useEffect(() => {

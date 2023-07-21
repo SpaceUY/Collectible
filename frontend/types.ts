@@ -125,6 +125,10 @@ export interface Post {
   isPublic: boolean;
   postId: string;
 }
+export interface PostContent {
+  text: string;
+  file?: File | string;
+}
 export interface PostWithCommunity extends Post {
   community: Community;
 }

@@ -12,6 +12,10 @@ const Header = () => {
   const { authSig, handleSignAuthSig } = useLit();
   const { identity, checkOrSignIdentity } = useWeaveDB();
 
+  const handleCheckOrSignIdentity = async () => {
+    await checkOrSignIdentity();
+  };
+
   return (
     <>
       <div className="relative mr-[14px] w-[250px] shrink-0  px-4">
@@ -29,7 +33,7 @@ const Header = () => {
             className={`h-6 w-6 ${
               identity ? "opacity-1" : "opacity-20"
             } cursor-pointer`}
-            onClick={checkOrSignIdentity}
+            onClick={handleCheckOrSignIdentity}
             width={50}
             height={50}
             src="/weavedb.svg"

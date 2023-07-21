@@ -1,8 +1,9 @@
 import LitJsSdk from "@lit-protocol/lit-node-client";
 import { ILitNodeClient } from "@lit-protocol/types";
 import { decryptFromIpfs, encryptToIpfs } from "@lit-protocol/lit-node-client";
+import { PostContent } from "types";
 
-console.log('decryptFromIpfs', decryptFromIpfs);
+console.log("decryptFromIpfs", decryptFromIpfs);
 type EncryptedResponse = string;
 type DecryptedResponse = unknown;
 
@@ -51,33 +52,28 @@ export class LitApi {
   }
 
   async encrypt(
-    content: string,
     authSig: any,
     collectionAddresses: string[],
+    content: PostContent,
   ): Promise<EncryptedResponse> {
+    const { text, file } = content;
     console.log("encryptToIpfs() call ");
 
     // Generate accessControlConditions from collectionAddresses
     const accessControlConditions = this.constructACC(collectionAddresses);
-    console.log(
-      "encryptToIpfs() - constructACC() - accessControlConditions",
-      accessControlConditions,
-    );
-    console.log("LitJsSdk", LitJsSdk);
-    console.log("this.client", this.client);
 
     // Encrypt and store on IPFS based on the generated accessControlConditions
     const ipfsCid = await encryptToIpfs({
       authSig,
       accessControlConditions,
       chain: this.chain,
-      string: content, // If you want to encrypt a string
+      string: text, // If you want to encrypt a string
       //   file, // If you want to encrypt a file instead of a string
       litNodeClient: this.client,
       infuraId: process.env.NEXT_PUBLIC_INFURA_API_KEY,
-      infuraSecretKey: process.env.NEXT_PUBLIC_API_KEY_SECRET,
+      infuraSecretKey: process.env.NEXT_PUBLIC_INFURA_API_KEY_SECRET,
     });
-    console.log("failed to encrypt");
+
     return ipfsCid;
   }
 

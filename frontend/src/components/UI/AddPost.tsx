@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import { useWeaveDB } from "../../context/WeaveDBContext";
 import Image from "next/image";
-import { Community } from "../../../types";
+import { Community, PostContent } from "../../../types";
 import { useUser } from "@/context/UserContext";
 import { generateRandomId } from "../../../utils/functions";
 import community from "../../../../contract/smart-scripts/community";
@@ -12,16 +12,21 @@ import {
   decryptFromIpfs,
   encryptToIpfs,
 } from "@lit-protocol/lit-node-client";
+import { uploadToIpfs } from "@/api/ipfsApi";
 
 interface AddPostProps {
   community: Community;
 }
 
 const AddPost = ({ community }: AddPostProps) => {
-  const [postText, setPostText] = useState("");
   const { weaveDBApi, handleAppendNewPost, identity } = useWeaveDB();
   const { user } = useUser();
   const { litApi, authSig } = useLit();
+
+  const [submitingPost, setSubmitingPost] = useState<boolean>(false);
+
+  const [postText, setPostText] = useState("");
+  const [isPublic, setIsPublic] = useState(true);
 
   const communityCollections = community.collections.map(
     (collection) => collection.address,
@@ -35,54 +40,75 @@ const AddPost = ({ community }: AddPostProps) => {
     if (!authSig) {
       return console.error("AuthSig must be signed in order to post");
     }
-    console.log("authSig", authSig);
-    try {
-      // const authSig = await checkAndSignAuthMessage({ chain: "mumbai" });
-      const contentCID = await litApi.encrypt(
-        postText,
-        authSig,
-        communityCollections,
-      );
-      console.log(
-        "handleSubmitPost success!, encrypted and pushed, contentCID",
-        contentCID,
-      );
-      resetForm();
-    } catch (error) {
-      console.error("Error at handleSubmitPost, ", error);
-    }
-  };
+    // if (!identity) {
+    //   return console.error(
+    //     "Identity must be loaded in order to post to weaveDB",
+    //   );
+    // }
 
-  const handleSubmitPost2 = async () => {
-    console.log("handleSubmitPost() call");
+    setSubmitingPost(true);
 
-    const isPublic = true;
     const postId = generateRandomId();
     const creationDate = new Date().toISOString();
 
-    try {
-      await weaveDBApi.createCommunityPost(
-        {
+    const content: PostContent = {
+      text: postText,
+      // file: null,
+    };
+
+    let contentCID;
+
+    if (isPublic) {
+      try {
+        contentCID = await uploadToIpfs(content);
+      } catch (error) {
+        console.log("Error at uploading post to IPFS");
+      }
+    } else {
+      try {
+        contentCID = await litApi.encrypt(
+          authSig,
+          communityCollections,
+          content,
+        );
+        console.log(
+          "handleSubmitPost encryption success!, encrypted and pushed, contentCID",
+          contentCID,
+        );
+      } catch (error) {
+        console.error("Error at encrypting post to IPFS ", error);
+      }
+    }
+
+    // 2. Submit
+    const submit = true;
+    if (submit) {
+      try {
+        // Handeled in the weaveDBApi to work with undefined identity
+        await weaveDBApi.createCommunityPost(
+          {
+            content: contentCID,
+            creationDate: creationDate,
+            communityId: community.communityId,
+            postId: postId,
+            isPublic: isPublic,
+          },
+          identity,
+        );
+        handleAppendNewPost(community, {
+          communityId: community.communityId,
           content: postText,
           creationDate: creationDate,
-          communityId: community.communityId,
+          isPublic: isPublic,
           postId: postId,
-          isPublic: isPublic, // TODO: add option to make post private
-        },
-        identity,
-      );
-      handleAppendNewPost(community, {
-        communityId: community.communityId,
-        content: postText,
-        creationDate: creationDate,
-        isPublic: isPublic,
-        postId: postId,
-      });
+        });
 
-      resetForm();
-    } catch (e) {
-      console.error("Error at submiting post", e);
+        resetForm();
+      } catch (e) {
+        console.error("Error at submiting post", e);
+      }
     }
+    setSubmitingPost(false);
   };
 
   return (
@@ -109,15 +135,31 @@ const AddPost = ({ community }: AddPostProps) => {
         onChange={(e) => setPostText(e.target.value)}
         value={postText}
       />
+
       {/* <input
         type="file"
         className="cursr-pointer mt-3 w-full rounded-lg bg-collectible-dark-purple text-gray-weak file:mr-3 file:rounded-lg file:border-none file:bg-collectible-purple file:p-2 file:text-gray-strong"
         onChange={() => console.log("a")}
       /> */}
 
-      <div className="mb-[-8px] mt-2 flex w-full items-center justify-end">
-        <Button className="px-8" action={handleSubmitPost}>
-          Post
+      <div className="mb-[-8px] mt-2 flex w-full items-center justify-end gap-10">
+        <div className="flex items-center gap-2">
+          <label htmlFor="is-post-public" className="text-gray-medium">
+            Member-only
+          </label>
+          <input
+            className="h-4 w-4 rounded-xl accent-purple-600"
+            id="is-post-public"
+            type="checkbox"
+            onChange={(e) => setIsPublic(!e.target.checked)}
+          />
+        </div>
+        <Button
+          className="px-8"
+          action={handleSubmitPost}
+          disabled={submitingPost || postText.length === 0}
+        >
+          {!submitingPost ? "Post" : "Posting..." }
         </Button>
       </div>
     </article>
