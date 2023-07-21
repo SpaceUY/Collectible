@@ -3,6 +3,7 @@ import ConnectModal from "@/components/Modals/ConnectModal";
 import MintModal from "@/components/Modals/MintModal";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { AlchemyNFT } from "../../types";
 
 export interface CollectibleIdentifier {
   collectionID: string;
@@ -20,10 +21,8 @@ type ModalContextType = {
   isCollectibleModalOpen: boolean;
   handleOpenCollectibleModal: () => void;
   handleCloseCollectibleModal: () => void;
-  selectedCollectible: CollectibleIdentifier | null;
-  handleSelectCollectible: (
-    collectibleIdentifier: CollectibleIdentifier,
-  ) => void;
+  selectedCollectible: AlchemyNFT | null;
+  handleSelectCollectible: (nft: AlchemyNFT) => void;
 };
 
 // Create the context with default values
@@ -61,13 +60,10 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const handleCloseCollectibleModal = () => setIsCollectibleModalOpen(false);
 
   const [selectedCollectible, setSelectedCollectible] =
-    useState<CollectibleIdentifier | null>(null);
+    useState<AlchemyNFT | null>(null);
 
-  const handleSelectCollectible = ({
-    collectionID,
-    tokenID,
-  }: CollectibleIdentifier) =>
-    setSelectedCollectible({ collectionID, tokenID });
+  const handleSelectCollectible = (nft: AlchemyNFT) =>
+    setSelectedCollectible(nft);
 
   // If the user presses the 'Escape' key, close the Collectible Modal
   useEffect(() => {
@@ -116,7 +112,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
       {isCollectibleModalOpen && (
         <CollectibleModal
           handleCloseCollectibleModal={handleCloseCollectibleModal}
-          selectedCollectibleIdentifier={selectedCollectible}
+          selectedCollectible={selectedCollectible}
         />
       )}
       {children}

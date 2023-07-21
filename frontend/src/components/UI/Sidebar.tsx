@@ -6,6 +6,9 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useModal } from "@/context/ModalContext";
 import { BiLogOut } from "react-icons/bi";
+import LoadingWheel from "@/components/UI/LoadingWheel";
+import { useWeaveDB } from "@/context/WeaveDBContext";
+import { useLit } from "@/context/LitContext";
 
 const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
   { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
@@ -15,6 +18,7 @@ const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
 const Sidebar = () => {
   const { user, disconnectUser } = useUser();
   const { handleOpenConnectModal } = useModal();
+
   return (
     <>
       <ul className="mb-4">
@@ -41,40 +45,44 @@ const Sidebar = () => {
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
-            {user?.communityMemberships.map(({ communityPicture, name }) => (
-              <CommunityListItem
-                key={name}
-                communityPicture={communityPicture}
-                name={name}
-              />
+            {user?.communityMemberships.map((communityId) => (
+              <CommunityListItem key={communityId} communityId={communityId} />
             ))}
           </ul>
         </div>
       )}
 
+      {user?.loading && (
+        <div className="flex flex-col px-1">
+          <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
+            <LoadingWheel />
+          </ul>
+        </div>
+      )}
+
       {user?.isLoggedIn && (
-        <Link
-          className="fixed bottom-8 flex items-center justify-center gap-3"
-          href={`/profile/${user?.address}`}
-        >
-          <div className="rounded-full border-[1px] bg-gray-strong">
+        <div className="fixed bottom-8 flex items-center justify-center gap-3">
+          <div className={`rounded-full border-[1px] bg-gray-strong `}>
             <Image
               /** 
                @DEV remove opacity-0 to display image
                **/
-              className="h-12 w-12 rounded-full border-gray-strong opacity-0"
-              src={"collectible-logo.svg"}
+              className={`h-12 w-12 rounded-full opacity-0 `}
+              src={"isologo.svg"}
               width={50}
               height={50}
               alt="Collectible Logo"
             />
           </div>
-          <span className="mr-6 flex flex-col">
+          <Link
+            className="mr-6 flex flex-col"
+            href={`/profile/${user?.address}`}
+          >
             <p className="text-gray-strong opacity-50">{user?.name}</p>
             <p className="text-sm text-gray-strong opacity-50">
               {user?.shortAddress}
             </p>
-          </span>
+          </Link>
           {!user?.loading && user?.isLoggedIn && (
             <button
               className="text-2xl text-gray-medium "
@@ -83,7 +91,7 @@ const Sidebar = () => {
               <BiLogOut />
             </button>
           )}
-        </Link>
+        </div>
       )}
 
       <div className="fixed bottom-8 ml-2 flex items-center justify-center">
@@ -94,7 +102,7 @@ const Sidebar = () => {
         )}
         {user?.loading && (
           <Button isLarge className="w-[200px]" action={() => {}}>
-            Loading
+            Loading account..
           </Button>
         )}
       </div>

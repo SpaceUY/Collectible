@@ -1,6 +1,4 @@
 import Layout from "@/components/Layout";
-import { useUser } from "@/context/UserContext";
-import { COMMUNITY_LIST } from "mock/communities";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -10,11 +8,11 @@ import BenefitIllustration from "../../../components/brand/BenefitIllustration";
 import Button from "../../../components/UI/Button";
 import { DayRange } from "@amir04lm26/react-modern-calendar-date-picker";
 import { BenefitOptions } from "../../../common/enums/benefit-options.enum";
+import { useWeaveDB } from "../../../context/WeaveDBContext";
 
 const ManageBenefits = () => {
-  const { user } = useUser();
   const router = useRouter();
-  const { communityID } = router.query;
+  const { communityId } = router.query;
   const [benefitName, setBenefitName] = useState("");
   const [communityBenefit, setCommunityBenefit] =
     useState<BenefitOptions>(null);
@@ -23,16 +21,22 @@ const ManageBenefits = () => {
     to: null,
   });
   const [selectedIllustration, setSelectedIllustration] = useState("");
+  const { allCommunities } = useWeaveDB();
 
-  /**  @DEV to be implemented */
-  const community = COMMUNITY_LIST.find(
-    (community) => community.communityId === communityID,
+  const community = allCommunities.find(
+    (community) => community.communityId === communityId,
   );
 
-  const handleSubmit = () => {
-    // TODO sent data
-    alert('TODO: send data')
-    console.log("sent");
+  const handleSubmit = async () => {
+    alert("tbd");
+    // await weaveDB.addBenefit({
+    //   type: communityBenefit,
+    //   name: benefitName,
+    //   communityId: community.id,
+    //   initialDate: selectedDayRange.from.toString(),
+    //   finishDate: selectedDayRange.from.toString(),
+    //   content: "", // TODO
+    // });
   };
 
   return (
@@ -56,7 +60,6 @@ const ManageBenefits = () => {
           <div className="w-1/2">
             <h2 className="mb-3 text-gray-strong">Benefit type</h2>
             <BenefitSelector
-              
               benefit={communityBenefit}
               onSelectBenefit={setCommunityBenefit}
             />

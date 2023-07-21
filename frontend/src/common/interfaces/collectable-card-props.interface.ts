@@ -1,5 +1,3 @@
-import { CommunityId } from "./community.interface";
-
 export interface CollectibleCardProps {
   pictureUrl: string;
   name: string;
@@ -7,5 +5,5 @@ export interface CollectibleCardProps {
   showPictureOnly?: boolean;
   collectionID: string;
   tokenID: string;
-  communityID: CommunityId;
+  communityID: string;
 }

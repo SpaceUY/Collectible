@@ -1,0 +1,29 @@
+[
+  {
+    "collectionAddress": "0x15eFF7A8c5C9d033Fa94B41B7C866d11A869085e",
+    "chain": "maticmum",
+    "communityId": "harry-potter",
+    "collectionName": "harry-potter-collection-01",
+    "creationDate": "7/16/2023, 8:17:17 PM",
+    "units": 20,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0xf87d5188a2870317b65886e259fFd62e99eED783",
+    "chain": "maticmum",
+    "communityId": "harry-potter",
+    "collectionName": "harry-potter-collection-02",
+    "creationDate": "7/16/2023, 8:21:03 PM",
+    "units": 20,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x1D22FD446400950495ddd394362531BfF9103aA0",
+    "chain": "maticmum",
+    "communityId": "harry-potter",
+    "collectionName": "harry-potter-collection-03",
+    "creationDate": "7/17/2023, 5:44:17 PM",
+    "units": 30,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  }
+]

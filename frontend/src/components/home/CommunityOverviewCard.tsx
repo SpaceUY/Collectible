@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CoverColor } from "../../common/interfaces/community.interface";
+import { CoverColor } from '../../../types';
+
 
 type CollectionOverviewInfo = {
   description: string;

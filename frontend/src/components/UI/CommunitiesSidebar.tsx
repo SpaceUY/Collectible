@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import CommunityListItem from "./CommunityListItem";
 import SearchBar from "./SearchBar";
-import { COMMUNITY_LIST } from "../../../mock/communities";
+import { useWeaveDB } from "@/context/WeaveDBContext";
 
 const CommunitiesSidebar = () => {
   const [searchInput, setSearchInput] = useState("");
 
-  const filteredCommunitites = COMMUNITY_LIST.filter((community) =>
+  const { allCommunities } = useWeaveDB();
+  const filteredCommunitites = allCommunities.filter((community) =>
     community.name
       .toLocaleLowerCase()
       .includes(searchInput.toLocaleLowerCase()),
@@ -22,11 +23,10 @@ const CommunitiesSidebar = () => {
 
       <div className="mt-6 flex h-full flex-col content-end">
         <ul className="mb-8 space-y-5">
-          {filteredCommunitites.map(({ communityPicture, name }) => (
+          {filteredCommunitites.map((community) => (
             <CommunityListItem
-              key={name}
-              communityPicture={communityPicture}
-              name={name}
+              key={community.communityId}
+              communityId={community.communityId}
             />
           ))}
         </ul>
