@@ -37,9 +37,9 @@ const AddPost = ({ community }: AddPostProps) => {
   };
 
   const handleSubmitPost = async () => {
-    if (!authSig) {
-      return console.error("AuthSig must be signed in order to post");
-    }
+    // if (!authSig) {
+    //   return console.error("AuthSig must be signed in order to post");
+    // }
     // if (!identity) {
     //   return console.error(
     //     "Identity must be loaded in order to post to weaveDB",
@@ -58,43 +58,43 @@ const AddPost = ({ community }: AddPostProps) => {
 
     let contentCID;
 
-    if (isPublic) {
-      try {
-        contentCID = await uploadToIpfs(content);
-      } catch (error) {
-        console.log("Error at uploading post to IPFS");
-      }
-    } else {
-      try {
-        contentCID = await litApi.encrypt(
-          authSig,
-          communityCollections,
-          content,
-        );
-        console.log(
-          "handleSubmitPost encryption success!, encrypted and pushed, contentCID",
-          contentCID,
-        );
-      } catch (error) {
-        console.error("Error at encrypting post to IPFS ", error);
-      }
-    }
+    // if (isPublic) {
+    //   try {
+    //     contentCID = await uploadToIpfs(content);
+    //   } catch (error) {
+    //     console.log("Error at uploading post to IPFS");
+    //   }
+    // } else {
+    //   try {
+    //     contentCID = await litApi.encrypt(
+    //       authSig,
+    //       communityCollections,
+    //       content,
+    //     );
+    //     console.log(
+    //       "handleSubmitPost encryption success!, encrypted and pushed, contentCID",
+    //       contentCID,
+    //     );
+    //   } catch (error) {
+    //     console.error("Error at encrypting post to IPFS ", error);
+    //   }
+    // }
 
     // 2. Submit
     const submit = true;
     if (submit) {
       try {
         // Handeled in the weaveDBApi to work with undefined identity
-        await weaveDBApi.createCommunityPost(
-          {
-            content: contentCID,
-            creationDate: creationDate,
-            communityId: community.communityId,
-            postId: postId,
-            isPublic: isPublic,
-          },
-          identity,
-        );
+        // await weaveDBApi.createCommunityPost(
+        //   {
+        //     content: contentCID,
+        //     creationDate: creationDate,
+        //     communityId: community.communityId,
+        //     postId: postId,
+        //     isPublic: isPublic,
+        //   },
+        //   identity,
+        // );
         handleAppendNewPost(community, {
           communityId: community.communityId,
           content: postText,

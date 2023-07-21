@@ -19,6 +19,10 @@ const Sidebar = () => {
   const { user, disconnectUser } = useUser();
   const { handleOpenConnectModal } = useModal();
 
+  const displayedCommunities = Array.from(
+    new Set([...user.communityOwnerships, ...user.communityMemberships]),
+  );
+
   return (
     <>
       <ul className="mb-4">
@@ -45,7 +49,7 @@ const Sidebar = () => {
       {user?.isLoggedIn && (
         <div className="flex flex-col px-1">
           <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
-            {user?.communityMemberships.map((communityId) => (
+            {displayedCommunities.map((communityId) => (
               <CommunityListItem key={communityId} communityId={communityId} />
             ))}
           </ul>

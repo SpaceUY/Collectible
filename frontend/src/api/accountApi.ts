@@ -56,7 +56,9 @@ export async function getUserChainData(
   try {
     // 1. Determine community ownerships
     const communityOwnerships = [];
+
     for (const community of allCommunities) {
+      community.owners = community.owners.map((owner) => owner.toLowerCase());
       if (community.owners.includes(address.toLowerCase())) {
         communityOwnerships.push(community.communityId);
       }
