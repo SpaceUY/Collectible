@@ -6,7 +6,8 @@ import { uploadMetadata } from "../scripts/upload-metadata";
 import { generateMerkleTree } from "../scripts/generate-merkle-tree";
 import { deployCollection } from "../scripts/deploy-collection";
 import dotenv from "dotenv";
-import { WeaveDBCommunity } from "../../types";
+import { WeaveDBCommunity } from "../../frontend/types";
+
 import { generateQRCodes } from "../scripts/generate-qrs";
 
 dotenv.config();

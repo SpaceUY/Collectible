@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import dotenv from "dotenv";
 import { weaveDB } from "../weavedb";
-import { Community } from "../../types";
+import { Community } from '../../frontend/types';
 
 dotenv.config();
 
