@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-    mediaQuery: "xs",
+    width: 1200,
+    height: 1200,
+    mediaQuery: "md",
   });
 
   useEffect(() => {

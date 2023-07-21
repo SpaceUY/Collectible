@@ -12,6 +12,7 @@ import { useWeb3 } from "./Web3Context";
 import { useUser } from "./UserContext";
 import { generateRandomId } from "utils/functions";
 import { useRouter } from "next/router";
+import useWindowSize from "@/hooks/useWindowSize";
 
 type LitContextType = {
   litApi: LitApi;
@@ -35,6 +36,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
   const router = useRouter();
   const [authSig, setAuthSig] = useState<any>(null);
+  const size = useWindowSize();
 
   const handleSignAuthSig = async () => {
     if (authSig) {
@@ -98,6 +100,9 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
     // if the page url includes app
     if (!router.pathname.includes("/app")) {
       return console.log("Not in app, so not signing AuthSig");
+    }
+    if (!(size.width > 1024)) {
+      return console.log("Must be in desktop to sign AuthSig");
     }
     if (!web3) {
       return console.error(
