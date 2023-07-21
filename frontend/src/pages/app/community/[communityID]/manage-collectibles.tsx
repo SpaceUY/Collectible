@@ -9,7 +9,6 @@ import { useDropzone } from "react-dropzone";
 import { BsBoxArrowInDown } from "react-icons/bs";
 import Image from "next/image";
 import { useWeaveDB } from "../../../../context/WeaveDBContext";
-import LoadingWrapper from "../../../../components/LoadingWrapper";
 import LoadingWheel from "@/components/UI/LoadingWheel";
 
 const ManageCollectibles = () => {

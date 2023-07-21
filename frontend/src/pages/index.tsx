@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Button from "../components/UI/Button";
+import Head from "next/head";
 
 const LEARN_MORE = "learn-more";
 const DISCOVER = "discover";
@@ -15,8 +16,12 @@ const headerLinks = [
 const Landing = () => {
   return (
     <>
+      <Head>
+        <title>Collectible</title>
+      </Head>
+
       <header className="absolute z-10 flex w-full items-center py-[14px]">
-        <Link className="mr-[14px] ml-3 w-[250px] shrink-0 px-4" href="/">
+        <Link className="ml-3 mr-[14px] w-[250px] shrink-0 px-4" href="/">
           <Image
             src={"/isologo.svg"}
             width={145.54}
@@ -36,7 +41,7 @@ const Landing = () => {
           ))}
         </div>
         <Link className="ml-auto mr-10 mt-2" href="/app">
-          <Button className="px-10" action={() => console.log("ahem")}>
+          <Button className="px-[40px]" action={() => console.log("ahem")}>
             Enter App
           </Button>
         </Link>
