@@ -1,6 +1,7 @@
 import { getAddressShortcut } from "utils/functions";
 import Web3 from "web3";
-import { Community, UserData, AlchemyNFT, Collection } from "../../../types";
+import { Community, UserData, AlchemyNFT, Collection } from "../../types";
+
 import { getUserNFTsOnCollections } from "./alchemyApi";
 
 export async function getUserData(

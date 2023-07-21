@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { POST_ICON_OPTIONS } from "../../common/constants/post-icon-options";
 import Link from "next/link";
-import { Post, Community } from "../../../../types";
+import { Post, Community } from "../../../types";
 import { formatTime } from "utils/functions";
 
 interface CommunityPostProps {

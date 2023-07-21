@@ -9,7 +9,7 @@ import {
   Collection,
   CollectionWithNfts,
   Post,
-} from "../../../types";
+} from "../../types";
 import { getCollectionNfts } from "@/api/alchemyApi";
 import { NEW_COLLECTIONS_LENGTH } from "../../constants";
 

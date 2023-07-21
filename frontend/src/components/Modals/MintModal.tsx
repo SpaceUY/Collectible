@@ -10,7 +10,7 @@ import { decodeVariables } from "utils/functions";
 import LoadingWheel from "../UI/LoadingWheel";
 import ErrorComponent from "@/components/ErrorComponent";
 import { getMerkleProof, getTokenURI } from "@/api/alchemyApi";
-import { CollectibleMetadata, QRValues } from "../../../../types";
+import { CollectibleMetadata, QRValues } from "../../../types";
 import { collectibleContractAbi } from "../../collectibleContractAbi";
 
 interface MintModalProps {

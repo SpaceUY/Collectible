@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CoverColor } from '../../../../types';
+import { CoverColor } from '../../../types';
 
 
 type CollectionOverviewInfo = {

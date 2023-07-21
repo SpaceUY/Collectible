@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useModal } from "@/context/ModalContext";
-import { AlchemyNFT } from "../../../../types";
+import { AlchemyNFT } from "../../../types";
 
 interface CollectibleCardProps {
   nft: AlchemyNFT;

@@ -4,7 +4,7 @@ import {
   Post,
   PostCreationPayload,
   PrePostedCommunity,
-} from "../../../types";
+} from "../../types";
 
 export class WeaveDBApi {
   private db: WeaveDB;

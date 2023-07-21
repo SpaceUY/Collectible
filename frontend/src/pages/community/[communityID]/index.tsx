@@ -10,7 +10,7 @@ import CommunityCollections from "../../../components/community/CommunityCollect
 import Head from "next/head";
 import Image from "next/image";
 import CommunityBenefits from "../../../components/community/CommunityBenefits";
-import { CoverColor, Community } from "../../../../../types";
+import { CoverColor, Community } from "../../../../types";
 import { useWeaveDB } from "@/context/WeaveDBContext";
 import ErrorComponent from "@/components/ErrorComponent";
 import LoadingWheel from "../../../components/UI/LoadingWheel";

@@ -5,7 +5,7 @@ import CollectiblesReel from "../components/UI/CollectiblesReel";
 import { useWeaveDB } from "@/context/WeaveDBContext";
 import LoadingWheel from "@/components/UI/LoadingWheel";
 import { useEffect, useState } from "react";
-import { PostWithCommunity, Post } from "../../../types";
+import { PostWithCommunity, Post } from "../../types";
 import { DISPLAY_NEW_COLLECTIONS_ON_FEED } from "../../constants";
 
 interface FeedContent {

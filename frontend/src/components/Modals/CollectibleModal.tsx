@@ -3,7 +3,7 @@ import React from "react";
 import Button from "../UI/Button";
 import Backdrop from "./Backdrop";
 import Link from "next/link";
-import { AlchemyNFT } from "../../../../types";
+import { AlchemyNFT } from "../../../types";
 import { useWeaveDB } from "@/context/WeaveDBContext";
 
 interface CollectibleModalProps {

@@ -1,5 +1,5 @@
 import BenefitCard from "../UI/BenefitCard";
-import { Community } from "../../../../types";
+import { Community } from "../../../types";
 interface CommunityBenefitsProps {
   community: Community;
   isMember: boolean;

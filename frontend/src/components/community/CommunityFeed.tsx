@@ -3,7 +3,7 @@ import CommunityPost from "../UI/CommunityPost";
 import AddPost from "../UI/AddPost";
 import { CommunityPost as CommunityPostType } from "../../common/types/CommunityPost.type";
 import LoadingWheel from "../UI/LoadingWheel";
-import { Community, Post } from "../../../../types";
+import { Community, Post } from "../../../types";
 
 interface CommunityFeedProps {
   community: Community;

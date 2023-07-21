@@ -28,7 +28,7 @@ const nextConfig = {
       ...(config.snapshot ?? {}),
       // Add all node_modules but @next module to managedPaths
       // Allows for hot refresh of changes to @next module
-       managedPaths: [/^(.+?[\\/]node_modules[\\/])(?!weavedb-base)/],
+      managedPaths: [/^(.+?[\\/]node_modules[\\/])(?!weavedb-base)/],
       // managedPaths: [/^(.+?[\\/]node_modules[\\/])(?!weavedb-base)/],
     };
     return config;
@@ -39,7 +39,7 @@ if (process.env.ANALYZE === "true") {
   const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: true,
   });
-  config = withBundleAnalyzer(config);
+  nextConfig = withBundleAnalyzer(nextConfig);
 }
 
 module.exports = nextConfig;

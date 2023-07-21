@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CollectiblesReel from "../UI/CollectiblesReel";
 import LoadingWheel from "../UI/LoadingWheel";
-import { Community, CollectionWithNfts } from "../../../../types";
+import { Community, CollectionWithNfts } from "../../../types";
 import { getCollectionNfts } from "@/api/alchemyApi";
 
 interface CommunityCollectionsProps {

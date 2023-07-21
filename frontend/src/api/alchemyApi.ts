@@ -1,5 +1,5 @@
 import { Network, Alchemy } from "alchemy-sdk";
-import { CollectibleMetadata } from "../../../types";
+import { CollectibleMetadata } from "../../types";
 import { generateMerkleProof } from "utils/functions";
 
 // Optional Config object, but defaults to demo api-key and eth-mainnet.

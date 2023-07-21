@@ -3,7 +3,7 @@ import ConnectModal from "@/components/Modals/ConnectModal";
 import MintModal from "@/components/Modals/MintModal";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { AlchemyNFT } from "../../../types";
+import { AlchemyNFT } from "../../types";
 
 export interface CollectibleIdentifier {
   collectionID: string;

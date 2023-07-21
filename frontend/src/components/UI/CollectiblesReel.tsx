@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CollectibleCard from "./CollectibleCard";
-import { CollectionWithNfts, AlchemyNFT } from "../../../../types";
+import { CollectionWithNfts, AlchemyNFT } from "../../../types";
 import { formatTime } from "utils/functions";
 
 interface CollectiblesReelProps {

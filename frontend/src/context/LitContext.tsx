@@ -10,6 +10,7 @@ import { ILitNodeClient } from "@lit-protocol/types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { useWeb3 } from "./Web3Context";
 import { useUser } from "./UserContext";
+import { generateRandomId } from "utils/functions";
 
 type LitContextType = {
   litApi: LitApi;
@@ -46,24 +47,19 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
       return console.log("User must be logged in to sign AuthSig ");
     }
     try {
-      //   const message = `Authentication Signature Validation:
-      //   \nSign this validation to get authenticated and access your member-only content!.
-      // `;
-      const nonce =
-        Math.random().toString(36).substring(2, 15) +
-        Math.random().toString(36).substring(2, 15);
+      const nonce = generateRandomId(); // numeric
 
       const message = `localhost wants you to sign in with your Ethereum account:
-${user?.address}
+      ${user?.address}
 
-This is a test statement. You can put anything you want here.
+      This is a test statement. You can put anything you want here.
 
-URI: https://localhost/login
-Version: 1
-Chain ID: 1
-Nonce: ${nonce}
-Issued At: ${new Date().toISOString()}
-`;
+      URI: https://localhost/login
+      Version: 1
+      Chain ID: 1
+      Nonce: ${nonce}
+      Issued At: ${new Date().toISOString()}
+      `;
 
       const sig = await web3.eth.personal.sign(message, user?.address, "");
       const authSig = {

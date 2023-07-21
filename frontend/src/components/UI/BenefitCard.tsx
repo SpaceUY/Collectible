@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Button from "./Button";
-import { Benefit } from "../../../../types";
+import { Benefit } from "../../../types";
 
 interface BenefitCardProps {
   benefit: Benefit;

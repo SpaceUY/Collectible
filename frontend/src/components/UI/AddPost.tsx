@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "./Button";
 import { useWeaveDB } from "../../context/WeaveDBContext";
 import Image from "next/image";
-import { Community } from "../../../../types";
+import { Community } from "../../../types";
 import { useUser } from "@/context/UserContext";
 import { generateRandomId } from "../../../utils/functions";
 import community from "../../../../contract/smart-scripts/community";
