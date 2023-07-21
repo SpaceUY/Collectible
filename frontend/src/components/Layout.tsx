@@ -7,7 +7,7 @@ export default function Layout({ children, title, className = "" }) {
   const router = useRouter();
 
   const isHomeOrExplore =
-    router.pathname === "/" || router.pathname === "/explore";
+    router.pathname === "/app" || router.pathname === "/app/explore";
   return (
     <div
       className={`relative mx-auto flex w-full flex-col border-red-500 ${className} min-h-[calc(100vh-96px)]`}

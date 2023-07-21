@@ -5,5 +5,5 @@ export interface CollectibleCardProps {
   showPictureOnly?: boolean;
   collectionID: string;
   tokenID: string;
-  communityID: string;
+  communityId: string;
 }

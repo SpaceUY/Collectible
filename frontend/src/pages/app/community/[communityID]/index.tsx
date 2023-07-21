@@ -54,6 +54,7 @@ export default function CollectiblesPage() {
   };
 
   useEffect(() => {
+    console.log("communityId", communityId);
     if (!loadingDB && !loadingDBData) {
       const community = allCommunities.find(
         (community) => community.communityId === communityId,

@@ -52,10 +52,10 @@ export default function App({ Component, pageProps }) {
                   }
                 `}
               </style>
-              {size.width > 1024 ? (
-                <Component {...pageProps} />
-              ) : (
+              {size.width < 1024 ? (
                 <NotAvailableAOnMobileComponent />
+              ) : (
+                <Component {...pageProps} />
               )}
             </ModalProvider>
           </LitProvider>
