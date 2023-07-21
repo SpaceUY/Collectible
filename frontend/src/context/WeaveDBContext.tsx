@@ -73,51 +73,7 @@ export const WeaveDBProvider = ({
   const [loadingDBData, setLoadingDBData] = useState<boolean>(true);
   const [identity, setIdentity] = useState(null);
 
-  // if (!identity) {
-  //   const check = async () => {
-  //     try {
-  //       const { identity } = await db.createTempAddress(user?.address);
-  //       console.log("db.createTempAddress(address) passed");
-  //       setIdentity(identity);
-
-  //       const tuki = 'tuka'
-  //       const pepe = 'tuka'
-
-  //       //
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   check();
-  // }
-
-  // useEffect(() => {
-  //   if (identity) {
-  //     return console.error("Identity already signed");
-  //   }
-  //   if (!db) {
-  //     return console.error(
-  //       "db must be connected and loaded in order to SignIdentity",
-  //     );
-  //   }
-  //   try {
-  //     const check = async () => {
-  //       try {
-  //         const { identity } = await db.createTempAddress(user?.address);
-  //         console.log("db.createTempAddress(address) passed");
-  //         setIdentity(identity);
-  //         //
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-  //     check();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [db, user, web3, identity, loadingDB, weaveDBApi, allCommunities]);
-
-  //test
+  // Sign the identity on load
   useEffect(() => {
     if (identity) {
       return console.log("Identity already signed");
@@ -198,13 +154,16 @@ export const WeaveDBProvider = ({
   };
 
   const handleAppendNewPost = async (community: Community, post: Post) => {
-    console.log("community before edition", community);
-    community.posts.unshift(post);
-    console.log('edited community', community)
-    setAllCommunities([
-      ...allCommunities,
-      { ...community, posts: [...community.posts, post] },
-    ]);
+    const updatedCommunities = allCommunities.map((c) => {
+      if (c.communityId === community.communityId) {
+        return {
+          ...c,
+          posts: [...c.posts, post],
+        };
+      }
+      return c;
+    });
+    setAllCommunities(updatedCommunities);
   };
 
   const startWeaveDB = async () => {
@@ -219,7 +178,7 @@ export const WeaveDBProvider = ({
       contractTxId: process.env.NEXT_PUBLIC_WEAVEDB_CONTRACT_TX_ID,
     });
 
-    const weaveDBApi = new WeaveDBApi(db, checkOrSignIdentity);
+    const weaveDBApi = new WeaveDBApi(db);
 
     await db.initializeWithoutWallet();
 
@@ -302,11 +261,6 @@ export const WeaveDBProvider = ({
       );
     }
     (async () => {
-      try {
-        await checkOrSignIdentity();
-      } catch (error) {
-        console.error("Error at checkOrSignIdentity", error);
-      }
       await fetchUserChainData(
         allCommunities,
         allCollections,
