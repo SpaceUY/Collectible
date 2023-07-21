@@ -1,36 +1,39 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { fetchNFTs } from "@/lib/utils";
 import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
 import { getUserData } from "@/api/accountApi";
+import { fetchMockedNFTs, fetchNFTs } from "@/api/nftApi";
+import { useRouter } from "next/router";
+import { UserData } from "../common/interfaces/user-data.interface";
 
-// Define custom user data type
-interface UserData {
-  address?: string;
-  shortAddress?: string;
-  balance?: string;
-  collectibles?: string[];
-  isLoggedIn?: boolean;
-  loading?: boolean;
-  refreshCollectibles?: boolean;
-  tokenIdForModal?: number;
-}
+const initialUserState: UserData = {
+  loading: true,
+  isLoggedIn: false,
+  address: "",
+  shortAddress: "",
+  name: "",
+  balance: "",
+  refreshCollectibles: false,
+  collectibles: [],
+  communityMemberships: [],
+  communityOwnerships: [],
+};
 
 // Define user context type
 type UserContextType = {
-  user: UserData | null;
-  setUser: React.Dispatch<React.SetStateAction<UserData | undefined>> | null;
+  user: UserData;
+  setUser: React.Dispatch<React.SetStateAction<UserData>> | null;
   connectUser: () => void;
-  connectBrand: () => void;
+  // connectBrand: () => void;
   disconnectUser: () => void;
 };
 
 // Create context with default values
 const UserContext = createContext<UserContextType>({
-  user: null,
+  user: initialUserState,
   setUser: null,
   connectUser: () => {},
-  connectBrand: () => {},
+  // connectBrand: () => {},
   disconnectUser: () => {},
 });
 
@@ -41,9 +44,10 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Get web3 and contract instances from Web3Context
   const { web3, contract, isAccountChanged, initializeWeb3 } = useWeb3();
+  const router = useRouter();
 
   // State to hold the user data
-  const [user, setUser] = useState<UserData>();
+  const [user, setUser] = useState<UserData>(initialUserState);
 
   /**  
    @dev User connection to be handled on WeaveDV @TBD
@@ -60,46 +64,32 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  /**  
-   @dev Brand connection to be handled on WeaveDV @TBD
-  **/
-  const connectBrand = async () => {
-    try {
-      // Attempt to connect with the user's wallet using Magic's UI
-      await magic.wallet.connectWithUI();
-      // If the wallet connection is successful, initialize web3 instance
-      await initializeWeb3();
-    } catch (error) {
-      // Log any errors that occur during the login process
-      console.error("handleLogin", error);
-    }
-  };
-
   const disconnectUser = async () => {
     // Disconnect from magic
     await magic.user.logout();
     console.log("disconnected from Magic");
     // Clear the user state
-    setUser(null);
+    setUser(initialUserState);
 
     // Re-initialize web3 instance to ensure correct provider is used
     await initializeWeb3();
+
+    // Redirect to homepage
+    router.push("/");
   };
 
   // 1. Get the user account when web3 instance is available
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching user data");
       if (!web3) return;
-      setUser({ loading: true });
-
+      setUser({ ...user, loading: true });
       const account = await web3.eth.getAccounts();
-      console.log(account);
       if (account.length > 0) {
         const data = await getUserData(web3);
+        console.log("data from getUserData", data);
         setUser(data);
       } else {
-        setUser({ loading: false });
+        setUser({ ...user, loading: false });
       }
     };
 
@@ -108,18 +98,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Function to fetch and update NFTs for the user
   const fetchAndUpdateNFTs = async () => {
-    if (!user?.address || !user?.refreshCollectibles) return;
+    if (!user?.address) return;
 
-    setUser({ ...user, refreshCollectibles: true });
+    // setUser({ ...user, refreshCollectibles: true });
 
     try {
-      const res = await fetchNFTs(user.address, contract);
+      // const res = await fetchNFTs(user.address, contract);
 
-      if (Array.isArray(res)) {
+      const collectibles = await fetchMockedNFTs(user.address, contract);
+
+      if (Array.isArray(collectibles)) {
         setUser({
           ...user,
-          collectibles: res.reverse(),
-          refreshCollectibles: false,
+          collectibles,
+          // refreshCollectibles: false,
         });
       }
     } catch (error) {
@@ -134,7 +126,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, connectUser, connectBrand, disconnectUser }}
+      value={{ user, setUser, connectUser, disconnectUser }}
     >
       {children}
     </UserContext.Provider>

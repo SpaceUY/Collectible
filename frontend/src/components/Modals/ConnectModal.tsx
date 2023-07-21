@@ -10,7 +10,7 @@ interface ConnectModalProps {
 }
 
 const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
-  const { user, connectUser, connectBrand } = useUser();
+  const { user, connectUser } = useUser();
 
   useEffect(() => {
     if (user?.isLoggedIn) {
@@ -25,7 +25,7 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
   return (
     <>
       <Backdrop />
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 flex items-center justify-center z-50">
         <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
           <div className="mb-14 flex justify-between">
             <Image

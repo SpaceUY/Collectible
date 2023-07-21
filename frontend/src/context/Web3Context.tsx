@@ -69,6 +69,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
       // Save the instance to state
       setWeb3(web3Instance);
+
       setContract(contractInstance);
     } catch (error) {
       console.error("Failed to initialize web3 or contract", error);
@@ -77,7 +78,6 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
   // Effect to initialize Web3 when the component mounts
   useEffect(() => {
-    console.log('useEffect on Web3Context, initializeWeb3()')
     initializeWeb3();
   }, []);
 

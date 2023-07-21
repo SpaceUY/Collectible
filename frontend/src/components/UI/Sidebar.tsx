@@ -3,34 +3,25 @@ import Image from "next/image";
 import Button from "./Button";
 import CommunityListItem from "./CommunityListItem";
 import { useUser } from "@/context/UserContext";
+import Link from "next/link";
+import { useModal } from "@/context/ModalContext";
+import { BiLogOut } from "react-icons/bi";
 
-const defaultSidebarItems: { text: string; icon: string }[] = [
-  { text: "Home", icon: "/page-icons/home-icon.svg" },
-  { text: "Explore", icon: "/page-icons/glass-icon.svg" },
+const defaultSidebarItems: { text: string; icon: string; href: string }[] = [
+  { text: "Home", icon: "/page-icons/home-icon.svg", href: "/" },
+  // { text: "Explore", icon: "/page-icons/glass-icon.svg", href: "/" },
 ];
 
-const communities: {
-  communityPicture: string;
-  name: string;
-}[] = [
-  { communityPicture: "", name: "Random1" },
-  { communityPicture: "", name: "Random2" },
-];
-
-interface SidebarProps {
-  handleOpenConnectModal: () => void;
-}
-
-const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
+const Sidebar = () => {
   const { user, disconnectUser } = useUser();
-  console.log("Sidebar - user is ", user);
+  const { handleOpenConnectModal } = useModal();
   return (
-    <aside className="fixed left-0 top-20 mx-5 mt-4 h-full w-64 rounded-lg bg-collectible-dark-purple ">
-      <ul className="mx-3 my-5">
+    <>
+      <ul className="mb-4">
         {defaultSidebarItems.map((itemList) => (
           <li key={itemList.text}>
-            <a
-              href="#"
+            <Link
+              href={itemList.href}
               className="text-strong-gray-900 hover:text:text-su flex items-center rounded-lg p-2 "
             >
               <Image
@@ -42,30 +33,72 @@ const Sidebar = ({ handleOpenConnectModal }: SidebarProps) => {
               <span className="ml-3 text-gray-medium hover:text-gray-strong">
                 {itemList.text}
               </span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
 
-      <div className="mx-3 flex h-full flex-col content-end">
-        <ul className="mb-8 space-y-5">
-          {communities.map(({ communityPicture, name }) => (
-            <CommunityListItem
-              key={name}
-              communityPicture={communityPicture}
-              name={name}
+      {user?.isLoggedIn && (
+        <div className="flex flex-col px-1">
+          <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
+            {user?.communityMemberships.map(({ communityPicture, name }) => (
+              <CommunityListItem
+                key={name}
+                communityPicture={communityPicture}
+                name={name}
+              />
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {user?.isLoggedIn && (
+        <Link
+          className="fixed bottom-8 flex items-center justify-center gap-3"
+          href={`/profile/${user?.address}`}
+        >
+          <div className="rounded-full border-[1px] bg-gray-strong">
+            <Image
+              /** 
+               @DEV remove opacity-0 to display image
+               **/
+              className="h-12 w-12 rounded-full border-gray-strong opacity-0"
+              src={"collectible-logo.svg"}
+              width={50}
+              height={50}
+              alt="Collectible Logo"
             />
-          ))}
-        </ul>
+          </div>
+          <span className="mr-6 flex flex-col">
+            <p className="text-gray-strong opacity-50">{user?.name}</p>
+            <p className="text-sm text-gray-strong opacity-50">
+              {user?.shortAddress}
+            </p>
+          </span>
+          {!user?.loading && user?.isLoggedIn && (
+            <button
+              className="text-2xl text-gray-medium "
+              onClick={disconnectUser}
+            >
+              <BiLogOut />
+            </button>
+          )}
+        </Link>
+      )}
+
+      <div className="fixed bottom-8 ml-2 flex items-center justify-center">
         {!user?.loading && !user?.isLoggedIn && (
-          <Button action={handleOpenConnectModal}>Connect Account</Button>
+          <Button isLarge className="w-[200px]" action={handleOpenConnectModal}>
+            Connect Account
+          </Button>
         )}
-        {!user?.loading && user?.isLoggedIn && (
-          <Button action={disconnectUser}>Disconnect</Button>
+        {user?.loading && (
+          <Button isLarge className="w-[200px]" action={() => {}}>
+            Loading
+          </Button>
         )}
-        {user?.loading && <Button action={() => {}}>Loading</Button>}
       </div>
-    </aside>
+    </>
   );
 };
 
