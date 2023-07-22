@@ -80,10 +80,15 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
             setAlreadyClaimed(true);
             setLoading(false);
           } else {
-            console.log('Is not already claimed, fetching data...')
+            console.log("Is not already claimed, fetching data...");
             // if it is available, fetch the nft, the merkle proof and generate the proof
-            const uri = await getTokenURI(tokenURI);
+            let uri = await getTokenURI(tokenURI);
             console.log("obtained tokenUri", uri);
+            uri.image = uri.image.replace(
+              "ipfs://",
+              process.env.NEXT_PUBLIC_ALCHEMY_IPFS_URL,
+            );
+
             const merkleProof = await getMerkleProof(tokenID, merkleTreeCID);
             console.log("obtained merkleProof", merkleProof);
             setCollectibleURI(uri);
@@ -189,19 +194,14 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
 
             {!loading && !error && !alreadyClaimed && (
               <>
-                <h3 className="text-2xl font-semibold text-gray-strong">
+                <h3 className="text-2xl mb-1 font-semibold text-gray-strong">
                   {collectibleURI.name}
                 </h3>
 
                 <Image
                   className="rounded-lg"
-                  src={`
-              ${collectibleURI.image.replace(
-                "ipfs://",
-                "https://gateway.pinata.cloud/ipfs/",
-              )}
-              `}
-                  width={300}
+                  src={collectibleURI.image}
+                  width={280}
                   height={300}
                   alt="the nft about to be claimed"
                 />
@@ -209,7 +209,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
                   {collectibleURI.name}
                 </p> */}
 
-                <p className="max-w-[480px] text-center text-[14px] text-gray-strong">
+                <p className="max-w-[510px] mt-2 text-center text-[14px] text-gray-strong">
                   {collectibleURI.description}
                 </p>
                 {/* 
