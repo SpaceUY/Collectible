@@ -23,7 +23,9 @@ const CommunityCollections = ({ community }: CommunityCollectionsProps) => {
       await Promise.all(
         community.collections.map(async (collection) => {
           const nfts = await getCollectionNfts(collection.address);
-          fetchedCollections.push({ ...collection, nfts });
+          if (nfts.length > 0) {
+            fetchedCollections.push({ ...collection, nfts });
+          }
         }),
       );
 
