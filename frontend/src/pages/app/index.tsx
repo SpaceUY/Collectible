@@ -16,7 +16,7 @@ interface FeedContent {
 const collectiblePost: Post = {
   communityId: "collectible",
   content:
-    "Welcome to Collectible!. The platform is still under development, so handle us with care. LFG #WeaveDBFellowship",
+    "Welcome to Collectible! As our platform continues to evolve and grow, we appreciate your understanding and patience. Together, we're forging the future of Collectible! Let's go, #WeaveDBFellowship!",
   creationDate: "2023-07-19T00:00:00.000Z",
   isPublic: true,
   postId: "collectible-post-01",
