@@ -4,11 +4,11 @@ import Button from "../components/UI/Button";
 import Head from "next/head";
 
 const LEARN_MORE = "learn-more";
-const DISCOVER = "discover";
+const IMAGINE = "imagine";
 const ABOUT_US = "about-us";
 
 const headerLinks = [
-  { title: "Discover", path: DISCOVER },
+  { title: "Imagine", path: IMAGINE },
   { title: "Our Platform", path: LEARN_MORE },
   { title: "About Us", path: ABOUT_US },
 ];
@@ -31,13 +31,13 @@ const Landing = () => {
         </Link>
         <div className="flex gap-14">
           {headerLinks.map((link) => (
-            <Link
-              className=" text-gray-medium hover:text-gray-strong"
+            <div
+              className="text-gray-medium hover:text-gray-strong"
               key={link.title}
-              href={`#${link.path}`}
+              // href={`#${link.path}`}
             >
               {link.title}
-            </Link>
+            </div>
           ))}
         </div>
         <Link className="ml-auto mr-10 mt-2" href="/app">
@@ -47,7 +47,7 @@ const Landing = () => {
         </Link>
       </header>
 
-      <div className="custom-scrollbar h-screen snap-y snap-mandatory overflow-auto">
+      <div className="h-screen snap-y snap-mandatory overflow-auto">
         <div
           style={{
             backgroundImage: `url('/img/landing-system.svg')`,
@@ -61,19 +61,19 @@ const Landing = () => {
                 Explore, Collect and Dive into the World of Your Treasures.
               </h1>
               <div className="mt-8 flex w-40">
-                <Link href={`#${DISCOVER}`} scroll={true}>
-                  <Button className="" action={() => console.log("ahem")}>
-                    Discover More
-                  </Button>
-                </Link>
+                {/* <Link href={`#${IMAGINE}`} scroll={true}> */}
+                <Button className="" action={() => console.log("ahem")}>
+                  Discover More
+                </Button>
+                {/* </Link> */}
               </div>
             </div>
           </div>
         </div>
 
         <section
-          id={DISCOVER}
-          className="2xl:w-2/3snap-center mx-auto mb-20 flex h-screen  w-9/12  items-center gap-20 "
+          id={IMAGINE}
+          className="mx-auto mb-20 flex h-screen w-9/12 snap-center  items-center  gap-20 2xl:w-2/3 "
         >
           <Image
             className="w-1/2"
@@ -84,7 +84,7 @@ const Landing = () => {
           />
           <article className="w-1/2">
             <h2 className="mb-4 text-xl font-extrabold text-gray-strong">
-              Discover!
+              Imagine
             </h2>
             <p className="mb-3 text-gray-strong">
               You{"'"}ve just bought a book - your ticket to a world of
@@ -95,7 +95,7 @@ const Landing = () => {
               world, leaving the mundane behind.
             </p>
             <p className="mb-3  text-gray-strong">
-              Welcome to the Collectible universe! Scan the code, hop onto our
+              Welcome to the Collectible universe!, scan the code, hop onto our
               website or app, and create your account using just your email.
               Boom! You are now a verified original book holder, a proud owner
               of a digital collectible tied to your physical book. You{"'"}ve
@@ -116,22 +116,22 @@ const Landing = () => {
             <p className="mb-3 text-gray-strong">
               Collectible is a platform that serves as a bridge between
               entertainment products and unlockable experiences via digital
-              collectibles, providing a seamless and user-friendly experience by
-              leveraging blockchain technology.
+              collectibles, providing a user-friendly experience and leveraging
+              blockchain technology to ensure validity.
             </p>
             <p className="mb-3 text-gray-strong">
               Collectible establishes a secure connection between creators and
               consumers, aiding creators in segmenting their consumer
-              communities, connecting with them, and rewarding them with extras
-              for the products they have already purchased.
+              communities, connecting with them, and rewarding them with extra
+              benefits and perks for the products they have already purchased.
             </p>
 
             <p className="mb-3 text-gray-strong">
               When a consumer purchases a product or ticket that contains a
-              collectible and claims it, it becomes blockchain-certified, tied
-              to both them and their original product. As verified holders, they
-              become part of the creator{"'"}s community and begin to receive
-              associated perks.
+              collectible and claims it by scanning the QR, it becomes
+              blockchain-certified and tied to both the consumer and their
+              original product. As verified holders, they become part of the
+              creator{"'"}s community and begin to receive associated perks.
             </p>
           </article>{" "}
           <Image
@@ -160,13 +160,16 @@ const Landing = () => {
             </h2>
             <p className="mb-3  text-gray-strong">
               Collectible is an innovative platform designed to create an
-              unbreakable bond between creators of entertainment products and
-              their consumers. By bridging physical products and experiences
-              with digital collectibles, it enhances consumer engagement,
-              increases sales, and fosters exclusive communities. Collectible
-              leverages blockchain technology to provide a seamless and friendly
-              user experience, where creators can segment their consumer
-              communities and offer them unique perks tied to their purchases.
+              unbreakable bond between entertainment creators and their
+              consumers. By bridging physical products and experiences with
+              digital collectibles, it enhances consumer engagement, increases
+              sales of original products, and fosters exclusive communities.
+              <br /> <br />
+              Collectible leverages the latest blockchain technology to provide
+              a secure and descentralized but friendly user experience. All the
+              private data on Collectible is encrypted and stored in a
+              distribuited manner, and our users are the only owners of their
+              data and their Collectibles (Non-fungible Tokens).
             </p>
           </article>
         </section>
