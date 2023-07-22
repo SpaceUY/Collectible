@@ -215,6 +215,7 @@ export const WeaveDBProvider = ({
           availableMetadataResources: collection.availableMetadataResources,
         })),
       );
+      console.log("allColelctions", allCollections);
       setAllCollections(allCollections);
 
       const allCollectionsAddresses = allCollections.map((collection) =>

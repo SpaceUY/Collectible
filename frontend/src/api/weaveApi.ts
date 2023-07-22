@@ -14,6 +14,7 @@ export class WeaveDBApi {
       const communities = communitiesResponse.map(
         (community) => community.data,
       );
+      console.log("weaveApi - getAllCommunities() - communities:", communities);
       return communities;
     } catch (error) {
       console.log(error);
@@ -37,10 +38,10 @@ export class WeaveDBApi {
         postCreationPayload;
 
       const lastestCommunitySnapshot = await this.getCommunity(communityId);
-      console.log('lastestCommunitySnapshot', lastestCommunitySnapshot)
+      console.log("lastestCommunitySnapshot", lastestCommunitySnapshot);
 
       if (identity) {
-        console.log('Creating post with identity...')
+        console.log("Creating post with identity...");
         await this.db.update(
           { posts: [...lastestCommunitySnapshot.posts, postCreationPayload] },
           "communities",
