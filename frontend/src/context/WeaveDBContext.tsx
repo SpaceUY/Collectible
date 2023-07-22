@@ -94,7 +94,7 @@ export const WeaveDBProvider = ({
     try {
       const sign = async () => {
         await checkOrSignIdentity();
-         const cheat = '123'
+        const cheat = '12'
       };
       sign();
     } catch (error) {
