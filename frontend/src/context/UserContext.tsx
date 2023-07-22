@@ -68,11 +68,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     await magic.user.logout();
     console.log("disconnected from Magic");
 
-    // Redirect to homepage
-    router.push("/");
-
     // refresh hard
-    window.location.reload();
+    window.location.href = "/";
   };
 
   const fetchUserData = async () => {
