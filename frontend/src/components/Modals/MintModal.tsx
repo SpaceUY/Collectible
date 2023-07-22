@@ -80,6 +80,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
             setAlreadyClaimed(true);
             setLoading(false);
           } else {
+            console.log('Is not already claimed, fetching data...')
             // if it is available, fetch the nft, the merkle proof and generate the proof
             const uri = await getTokenURI(tokenURI);
             console.log("obtained tokenUri", uri);
