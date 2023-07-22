@@ -30,7 +30,7 @@ export const getTokenURI = async (
   tokenURI: string,
 ): Promise<CollectibleMetadata> => {
   console.log(
-    "getTokenUri called! with tokenURI",
+    "getTokenUri called with tokenURI",
     tokenURI,
     "and gateway",
     process.env.NEXT_PUBLIC_ALCHEMY_IPFS_URL,
