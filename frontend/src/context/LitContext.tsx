@@ -9,8 +9,8 @@ import { useRouter } from "next/router";
 import useWindowSize from "@/hooks/useWindowSize";
 // test
 const siwe = require("siwe");
-const domain = "collectible.vercel.app";
-const origin = "http://localhost:3000/app/";
+const domain = "collectible.vercel.app/";
+const origin = "collectible.vercel.app/";
 
 function createSiweMessage(address, statement) {
   const siweMessage = new siwe.SiweMessage({
@@ -61,7 +61,7 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
       return console.log("User must be logged in to sign AuthSig ");
     }
     try {
-      const message = createSiweMessage(user?.address, "This is a Lit AuthSig");
+      const message = createSiweMessage(user?.address, "Authentication needed to encrypt and decrypt member-only content on Collectible.");
 
       const sig = await web3.eth.personal.sign(message, user?.address, "");
       const authSig = {

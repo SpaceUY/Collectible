@@ -29,6 +29,7 @@ export const CollectibleCard = ({
           src={nft?.media[0]?.gateway}
           layout="fill"
           alt=""
+          quality={100}
         />
       </div>
 
