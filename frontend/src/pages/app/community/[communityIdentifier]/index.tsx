@@ -30,7 +30,7 @@ const communitySections = [
 export default function CollectiblesPage() {
   const { user } = useUser();
   const router = useRouter();
-  const { communityId } = router.query;
+  const { communityIdentifier: communityId } = router.query;
   const { allCommunities, loadingDB, loadingDBData } = useWeaveDB();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
@@ -134,7 +134,9 @@ export default function CollectiblesPage() {
                 className="ml-auto"
                 variant="outlined"
                 action={() => {
-                  router.push(`/app/community/${communityId}/manage-collectibles`);
+                  router.push(
+                    `/app/community/${communityId}/manage-collectibles`,
+                  );
                 }}
               >
                 <span className="flex items-center gap-2">

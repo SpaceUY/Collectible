@@ -12,7 +12,7 @@ import { useWeaveDB } from "../../../../context/WeaveDBContext";
 
 const ManageBenefits = () => {
   const router = useRouter();
-  const { communityId } = router.query;
+  const { communityIdentifier: communityId } = router.query;
   const [benefitName, setBenefitName] = useState("");
   const [communityBenefit, setCommunityBenefit] =
     useState<BenefitOptions>(null);

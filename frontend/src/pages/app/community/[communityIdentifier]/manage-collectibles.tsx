@@ -14,7 +14,7 @@ import LoadingWheel from "@/components/UI/LoadingWheel";
 const ManageCollectibles = () => {
   const { user } = useUser();
   const router = useRouter();
-  const { communityId } = router.query;
+  const { communityIdentifier: communityId } = router.query;
   const [imagePaths, setImagePaths] = useState<string[]>([]);
   const [formData, setFormData] = useState<{
     collectionName: string;
