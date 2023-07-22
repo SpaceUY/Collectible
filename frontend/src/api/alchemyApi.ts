@@ -29,13 +29,25 @@ export const getCollectionNfts = async (collectionAddress: string) => {
 export const getTokenURI = async (
   tokenURI: string,
 ): Promise<CollectibleMetadata> => {
+  console.log(
+    "getTokenUri called! with tokenURI",
+    tokenURI,
+    "and gateway",
+    process.env.NEXT_PUBLIC_ALCHEMY_IPFS_URL,
+  );
   const gatewayUri = tokenURI.replace(
     "ipfs://",
     process.env.NEXT_PUBLIC_ALCHEMY_IPFS_URL,
   );
-  const response = await fetch(gatewayUri);
-  const data = await response.json();
-  return data;
+
+  try {
+    const response = await fetch(gatewayUri);
+    const data = await response.json();
+    console.log("getTokenUri data", data);
+    return data;
+  } catch (error) {
+    console.error("Error at getTokenUri", error);
+  }
 };
 
 // custom function using Alchemy Pinata Cloud to gate Merkle Trees and generate the proof
