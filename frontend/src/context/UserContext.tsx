@@ -68,14 +68,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     await magic.user.logout();
     console.log("disconnected from Magic");
 
-    // Clear the user state
-    setUser(initialUserState);
-
-    // Re-initialize web3 instance to ensure correct provider is used
-    await initializeWeb3();
-
     // Redirect to homepage
     router.push("/");
+
+    // refresh hard
+    window.location.reload();
   };
 
   const fetchUserData = async () => {
@@ -102,7 +99,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         console.log(e);
       }
     } else {
-       setUser({ ...user, loading: false });
+      setUser({ ...user, loading: false });
     }
   };
 

@@ -124,6 +124,7 @@ export interface Post {
   creationDate: string;
   isPublic: boolean;
   postId: string;
+  alreadyObtained?: boolean;
 }
 export interface PostContent {
   text: string;

@@ -46,17 +46,9 @@ const ManageCollectibles = () => {
   };
 
   const handleSumbit = async () => {
-    alert("TBD");
-    // await weaveDB.addCollection({
-    //   name: formData.collectionName,
-    //   description: formData.collectionDescription,
-    //   address: user.address,
-    //   collectionUnits: formData.collectionUnits,
-    //   communityId: communityID as string,
-    // });
+    alert("Currently under development");
+  }
 
-    // TODO images
-  };
 
   return (
     <Layout title="Holders Only Area" className="">

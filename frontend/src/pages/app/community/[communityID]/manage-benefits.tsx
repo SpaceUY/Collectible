@@ -28,15 +28,7 @@ const ManageBenefits = () => {
   );
 
   const handleSubmit = async () => {
-    alert("tbd");
-    // await weaveDB.addBenefit({
-    //   type: communityBenefit,
-    //   name: benefitName,
-    //   communityId: community.id,
-    //   initialDate: selectedDayRange.from.toString(),
-    //   finishDate: selectedDayRange.from.toString(),
-    //   content: "", // TODO
-    // });
+    alert("Currently under development");
   };
 
   return (

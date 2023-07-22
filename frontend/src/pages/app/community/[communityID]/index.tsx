@@ -114,7 +114,7 @@ export default function CollectiblesPage() {
                 className="ml-auto"
                 variant="outlined"
                 action={() => {
-                  router.push(`/community/${communityId}/manage-benefits`);
+                  router.push(`/app/community/${communityId}/manage-benefits`);
                 }}
               >
                 <span className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export default function CollectiblesPage() {
                 className="ml-auto"
                 variant="outlined"
                 action={() => {
-                  router.push(`/community/${communityId}/manage-collectibles`);
+                  router.push(`/app/community/${communityId}/manage-collectibles`);
                 }}
               >
                 <span className="flex items-center gap-2">

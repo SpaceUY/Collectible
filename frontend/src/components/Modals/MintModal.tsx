@@ -10,8 +10,9 @@ import { decodeVariables } from "utils/functions";
 import LoadingWheel from "../UI/LoadingWheel";
 import ErrorComponent from "@/components/ErrorComponent";
 import { getMerkleProof, getTokenURI } from "@/api/alchemyApi";
-import { CollectibleMetadata, QRValues } from "../../../types";
+import { CollectibleMetadata, QRValues, TokenUri } from "../../../types";
 import { collectibleContractAbi } from "../../collectibleContractAbi";
+import { useConfetti } from "@/context/ConfettiContext";
 
 interface MintModalProps {
   handleCloseMintModal: () => void;
@@ -22,14 +23,13 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
   const { web3 } = useWeb3();
   const router = useRouter();
   const { key } = router.query;
+  const { handleThrowConfetti } = useConfetti();
 
   const [isMinting, setIsMinting] = useState(false);
-  const [throwConfetti, setThrowConfetti] = useState(false);
 
   const [collectibleURI, setCollectibleURI] =
     useState<CollectibleMetadata | null>(null);
   const [keyVariables, setKeyVariables] = useState<QRValues | null>(null);
-
   const [alreadyClaimed, setAlreadyClaimed] = useState<boolean | null>(null);
   // const [claimedBy, setClaimedBy] = useState<string | null>(null);
   const [merkleProof, setMerkleProof] = useState<any | null>(null);
@@ -53,7 +53,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
     } catch (error) {
       availabilityError = error.message;
     } finally {
-      if (availabilityError && availabilityError.includes("invalid token ID")) {
+      if (availabilityError) {
         return false;
       } else {
         return true;
@@ -71,7 +71,6 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
           const merkleTreeCID = decodedData.merkleTreeCID;
           const contractAddress = decodedData.contractAddress;
           setKeyVariables(decodedData);
-
           const isAlreadyClaimed = await checkAlreadyClaimed(
             contractAddress,
             +tokenID,
@@ -98,6 +97,7 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
   }, [key, web3]);
 
   const handleMint = async () => {
+    setIsMinting(true);
     const contractInstance = new web3.eth.Contract(
       collectibleContractAbi,
       keyVariables?.contractAddress,
@@ -124,12 +124,19 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
         .safeMint(+tokenId, tokenUri, password, proof)
         .send({ from: user?.address });
 
-      setThrowConfetti(true);
+      setTimeout(() => {
+        router.push(`/app/profile/${user?.address}`);
+
+        handleCloseMintModal();
+        handleThrowConfetti();
+      }, 500);
     } catch (error) {
-      alert(
+      console.error(
         "There was an error while minting the NFT. Please try again later.",
       );
       console.error(error);
+    } finally {
+      setIsMinting(false);
     }
   };
 
@@ -181,50 +188,24 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
                 <h3 className="text-2xl font-semibold text-gray-strong">
                   {collectibleURI.name}
                 </h3>
-                {throwConfetti && (
-                  <Confetti
-                    confettiSource={{
-                      x: window.innerWidth / 2 - 250,
-                      y: window.innerHeight / 2 - 250,
-                      w: 500,
-                      h: 500,
-                    }}
-                    // shape="circle"
-                    // friction={0.99}
-                    recycle={false}
-                    numberOfPieces={250}
-                    colors={[
-                      "#7A5FC8",
-                      "#F5F5F5",
-                      "#201F23",
-                      "#26252C",
-                      "#433273",
-                    ]}
-                    wind={0}
-                    gravity={0.1}
-                    onConfettiComplete={() => {
-                      setThrowConfetti(false);
-                    }}
-                  />
-                )}
 
                 <Image
-                  className=""
+                  className="rounded-lg"
                   src={`
               ${collectibleURI.image.replace(
                 "ipfs://",
                 "https://gateway.pinata.cloud/ipfs/",
               )}
               `}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   alt="the nft about to be claimed"
                 />
                 {/* <p className="max-w-[480px] text-center text-gray-strong">
                   {collectibleURI.name}
                 </p> */}
 
-                <p className="max-w-[480px] text-center text-gray-strong">
+                <p className="max-w-[480px] text-center text-[14px] text-gray-strong">
                   {collectibleURI.description}
                 </p>
                 {/* 

@@ -39,7 +39,7 @@ const CommunityOverviewCard = ({
   const colorClass = colorToClass(coverColor);
   return (
     <article
-      className={`relative h-auto w-full rounded-lg bg-gradient-to-b ${colorClass} to-collectible-dark-purple px-7 pt-20 pb-10`}
+      className={`relative h-auto w-full rounded-lg bg-gradient-to-b ${colorClass} to-collectible-dark-purple px-7 pt-20 pb-16`}
     >
       <div className="mb-5 flex items-center ">
         <Image

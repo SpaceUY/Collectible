@@ -93,8 +93,8 @@ export const WeaveDBProvider = ({
     }
     try {
       const sign = async () => {
-        const tupapi = "tupa";
         await checkOrSignIdentity();
+         const cheat = '123'
       };
       sign();
     } catch (error) {
@@ -158,7 +158,7 @@ export const WeaveDBProvider = ({
       if (c.communityId === community.communityId) {
         return {
           ...c,
-          posts: [...c.posts, post],
+          posts: [post, ...c.posts],
         };
       }
       return c;

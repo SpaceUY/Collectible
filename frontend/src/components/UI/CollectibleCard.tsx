@@ -26,7 +26,7 @@ export const CollectibleCard = ({
       <div className="relative w-full rounded-lg bg-gray-medium pb-[100%]">
         <Image
           className="absolute inset-0 rounded-lg object-cover object-center"
-          src={nft.media[0].gateway}
+          src={nft?.media[0]?.gateway}
           layout="fill"
           alt=""
         />
@@ -35,10 +35,10 @@ export const CollectibleCard = ({
       {!showPictureOnly && (
         <>
           <h3 className="mt-3 truncate text-base font-bold text-gray-strong">
-            {nft.title}
+            {nft?.title}
           </h3>
           <p className="truncate text-sm font-semibold text-gray-weak">
-            {nft.description}
+            {nft?.description}
           </p>
         </>
       )}

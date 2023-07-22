@@ -12,7 +12,7 @@ import {
   decryptFromIpfs,
   encryptToIpfs,
 } from "@lit-protocol/lit-node-client";
-import { uploadToIpfs } from "@/api/ipfsApi";
+import { fetchFromIpfs, uploadToIpfs } from "@/api/ipfsApi";
 
 interface AddPostProps {
   community: Community;
@@ -21,7 +21,7 @@ interface AddPostProps {
 const AddPost = ({ community }: AddPostProps) => {
   const { weaveDBApi, handleAppendNewPost, identity } = useWeaveDB();
   const { user } = useUser();
-  const { litApi, authSig } = useLit();
+  const { litApi, authSig, handleSignAuthSig } = useLit();
 
   const [submitingPost, setSubmitingPost] = useState<boolean>(false);
 
@@ -37,8 +37,9 @@ const AddPost = ({ community }: AddPostProps) => {
   };
 
   const handleSubmitPost = async () => {
-    if (!authSig) {
-      return console.error("AuthSig must be signed in order to post");
+    await handleSignAuthSig();
+    if (!isPublic && !authSig) {
+      return console.error("AuthSig must be signed in order to post privately");
     }
     // if (!identity) {
     //   return console.error(
@@ -60,7 +61,13 @@ const AddPost = ({ community }: AddPostProps) => {
 
     if (isPublic) {
       try {
-        contentCID = await uploadToIpfs(content);
+        const ipfsResponse = await uploadToIpfs(content);
+        contentCID = ipfsResponse.path;
+
+        // Test of content recovery
+        const recoveredContent = await fetchFromIpfs(contentCID);
+        console.log("recoveredContent", recoveredContent);
+        // Test of content recovery
       } catch (error) {
         console.log("Error at uploading post to IPFS");
       }
@@ -75,12 +82,32 @@ const AddPost = ({ community }: AddPostProps) => {
           "handleSubmitPost encryption success!, encrypted and pushed, contentCID",
           contentCID,
         );
+
+        // Test of content recovery
+        console.log(
+          "recovering content with cid",
+          contentCID,
+          "and authSig",
+          authSig,
+        );
+        const recoveredContent = await litApi.decrypt(authSig, contentCID);
+        console.log("recovered unencrypted content", recoveredContent);
+
+        // Test of content recovery
       } catch (error) {
         console.error("Error at encrypting post to IPFS ", error);
       }
     }
 
     // 2. Submit
+    console.log("Submiting to WeaveDB... post:", {
+      content: contentCID,
+      creationDate: creationDate,
+      communityId: community.communityId,
+      postId: postId,
+      isPublic: isPublic,
+    });
+
     const submit = true;
     if (submit) {
       try {
@@ -95,9 +122,17 @@ const AddPost = ({ community }: AddPostProps) => {
           },
           identity,
         );
-        handleAppendNewPost(community, {
+        console.log("Appending new post", {
           communityId: community.communityId,
           content: postText,
+          creationDate: creationDate,
+          isPublic: isPublic,
+          postId: postId,
+        });
+        handleAppendNewPost(community, {
+          communityId: community.communityId,
+          content: isPublic ? postText : contentCID,
+          alreadyObtained: isPublic ? true : false,
           creationDate: creationDate,
           isPublic: isPublic,
           postId: postId,
@@ -129,7 +164,7 @@ const AddPost = ({ community }: AddPostProps) => {
 
       <textarea
         name="post-text"
-        maxLength={250}
+        maxLength={350}
         placeholder="Post to your community"
         className={`h-28 w-full resize-none rounded-lg bg-collectible-dark-purple p-4 text-gray-strong placeholder-gray-weak !outline-none`}
         onChange={(e) => setPostText(e.target.value)}
@@ -159,7 +194,7 @@ const AddPost = ({ community }: AddPostProps) => {
           action={handleSubmitPost}
           disabled={submitingPost || postText.length === 0}
         >
-          {!submitingPost ? "Post" : "Posting..." }
+          {!submitingPost ? "Post" : "Posting..."}
         </Button>
       </div>
     </article>

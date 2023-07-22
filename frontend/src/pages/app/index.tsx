@@ -114,6 +114,7 @@ export default function CollectiblesPage() {
               key={collectiblePostWithCommunity.postId}
               community={collectiblePostWithCommunity.community}
               disableCommunityLink
+              isCollectiblePost
             />
           }
           {feedContent

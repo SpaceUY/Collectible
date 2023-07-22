@@ -47,8 +47,8 @@ const Sidebar = () => {
       </ul>
 
       {user?.isLoggedIn && (
-        <div className="flex flex-col px-1">
-          <ul className="mb-8 max-h-[calc(100vh-310px)]  space-y-5 overflow-y-auto scrollbar-none">
+        <div className="flex flex-col">
+          <ul className="mb-8 max-h-[calc(100vh-310px)] space-y-5 overflow-y-auto scrollbar-none">
             {displayedCommunities.map((communityId) => (
               <CommunityListItem key={communityId} communityId={communityId} />
             ))}

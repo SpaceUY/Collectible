@@ -18,13 +18,13 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
   const isOwner = user?.communityOwnerships.includes(communityId);
 
   if (!community) return null;
-
+  console.log("community picture", community.picture);
   return (
     <li>
       <Link href={`/app/community/${communityId}`} className="">
         <div className="group flex items-center">
           <Image
-            className="h-12 w-12 rounded-full bg-gray-strong object-cover "
+            className="h-12 w-12 rounded-full object-cover "
             src={community.picture}
             width={65}
             height={65}
@@ -32,9 +32,9 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
           />
           <p
             className={`ml-3 text-base font-medium ${
-              isOwner
-                ? "text-purple-500 group-hover:text-purple-300"
-                : "text-gray-medium  group-hover:text-gray-strong"
+              // isOwner
+              // ? "text-purple-500 group-hover:text-purple-300"
+              "text-gray-medium  group-hover:text-gray-strong"
             }`}
           >
             {community.name}

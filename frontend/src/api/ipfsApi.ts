@@ -32,3 +32,25 @@ export const uploadToIpfs = async (content) => {
     console.error(error);
   }
 };
+
+export const fetchFromIpfs = async (cid) => {
+  console.log("Fetching content from IPFS, CID:", cid);
+
+  try {
+    const chunks = [];
+    for await (const chunk of ipfs.cat(cid)) {
+      chunks.push(chunk);
+    }
+
+    // Concatenate the chunks and convert it back to a string
+    const content = Buffer.concat(chunks).toString();
+    console.log("Content fetched from IPFS:", content);
+
+    // You may want to parse it back to JSON if the original content was a JSON object
+    const jsonContent = JSON.parse(content);
+
+    return jsonContent;
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -22,6 +22,9 @@ const nextConfig = {
       "nft-cdn.alchemy.com",
       "gateway.pinata.cloud",
       "console.weavedb.dev",
+      "cdn.freebiesupply.com",
+      "imgtr.ee",
+      "ipfs.io",
     ],
   },
   webpack: (config) => {

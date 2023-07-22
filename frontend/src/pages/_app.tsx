@@ -7,6 +7,7 @@ import { WeaveDBProvider } from "../context/WeaveDBContext";
 import { LitProvider } from "@/context/LitContext";
 import useWindowSize from "@/hooks/useWindowSize";
 import Image from "next/image";
+import { ConfettiProvider } from "@/context/ConfettiContext";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -44,20 +45,22 @@ export default function App({ Component, pageProps }) {
       <UserProvider>
         <WeaveDBProvider>
           <LitProvider>
-            <ModalProvider>
-              <style jsx global>
-                {`
-                  :root {
-                    --font-inter: ${poppins.style.fontFamily};
-                  }
-                `}
-              </style>
-              {size.width < 1024 ? (
-                <NotAvailableAOnMobileComponent />
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </ModalProvider>
+            <ConfettiProvider>
+              <ModalProvider>
+                <style jsx global>
+                  {`
+                    :root {
+                      --font-inter: ${poppins.style.fontFamily};
+                    }
+                  `}
+                </style>
+                {size.width < 1024 ? (
+                  <NotAvailableAOnMobileComponent />
+                ) : (
+                  <Component {...pageProps} />
+                )}
+              </ModalProvider>
+            </ConfettiProvider>
           </LitProvider>
         </WeaveDBProvider>
       </UserProvider>

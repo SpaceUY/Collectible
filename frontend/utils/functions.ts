@@ -26,6 +26,11 @@ export const formatTime = (timeString) => {
     return `${seconds}s ago`;
   }
 
+  const minutes = Math.floor(timeDiff / (1000 * 60));
+  if (minutes < 60) {
+    return `${minutes}m ago`;
+  }
+
   const hours = Math.floor(timeDiff / (1000 * 60 * 60));
   if (hours < 24) {
     return `${hours}h ago`;
@@ -34,6 +39,7 @@ export const formatTime = (timeString) => {
   const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
   return `${days}d ago`;
 };
+
 
 export function decodeVariables(encodedData) {
   try {
