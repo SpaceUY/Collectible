@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import dotenv from "dotenv";
 import { weaveDB } from "../weavedb";
-import { Community } from '../../frontend/types';
+import { Community } from "../../frontend/types";
 
 dotenv.config();
 
@@ -9,9 +9,9 @@ const community = new Command("community");
 
 // Create: create community on weavedb
 community
-  .command("create <communityId> <communityName> <description> <owner>")
+  .command("create <communityId> <communityName> <description> <owner> <pictureUrl>")
   .description("Creates a community on weavedb")
-  .action(async (communityId, communityName, description, owner) => {
+  .action(async (communityId, communityName, description, owner, pictureUrl) => {
     try {
       const db = await weaveDB();
       const now = new Date();
@@ -27,11 +27,11 @@ community
         communityId: communityId,
         name: communityName,
         description: description,
-        owners: [owner],
+        owners: [owner.toLowerCase()],
         collections: [],
         posts: [],
         benefits: [],
-        picture: "",
+        picture: pictureUrl,
         coverColor: "",
         creationDate: creationDate,
       };

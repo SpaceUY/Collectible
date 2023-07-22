@@ -8,12 +8,12 @@
     "upload-metadata": "ts-node scripts/upload-metadata.ts",
     "deploy-beacon": "ts-node scripts/deploy-beacon.ts",
     "deploy-collection": "npx hardhat run scripts/deploy-collection.ts",
+    "ecrypt": "npx scripts/encryptToIpfs.ts",
     "create-community": "npx ts-node ./index.ts community create",
     "list-communities": "npx ts-node ./index.ts community list",
     "create-collection": "npx ts-node ./index.ts collection create",
     "list-collections": "npx ts-node ./index.ts collection list",
-    "mint-collectible": "npx ts-node ./index.ts collectible mint",
-    "ecrypt": "npx tsnode run scripts/encryptToIpfs.ts"
+    "mint-collectible": "npx ts-node ./index.ts collectible mint"
   },
   "author": "",
   "license": "MIT",

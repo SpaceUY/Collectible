@@ -25,5 +25,88 @@
     "creationDate": "7/17/2023, 5:44:17 PM",
     "units": 30,
     "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x69CD94783D5cB48302CDBad945248D84b0394BcE",
+    "chain": "maticmum",
+    "communityId": "spacedev",
+    "collectionName": "Space Dev Collection",
+    "creationDate": "7/21/2023, 6:45:32 PM",
+    "units": 10,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x864A9ba3b72904aB1bE9f96BF0b2a840CcAbdE1e",
+    "chain": "maticmum",
+    "communityId": "spacedev",
+    "collectionName": "space-collection-01",
+    "creationDate": "7/21/2023, 6:49:05 PM",
+    "units": 10,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x54e9F8f71be656fB5cd30b2C9068264E50498983",
+    "chain": "maticmum",
+    "communityId": "spacedev",
+    "collectionName": "space-collection-01",
+    "creationDate": "7/21/2023, 6:50:40 PM",
+    "units": 10,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0xce4a24fE9B1AdfC6720bdaB7E7a0A589579f7441",
+    "chain": "maticmum",
+    "communityId": "spacedev",
+    "collectionName": "space-collection-01",
+    "creationDate": "7/21/2023, 6:52:42 PM",
+    "units": 10,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x602077BFAe9e784a49ffBCFe678fac2FDc46a7C2",
+    "chain": "maticmum",
+    "communityId": "star-wars",
+    "collectionName": "Star Wars Jedis",
+    "creationDate": "7/21/2023, 7:04:45 PM",
+    "units": 20,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x5AAa6B8cDE5F74824DBa828B2d3EB9232E2EDFA3",
+    "chain": "maticmum",
+    "communityId": "star-wars",
+    "collectionName": "Galactic wars memories",
+    "creationDate": "7/21/2023, 8:39:23 PM",
+    "units": 20,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0x2a2423555ceaF61005F4c2209001C980E463534A",
+    "chain": "maticmum",
+    "communityId": "metallica",
+    "collectionName": "Metallic Funkos",
+    "creationDate": "7/22/2023, 1:07:31 PM",
+    "units": 20,
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0xDC7C689a34E47D752e59893B099d2f2C190189a3",
+    "chain": "maticmum",
+    "communityId": "metallica",
+    "collectionName": "Metallic Funkos",
+    "creationDate": "7/22/2023, 1:43:36 PM",
+    "units": 20,
+    "MerkleTreeCID": "QmeDdARnorgW5XHW3nTeKVGXL2RwEQKsiUqnCvxmkuTpFk",
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
+  },
+  {
+    "collectionAddress": "0xB050E5fc1D00189A3D58D57d1c0C8086ecD0d484",
+    "chain": "maticmum",
+    "communityId": "metallica",
+    "collectionName": "Metallic Funkos",
+    "creationDate": "7/22/2023, 1:46:30 PM",
+    "units": 20,
+    "MerkleTreeCID": "QmZu4xPenWUXzU9ot3gQ4XWGWtfVagSZpXjq4C3gWqSMeP",
+    "deployedWithBeaconAddress": "0xb9c59500ff560Bd42CE2deD325aB439602D8D04b"
   }
 ]

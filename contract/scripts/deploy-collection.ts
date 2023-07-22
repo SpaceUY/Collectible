@@ -10,7 +10,8 @@ export async function deployCollection(
   communityId: string,
   collectionName: string,
   collectionSymbol: string,
-  nftCount: number
+  nftCount: number,
+  MerkleTreeCID: string
 ): Promise<string> {
   const network = await ethers.provider.getNetwork();
   const chainName = network.name === "unknown" ? "localhost" : network.name;
@@ -69,6 +70,7 @@ export async function deployCollection(
     collectionName: collectionName,
     creationDate: new Date().toLocaleString(),
     units: nftCount,
+    MerkleTreeCID: MerkleTreeCID,
     deployedWithBeaconAddress: beaconAddress,
   });
 

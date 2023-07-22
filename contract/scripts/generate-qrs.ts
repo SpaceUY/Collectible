@@ -2,15 +2,16 @@ import fs from "fs";
 import path from "path";
 import qr from "qrcode";
 
-const hardCodedUrl = "https://collectible.vercel.app/mint";
+const hardCodedUrl = "https://collectible.vercel.app/app/mint";
 
 export function encodeVariables(
   contractAddress: string,
+  merkleTreeCID: string,
   tokenID: string,
   tokenUri: string,
   password: string
 ): string {
-  const data = `${contractAddress}:::${tokenID}:::${tokenUri}:::${password}`;
+  const data = `${contractAddress}:::${merkleTreeCID}:::${tokenID}:::${tokenUri}:::${password}`;
   return btoa(data);
 }
 
@@ -26,7 +27,8 @@ async function generateQR(fullUrl: string, outputPath: string) {
 export async function generateQRCodes(
   communityId: string,
   collectionName: string,
-  collectionAddress: string
+  collectionAddress: string,
+  merkleTreeCID: string
 ) {
   const valuesPath = path.join(
     __dirname,
@@ -53,8 +55,14 @@ export async function generateQRCodes(
     const [tokenId, tokenURI, password] = values[i];
 
     // Encode variables and generate full URL
-    const encodedKey = encodeVariables(collectionAddress, tokenId, tokenURI, password);
-    const fullUrl = `${hardCodedUrl}/?key=${encodedKey}`;
+    const encodedKey = encodeVariables(
+      collectionAddress,
+      merkleTreeCID,
+      tokenId,
+      tokenURI,
+      password
+    );
+    const fullUrl = `${hardCodedUrl}?key=${encodedKey}`;
 
     // Generate QR Code
     const fileName = `QR_${tokenId}.png`;

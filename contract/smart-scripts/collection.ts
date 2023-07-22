@@ -6,9 +6,8 @@ import { uploadMetadata } from "../scripts/upload-metadata";
 import { generateMerkleTree } from "../scripts/generate-merkle-tree";
 import { deployCollection } from "../scripts/deploy-collection";
 import dotenv from "dotenv";
-import { WeaveDBCommunity } from "../../frontend/types";
-
 import { generateQRCodes } from "../scripts/generate-qrs";
+import { uploadMerkleTree } from "../scripts/upload-merkle-tree";
 
 dotenv.config();
 
@@ -52,20 +51,6 @@ collection
   .command("create <communityId> <collectionName> <description> <symbol> <nftCountStr>")
   .description("Generates all the elements necessary for a collection and deploys it")
   .action(async (communityId, collectionName, description, symbol, nftCountStr) => {
-    console.log("Collection create called!");
-    console.log(
-      "\ncommunityId:",
-      communityId,
-      "\ncollectionName:",
-      collectionName,
-      "\ndescription:",
-      description,
-      "\nsymbol:",
-      symbol,
-      "\nnftCountStr:",
-      nftCountStr
-    );
-
     // Convert string to number
     const nftCount = parseInt(nftCountStr, 10);
     // Then check if it's a valid number
@@ -86,21 +71,26 @@ collection
       console.log("\n2. Generating Merkle Tree from the Merkle values (leafs)...");
       await generateMerkleTree(communityId, collectionName);
 
-      // 3. Deploy Collection
-      console.log("\n3. Deploying collection contract...");
+      // 3. Upload Merkle tree to IPFS
+      console.log("\n3. Uploading Merkle Tree to IPFS...");
+      const merkleTreeCID = await uploadMerkleTree(communityId, collectionName);
+
+      // 4. Deploy Collection
+      console.log("\n4. Deploying collection contract...");
       const collectionAddress = await deployCollection(
         communityId,
         collectionName,
         symbol,
-        nftCount
+        nftCount,
+        merkleTreeCID
       );
 
-      // 4. Generate QRs and URLs
-      console.log("\n4. Generating QRs and URLs...");
-      await generateQRCodes(communityId, collectionName, collectionAddress);
+      // 5. Generate QRs and URLs
+      console.log("\n5. Generating QRs and URLs...");
+      await generateQRCodes(communityId, collectionName, collectionAddress, merkleTreeCID);
 
-      // 5. Upload collection to the WeaveDB community
-      console.log("\n4. Uploadiing collection to the WeaveDB community...");
+      // 6. Upload collection to the WeaveDB community
+      console.log("\n6. Uploadiing collection to the WeaveDB community...");
       await weaveDBCreateCollection(communityId, collectionName, collectionAddress);
     } catch (error) {
       console.log(error);
@@ -163,9 +153,7 @@ collection
     const communities = await db.cget("communities"); // Assuming 'collection' is the right key
     // console.log("communities", 4communities);
 
-    const collections = communities.flatMap(
-      (community: WeaveDBCommunity) => community.data.collections
-    );
+    const collections = communities.flatMap((community: any) => community.data.collections);
 
     console.log("collections: ", collections);
   });
