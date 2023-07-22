@@ -75,13 +75,16 @@ const MintModal = ({ handleCloseMintModal }: MintModalProps) => {
             contractAddress,
             +tokenID,
           );
+          console.log("decodedData", decodedData);
           if (isAlreadyClaimed) {
             setAlreadyClaimed(true);
             setLoading(false);
           } else {
             // if it is available, fetch the nft, the merkle proof and generate the proof
             const uri = await getTokenURI(tokenURI);
+            console.log("obtained tokenUri", uri);
             const merkleProof = await getMerkleProof(tokenID, merkleTreeCID);
+            console.log("obtained merkleProof", merkleProof);
             setCollectibleURI(uri);
             setMerkleProof(merkleProof);
             setLoading(false);

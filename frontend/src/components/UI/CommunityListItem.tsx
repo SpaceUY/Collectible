@@ -18,7 +18,6 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
   const isOwner = user?.communityOwnerships.includes(communityId);
 
   if (!community) return null;
-  console.log("community picture", community.picture);
   return (
     <li>
       <Link href={`/app/community/${communityId}`} className="">

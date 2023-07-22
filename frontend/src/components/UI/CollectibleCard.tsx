@@ -23,7 +23,7 @@ export const CollectibleCard = ({
       className="flex-grow cursor-pointer rounded-lg bg-collectible-medium-purple p-4"
       onClick={inspectCollectible}
     >
-      <div className="relative w-full rounded-lg bg-gray-medium pb-[100%]">
+      <div className="relative w-full rounded-lg pb-[100%]">
         <Image
           className="absolute inset-0 rounded-lg object-cover object-center"
           src={nft?.media[0]?.gateway}

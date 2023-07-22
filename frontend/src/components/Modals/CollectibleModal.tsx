@@ -80,8 +80,8 @@ const CollectibleModal = ({
                   {selectedCollectible.description}
                 </p>
                 <p className="max-w-[420px] text-gray-strong">
-                  Total units distribuited:{" "}
-                  {selectedCollectible.contract.totalSupply}
+                  {/* Total units distribuited:{" "}
+                  {selectedCollectible.contract.totalSupply} */}
                 </p>
               </div>
 
