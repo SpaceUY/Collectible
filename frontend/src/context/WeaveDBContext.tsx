@@ -76,18 +76,18 @@ export const WeaveDBProvider = ({
   // Sign the identity on load
   useEffect(() => {
     if (identity) {
-      return console.log("Identity already signed");
+      return console.info("Identity already signed");
     }
     if (!user?.address) {
-      return console.error("user must be connected in order to SignIdentity");
+      return console.info("user must be connected in order to SignIdentity");
     }
     if (!web3) {
-      return console.error(
+      return console.info(
         "web3 must be connected and loaded in order to SignIdentity",
       );
     }
     if (!db) {
-      return console.error(
+      return console.info(
         "db must be connected and loaded in order to SignIdentity",
       );
     }
@@ -111,15 +111,15 @@ export const WeaveDBProvider = ({
       return console.log("Identity already signed");
     }
     if (!user?.address) {
-      return console.error("user must be connected in order to SignIdentity");
+      return console.info("user must be connected in order to SignIdentity");
     }
     if (!web3) {
-      return console.error(
+      return console.info(
         "web3 must be connected and loaded in order to SignIdentity",
       );
     }
     if (!db) {
-      return console.error(
+      return console.info(
         "db must be connected and loaded in order to SignIdentity",
       );
     }
@@ -168,7 +168,7 @@ export const WeaveDBProvider = ({
 
   const startWeaveDB = async () => {
     if (!web3) {
-      return console.error(
+      return console.info(
         "web3 must be connected and loaded to run startWeaveDB",
       );
     }
@@ -198,7 +198,7 @@ export const WeaveDBProvider = ({
   // Execute side operations after the DB has been loaded
   useEffect(() => {
     if (!db) {
-      return console.error("db must be loaded to run fetchWeaveDBData");
+      return console.info("db must be loaded to run fetchWeaveDBData");
     }
     const fetchWeaveDBData = async () => {
       console.log("fetchWeaveDBData() call");
@@ -248,15 +248,15 @@ export const WeaveDBProvider = ({
   // Fetch user on-chain data
   useEffect(() => {
     if (!web3) {
-      return console.error(
+      return console.info(
         "web3 must be connected and loaded to run fetchUserChainData",
       );
     }
     if (!user?.address) {
-      return console.error("user must be logged in to run fetchUserChainData");
+      return console.info("user must be logged in to run fetchUserChainData");
     }
     if (loadingDBData) {
-      return console.error(
+      return console.info(
         "loadingDBData must be false to run fetchUserChainData",
       );
     }

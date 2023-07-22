@@ -2,7 +2,6 @@ import { useUser } from "@/context/UserContext";
 import { useWeaveDB } from "@/context/WeaveDBContext";
 import Image from "next/image";
 import Link from "next/link";
-import { nameToUrl } from "utils/functions";
 
 interface CommunityListItemProps {
   communityId: string;
@@ -14,9 +13,6 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
   const community = allCommunities.find(
     (community) => communityId === community.communityId,
   );
-
-  const isOwner = user?.communityOwnerships.includes(communityId);
-
   if (!community) return null;
   return (
     <li>
@@ -31,8 +27,6 @@ const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
           />
           <p
             className={`ml-3 text-base font-medium ${
-              // isOwner
-              // ? "text-purple-500 group-hover:text-purple-300"
               "text-gray-medium  group-hover:text-gray-strong"
             }`}
           >

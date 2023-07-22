@@ -5,7 +5,6 @@ import Backdrop from "./Backdrop";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import { useWeb3 } from "@/context/Web3Context";
-import Confetti from "react-confetti";
 import { decodeVariables } from "utils/functions";
 import LoadingWheel from "../UI/LoadingWheel";
 import ErrorComponent from "@/components/ErrorComponent";

@@ -4,10 +4,10 @@ import { ILitNodeClient } from "@lit-protocol/types";
 import { LitNodeClient } from "@lit-protocol/lit-node-client";
 import { useWeb3 } from "./Web3Context";
 import { useUser } from "./UserContext";
-import { generateRandomId } from "utils/functions";
+
 import { useRouter } from "next/router";
 import useWindowSize from "@/hooks/useWindowSize";
-// test
+
 const siwe = require("siwe");
 const domain = "collectible.vercel.app";
 const origin = "http://collectible.vercel.app/app/";
@@ -23,7 +23,7 @@ function createSiweMessage(address, statement) {
   });
   return siweMessage.prepareMessage();
 }
-//test
+
 type LitContextType = {
   litApi: LitApi;
   authSig: any;
@@ -50,10 +50,10 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSignAuthSig = async () => {
     if (authSig) {
-      return console.log("AuthSig already signed!");
+      return console.info("AuthSig already signed!");
     }
     if (!web3) {
-      return console.error(
+      return console.info(
         "Web3 must be loaded in order to sign AuthSign with Magics",
       );
     }
@@ -95,25 +95,24 @@ export const LitProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    // To be removed from the landing page
-    // if (!router.pathname.includes("/app")) {
-    //   return console.log("Not in app, so not signing AuthSig");
-    // }
     if (!(size.width > 1024)) {
       return console.log("Must be in desktop to sign AuthSig");
     }
     if (!web3) {
-      return console.error(
+      return console.info(
         "Web3 must be loaded in order to sign AuthSign with Magics",
       );
     }
     if (!user?.address) {
-      return console.error("User must be logged in to sign AuthSig");
+      return console.info("User must be logged in to sign AuthSig");
     }
     if (!litApi) {
-      return console.error("LitApi must be loaded in order to sign AuthSig");
+      return console.info("LitApi must be loaded in order to sign AuthSig");
     }
     const signAuthSig = async () => {
+      /** 
+       @DEV Currently disabled, using manual lit signing
+      */
       // handleSignAuthSig();
     };
     signAuthSig();

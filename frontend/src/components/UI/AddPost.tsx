@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import { useWeaveDB } from "../../context/WeaveDBContext";
-import Image from "next/image";
 import { Community, PostContent } from "../../../types";
 import { useUser } from "@/context/UserContext";
 import { generateRandomId } from "../../../utils/functions";
-import community from "../../../../contract/smart-scripts/community";
 import { useLit } from "@/context/LitContext";
-import {
-  checkAndSignAuthMessage,
-  decryptFromIpfs,
-  encryptToIpfs,
-} from "@lit-protocol/lit-node-client";
 import { fetchFromIpfs, uploadToIpfs } from "@/api/ipfsApi";
 
 interface AddPostProps {
@@ -39,7 +32,7 @@ const AddPost = ({ community }: AddPostProps) => {
   const handleSubmitPost = async () => {
     await handleSignAuthSig();
     if (!isPublic && !authSig) {
-      return console.error("AuthSig must be signed in order to post privately");
+      return console.info("AuthSig must be signed in order to post privately");
     }
     // if (!identity) {
     //   return console.error(
