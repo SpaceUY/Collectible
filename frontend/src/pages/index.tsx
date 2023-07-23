@@ -31,13 +31,13 @@ const Landing = () => {
         </Link>
         <div className="flex gap-14">
           {headerLinks.map((link) => (
-            <div
+            <Link
               className="text-gray-medium hover:text-gray-strong"
               key={link.title}
               href={`#${link.path}`}
             >
               {link.title}
-            </div>
+            </Link>
           ))}
         </div>
         <Link className="ml-auto mr-10 mt-2" href="/app">
@@ -47,7 +47,7 @@ const Landing = () => {
         </Link>
       </header>
 
-      <div className="h-screen overflow-auto">
+      <div className="h-screen overflow-auto scroll-smooth">
         <div
           style={{
             backgroundImage: `url('/img/landing-system.svg')`,
