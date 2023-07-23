@@ -74,7 +74,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserData = async () => {
     if (!web3) {
-      return console.error(
+      return console.info(
         "web3 must be connected and loaded to fetch the user data",
       );
     }

@@ -54,7 +54,7 @@ const CollectiblesReel = ({
               spaceBetween: 12,
             },
           }}
-          mousewheel={nfts.length >= 4} // Enable mousewheel control here
+          // mousewheel={nfts.length >= 4} // Mousewheel doesn't work right when the row is not complete, it prevents vertical scrolling
         >
           {nfts.map((nft) => (
             <SwiperSlide key={nft.tokenId}>

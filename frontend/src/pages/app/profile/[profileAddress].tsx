@@ -54,7 +54,7 @@ export default function CollectiblesPage() {
         <title>Collectible - Profile</title>
       </Head>
 
-      <div className="mb-8 flex items-center">
+      <div className="mb-8 flex items-center justify-between">
         <div
           className="flex cursor-pointer items-center gap-4"
           onClick={handleShowMagicUI}
@@ -78,6 +78,14 @@ export default function CollectiblesPage() {
             </p>
           </span>
         </div>
+        <Image
+          className=" cursor-pointer"
+          src={"/config-icon.svg"}
+          width={25}
+          height={25}
+          alt="configurate profile"
+          onClick={handleShowMagicUI}
+        />
       </div>
 
       <div className="mb-8 flex flex-col justify-center gap-3">

@@ -52,7 +52,7 @@ const CommunityPost = ({
   };
 
   useEffect(() => {
-    if (isPublic && !post.alreadyObtained) {
+    if (isPublic && !post.alreadyObtained && !isCollectiblePost) {
       handleObtainPost();
     }
   }, [isPublic]);
