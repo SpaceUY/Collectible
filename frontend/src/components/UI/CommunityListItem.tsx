@@ -1,28 +1,39 @@
+import { useUser } from "@/context/UserContext";
+import { useWeaveDB } from "@/context/WeaveDBContext";
 import Image from "next/image";
+import Link from "next/link";
 
-const CommunityListItem = ({
-  communityPicture,
-  name,
-}: {
-  communityPicture: string;
-  name: string;
-}) => {
+interface CommunityListItemProps {
+  communityId: string;
+}
+const CommunityListItem = ({ communityId }: CommunityListItemProps) => {
+  const { user } = useUser();
+  const { allCommunities } = useWeaveDB();
+
+  const community = allCommunities.find(
+    (community) => communityId === community.communityId,
+  );
+  if (!community) return null;
   return (
     <li>
-      <a href="#" className="">
+      <Link href={`/app/community/${communityId}`} className="">
         <div className="group flex items-center">
           <Image
-            src={communityPicture}
+            className="h-12 w-12 rounded-full object-cover "
+            src={community.picture}
             width={65}
             height={65}
             alt=""
-            className="rounded-full bg-orange-500"
           />
-          <p className="ml-3 text-base font-medium text-gray-medium group-hover:text-gray-strong">
-            {name}
+          <p
+            className={`ml-3 text-base font-medium ${
+              "text-gray-medium  group-hover:text-gray-strong"
+            }`}
+          >
+            {community.name}
           </p>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };

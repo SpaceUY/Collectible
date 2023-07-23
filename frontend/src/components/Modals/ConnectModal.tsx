@@ -10,12 +10,13 @@ interface ConnectModalProps {
 }
 
 const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
-  const { user, connectUser, connectBrand } = useUser();
+  const { user, connectUser } = useUser();
 
   useEffect(() => {
     if (user?.isLoggedIn) {
       handleCloseConnectModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.isLoggedIn]);
 
   /**  
@@ -25,11 +26,11 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
   return (
     <>
       <Backdrop />
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="min-w-[500px] rounded-xl border-2 border-collectible-purple-borders bg-collectible-dark-purple p-8">
           <div className="mb-14 flex justify-between">
             <Image
-              src={"/collectible-logo.svg"}
+              src={"/isologo.svg"}
               width={60}
               height={50}
               alt="Collectible Logo"
@@ -57,12 +58,11 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
               variant="white"
               action={() => {
                 // connectBrand();
-                alert("Connect as a creator callback");
+                alert("Currently under development, feel free to reach us at info@spacedev.io");
               }}
             >
               Connect as a creator
             </Button>
-            ;
           </div>
         </div>
       </div>

@@ -6,9 +6,13 @@ const createMagic = () => {
     typeof window !== "undefined" &&
     new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY, {
       network: {
-        rpcUrl: "https://rpc2.sepolia.org",
-        chainId: 11155111,
+        rpcUrl: "https://rpc.ankr.com/polygon_mumbai",
+        chainId: 80001,
       },
+      // network: {
+      //   rpcUrl: "https://rpc.sepolia.org",
+      //   chainId: 11155111,
+      // },
     })
   );
 };

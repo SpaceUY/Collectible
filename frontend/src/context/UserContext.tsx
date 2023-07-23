@@ -1,37 +1,39 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { fetchNFTs } from "@/lib/utils";
 import { useWeb3 } from "./Web3Context";
 import { magic } from "@/lib/magic";
-import { getUserData } from "@/api/accountApi";
+import { getUserChainData, getUserData } from "@/api/accountApi";
+import { useRouter } from "next/router";
+import { Community, UserData, Collection } from "../../types";
 
-// Define custom user data type
-interface UserData {
-  address?: string;
-  shortAddress?: string;
-  balance?: string;
-  collectibles?: string[];
-  isLoggedIn?: boolean;
-  loading?: boolean;
-  refreshCollectibles?: boolean;
-  tokenIdForModal?: number;
-}
+const initialUserState: UserData = {
+  loading: true,
+  isLoggedIn: false,
+  address: "",
+  shortAddress: "",
+  name: "",
+  balance: "",
+  collectibles: [],
+  communityMemberships: [],
+  communityOwnerships: [],
+};
 
-// Define user context type
 type UserContextType = {
-  user: UserData | null;
-  setUser: React.Dispatch<React.SetStateAction<UserData | undefined>> | null;
+  user: UserData;
   connectUser: () => void;
-  connectBrand: () => void;
   disconnectUser: () => void;
+  fetchUserChainData: (
+    allCommunities: Community[],
+    allCollections: Collection[],
+    allCollectionAddreses: string[],
+  ) => Promise<void>;
 };
 
 // Create context with default values
 const UserContext = createContext<UserContextType>({
-  user: null,
-  setUser: null,
+  user: initialUserState,
   connectUser: () => {},
-  connectBrand: () => {},
   disconnectUser: () => {},
+  fetchUserChainData: () => Promise.resolve(),
 });
 
 // Custom hook to use the UserContext
@@ -40,10 +42,11 @@ export const useUser = () => useContext(UserContext);
 // Provider component to wrap around components that need access to the context
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Get web3 and contract instances from Web3Context
-  const { web3, contract, isAccountChanged, initializeWeb3 } = useWeb3();
+  const { web3, initializeWeb3 } = useWeb3();
+  const router = useRouter();
 
   // State to hold the user data
-  const [user, setUser] = useState<UserData>();
+  const [user, setUser] = useState<UserData>(initialUserState);
 
   /**  
    @dev User connection to be handled on WeaveDV @TBD
@@ -60,81 +63,75 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  /**  
-   @dev Brand connection to be handled on WeaveDV @TBD
-  **/
-  const connectBrand = async () => {
-    try {
-      // Attempt to connect with the user's wallet using Magic's UI
-      await magic.wallet.connectWithUI();
-      // If the wallet connection is successful, initialize web3 instance
-      await initializeWeb3();
-    } catch (error) {
-      // Log any errors that occur during the login process
-      console.error("handleLogin", error);
-    }
-  };
-
   const disconnectUser = async () => {
     // Disconnect from magic
     await magic.user.logout();
     console.log("disconnected from Magic");
-    // Clear the user state
-    setUser(null);
 
-    // Re-initialize web3 instance to ensure correct provider is used
-    await initializeWeb3();
+    // refresh hard
+    window.location.href = "/";
+  };
+
+  const fetchUserData = async () => {
+    if (!web3) {
+      return console.info(
+        "web3 must be connected and loaded to fetch the user data",
+      );
+    }
+    const accounts = await web3.eth.getAccounts();
+    const address = accounts[0];
+    if (address) {
+      try {
+        const userData = await getUserData(web3, address);
+        setUser({
+          ...user,
+          address: userData.address,
+          shortAddress: userData.shortAddress,
+          name: userData.name,
+          balance: userData.balance,
+          // loading: userData.loading,
+          // isLoggedIn: userData.isLoggedIn,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      setUser({ ...user, loading: false });
+    }
+  };
+
+  const fetchUserChainData = async (
+    allCommunities: Community[],
+    allCollections: Collection[],
+    allCollectionAddreses: string[],
+  ) => {
+    const userChainData = await getUserChainData(
+      web3,
+      user.address,
+      allCommunities,
+      allCollections,
+      allCollectionAddreses,
+    );
+    console.log("obtained user chain data");
+    setUser({
+      ...user,
+      collectibles: userChainData.collectibles,
+      communityMemberships: userChainData.communityMemberships,
+      communityOwnerships: userChainData.communityOwnerships,
+      isLoggedIn: true, // edited
+      loading: false, // edited
+    });
   };
 
   // 1. Get the user account when web3 instance is available
   useEffect(() => {
-    const fetchData = async () => {
-      console.log("Fetching user data");
-      if (!web3) return;
-      setUser({ loading: true });
-
-      const account = await web3.eth.getAccounts();
-      console.log(account);
-      if (account.length > 0) {
-        const data = await getUserData(web3);
-        setUser(data);
-      } else {
-        setUser({ loading: false });
-      }
-    };
-
-    fetchData();
-  }, [web3, isAccountChanged]);
-
-  // Function to fetch and update NFTs for the user
-  const fetchAndUpdateNFTs = async () => {
-    if (!user?.address || !user?.refreshCollectibles) return;
-
-    setUser({ ...user, refreshCollectibles: true });
-
-    try {
-      const res = await fetchNFTs(user.address, contract);
-
-      if (Array.isArray(res)) {
-        setUser({
-          ...user,
-          collectibles: res.reverse(),
-          refreshCollectibles: false,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // Fetch and update NFTs when address or refreshCollectibles state changes
-  useEffect(() => {
-    fetchAndUpdateNFTs();
-  }, [user?.address, user?.refreshCollectibles]);
+    fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [web3]);
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, connectUser, connectBrand, disconnectUser }}
+      value={{ user, connectUser, disconnectUser, fetchUserChainData }}
     >
       {children}
     </UserContext.Provider>

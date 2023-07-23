@@ -1,7 +1,7 @@
 {
-  "name": "magic-nft-demo",
+  "name": "collectible-monorepo",
   "version": "1.0.0",
-  "description": "Magic NFT Starter Kit!",
+  "description": "Collectible Monorepo",
   "main": "index.js",
   "private": true,
   "scripts": {
