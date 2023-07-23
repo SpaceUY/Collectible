@@ -58,7 +58,7 @@ const ConnectModal = ({ handleCloseConnectModal }: ConnectModalProps) => {
               variant="white"
               action={() => {
                 // connectBrand();
-                alert("Connect as a creator callback");
+                alert("Currently under development, feel free to reach us at info@spacedev.io");
               }}
             >
               Connect as a creator
