@@ -23,6 +23,12 @@ const CommunityFeed = ({
   return !isLoading ? (
     <div className="mb-40 flex flex-col gap-4">
       {isOwner && <AddPost community={community} />}
+
+      {/* {posts.length === 0 && (
+        <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-strong/90">
+          The {community.name} community has made any post yet.
+        </h3>
+      )} */}
       {posts
         .sort(
           (a, b) =>

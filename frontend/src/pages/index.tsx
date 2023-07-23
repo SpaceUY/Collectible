@@ -47,7 +47,7 @@ const Landing = () => {
         </Link>
       </header>
 
-      <div className="h-screen overflow-auto scroll-smooth">
+      <div className="h-screen overflow-auto">
         <div
           style={{
             backgroundImage: `url('/img/landing-system.svg')`,
