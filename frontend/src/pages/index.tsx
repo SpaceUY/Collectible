@@ -128,7 +128,7 @@ const Landing = () => {
             </p>
 
             <p className="mb-3 text-gray-strong">
-              a consumer, when you claim a collectible bundled with your
+              As a consumer, when you claim a collectible bundled with your
               purchase via QR scanning, it becomes blockchain-certified. This
               bond to your product unlocks your verified membership within the
               creator{"'"}s community, opening up a world of exclusive perks.
