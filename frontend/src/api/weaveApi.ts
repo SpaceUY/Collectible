@@ -11,6 +11,7 @@ export class WeaveDBApi {
   async getAllCommunities(): Promise<Community[]> {
     try {
       const communitiesResponse = await this.db.cget("communities");
+      console.log('getAllCommunities() - communitiesResponse', communitiesResponse)
       const communities = communitiesResponse.map(
         (community) => community.data,
       );
